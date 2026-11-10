@@ -18,7 +18,10 @@ W, H = 1280, 800
 ALEX = ("Alex", "account executive", "#4dc2c8")
 ENGINE = ("Account Focus", "the engine", "#a99dff")
 REVOPS = ("Dev", "RevOps", "#f0914f")
-TOTAL = 16
+ORBIT = ("GTM Orbit", "outreach agents", "#7fd18b")
+# FOCUS_SLACK_SPLICE=4 leaves room for 4 steps of real Slack footage spliced in later (scripts/video/splice.py)
+SPLICE = int(os.environ.get("FOCUS_SLACK_SPLICE", "0"))
+TOTAL = 17 + (SPLICE - 1 if SPLICE else 0)
 
 def free_port():
     s = socket.socket(); s.bind(("127.0.0.1", 0)); p = s.getsockname()[1]; s.close(); return p
@@ -50,13 +53,28 @@ class Recorder:
         asyncio.ensure_future(self.cdp.send("Page.screencastFrameAck", {"sessionId": ev["sessionId"]}))
     async def stop(self):
         await self.cdp.send("Page.stopScreencast"); self.end = time.monotonic() - self.t0
+    def now(self): return round(time.monotonic() - (self.t0 or time.monotonic()), 2)
     def mark(self, title, persona):
         self.chapters.append({"t": round(time.monotonic() - (self.t0 or time.monotonic()), 2), "title": title, "persona": persona[0], "role": persona[1], "color": persona[2]})
 
 async def main():
     shutil.rmtree(OUT, ignore_errors=True); os.makedirs(FRAMES)
     port = free_port()
-    server = subprocess.Popen(["node", os.path.join(ROOT, "app", "server.js"), "--offline", "--no-slack", f"--port={port}"], stdout=subprocess.PIPE)
+    # GTM Orbit, so the hand-off is real: set FOCUS_ORBIT_DIR to Orbit's orbit/ folder (its code is not changed)
+    orbit_dir = os.environ.get("FOCUS_ORBIT_DIR"); orbit = None; orbit_base = None
+    env = dict(os.environ)
+    if orbit_dir:
+        oport = free_port()
+        while oport == port: oport = free_port()
+        orbit_base = f"http://127.0.0.1:{oport}"
+        orbit = subprocess.Popen(["node", "server.js", "--offline"], cwd=orbit_dir, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                 env={**os.environ, "ORBIT_PORT": str(oport), "SLACK_BOT_TOKEN": "", "SLACK_APP_TOKEN": ""})
+        for _ in range(50):
+            try: urllib.request.urlopen(orbit_base + "/api/health"); break
+            except Exception: time.sleep(0.2)
+        urllib.request.urlopen(urllib.request.Request(orbit_base + "/api/reset", data=b"{}", headers={"content-type": "application/json"}, method="POST"))
+        env["ORBIT_URL"] = orbit_base
+    server = subprocess.Popen(["node", os.path.join(ROOT, "app", "server.js"), "--offline", "--no-slack", f"--port={port}"], stdout=subprocess.PIPE, env=env)
     base = f"http://127.0.0.1:{port}"
     for _ in range(50):
         try: urllib.request.urlopen(base + "/api/health"); break
@@ -148,12 +166,33 @@ async def main():
             await show(page.locator(".prep-sec").nth(1), "Public · internal tags", 5.0, scroll=False)
             # 8 accept and hand off
             await nohl()
-            await cap(ALEX, "Accept, then hand off to Orbit", "Alex accepts the pick. Prepare outreach passes the why now, contacts and evidence IDs to Orbit's brief flow.")
+            await cap(ALEX, "Accept, then hand off to Orbit", "Alex accepts the pick. Prepare outreach starts GTM Orbit's brief for Keystone, carrying the why now, contacts and evidence IDs.")
             await click(page.locator("#closePrep"), settle=500)
             await page.locator("#move").evaluate("e => e.scrollTo({ top: 0 })")
             await click(page.locator('#move button[data-act="accepted"]'), settle=1100)
             await click(page.locator("#handoff"), settle=900)
-            await show(page.locator(".handoff pre"), "Hand-off · evidence IDs", 4.6, scroll=False)
+            if orbit_base:
+                await page.locator(".handoff p.orbit-status").scroll_into_view_if_needed(); await page.wait_for_timeout(600)
+                await show(page.locator(".handoff p.orbit-status"), "Orbit run started", 3.6, scroll=False)
+                await nohl()
+                # wait for Orbit's flow to reach human approval, then show it in Orbit's own console
+                for _ in range(60):
+                    flows = json.loads(urllib.request.urlopen(orbit_base + "/api/flows").read() or b"[]")
+                    if any(f.get("ACCOUNT_KEY") == "GTM-0024" and f.get("STATE") == "awaiting_ae" for f in flows): break
+                    await page.wait_for_timeout(250)
+                x, y = await to(page.locator(".handoff p.orbit-status a"))
+                await fw("([x, y]) => window.__fw.ripple(x, y)", [x, y]); await page.wait_for_timeout(350)
+                await fw("() => window.__fw.nocap()")
+                await page.goto(orbit_base + "/#GTM-0024"); await page.wait_for_load_state("networkidle"); await page.wait_for_timeout(900)
+                await cap(ORBIT, "Orbit picks it up", "In GTM Orbit, the Keystone brief has run Discover, Research, Compose and Validate. It stops for Alex's approval; nothing is sent.")
+                await page.wait_for_timeout(500)
+                await show(page.locator("#workspace .orbit-wrap"), "GTM Orbit · brief ready for approval", 4.4, top=140)
+                await nohl()
+                await show(page.locator("#brief"), "Cited draft · waiting for Alex", 4.4)
+                await nohl()
+                await page.goto(base + "/"); await page.wait_for_load_state("networkidle"); await page.wait_for_timeout(900)
+            else:
+                await show(page.locator(".handoff pre"), "Hand-off · evidence IDs", 4.6, scroll=False)
             # 9 hot account wrong people
             await nohl(); await top_of_page()
             await cap(ALEX, "Hot account, wrong people", "Northstar is moving fast, but nobody who owns the budget has joined a call. Focus says multithread, not drop it.")
@@ -190,9 +229,14 @@ async def main():
             await show(page.locator('button.pick[data-key="GTM-0002"]'), "Rejected · back in 14 days", 3.6, scroll=False)
             # 15 slack
             await nohl()
-            await cap(ALEX, "The same brief in Slack", "At 8:00 the five arrive as a Slack message. Decisions made there and in the console stay in sync.")
-            await click(page.locator('button.view-link[data-view="slack"]'))
-            await show(page.locator(".sl-block").nth(0), "Accepted in the console", 4.4)
+            if SPLICE:
+                # real Slack footage goes here; leave a beat on the brief and number the next step after it
+                await fw("() => window.__fw.nocap()"); await top_of_page(); await page.wait_for_timeout(400)
+                rec.splice = rec.now(); step[0] += SPLICE
+            else:
+                await cap(ALEX, "The same brief in Slack", "At 8:00 the five arrive as a Slack message. Decisions made there and in the console stay in sync.")
+                await click(page.locator('button.view-link[data-view="slack"]'))
+                await show(page.locator(".sl-block").nth(0), "Accepted in the console", 4.4)
             # 16 evaluation
             await nohl(); await top_of_page()
             await cap(REVOPS, "Proof, not persuasion", "RevOps checks the ranking against the baseline and the wording against its evidence. Every number is computed by the app.")
@@ -207,14 +251,15 @@ async def main():
             rec.mark("Try it yourself", ENGINE)
             await fw("c => window.__fw.card(c)", {"logo": "GTM Orbit", "title": "Account Focus", "tag": "Try it: hithakishore-all.github.io/account-focus",
                 "one": "Code, Snowflake scripts, Slack bot and docs: github.com/hithakishore-all/account_focus",
-                "small": "FICTIONAL DATA · 20 AUTOMATED TESTS · RUNS OFFLINE WITH ONE COMMAND"})
+                "small": "FICTIONAL DATA · 21 AUTOMATED TESTS · RUNS OFFLINE WITH ONE COMMAND"})
             await page.wait_for_timeout(5000)
             await rec.stop()
             await browser.close()
     finally:
         server.terminate()
+        if orbit: orbit.terminate()
     with open(os.path.join(OUT, "chapters.json"), "w") as f: json.dump(rec.chapters, f, indent=1)
-    with open(os.path.join(OUT, "timeline.json"), "w") as f: json.dump({"frames": len(rec.frames), "end": rec.end}, f)
+    with open(os.path.join(OUT, "timeline.json"), "w") as f: json.dump({"frames": len(rec.frames), "end": rec.end, "splice": getattr(rec, "splice", None)}, f)
     encode(rec)
 
 def encode(rec):

@@ -4,7 +4,7 @@
 
 Account Focus is the daily decision layer inside GTM Orbit. Orbit keeps the customer, the seller and the company's go-to-market strategy connected as account conditions change. Account Focus puts that context to work each morning: it brings forward the five account-and-motion combinations most worth a seller's attention, explains why now, names who to engage, and recommends what to say and do next. Every recommendation links to its evidence, a validator removes any claim it cannot cite, and seller decisions flow back into the orbit.
 
-**[Live demo](https://hithakishore-all.github.io/account-focus/)** · [Walkthrough video (2½ min, Loom)](https://www.loom.com/share/17492ac05c424095ac32a1b6b04245fb) · [PRD](docs/PRD.md) · [Design](docs/DESIGN.md) · [Architecture](docs/ARCHITECTURE.md)
+**[Live demo](https://hithakishore-all.github.io/account-focus/)** · [Walkthrough video (Loom)](https://www.loom.com/share/17492ac05c424095ac32a1b6b04245fb) · [PRD](docs/PRD.md) · [Design](docs/DESIGN.md) · [Architecture](docs/ARCHITECTURE.md)
 
 ![The Focus view: today's five, the account, and the next move](docs/screenshots/console.png)
 
@@ -240,7 +240,7 @@ Errors come back as `{"error": "…"}` with 400 (bad input), 404 (unknown accoun
 
 ## Re-recording the walkthrough
 
-`make video` starts the app offline, drives it with Playwright (a visible cursor, highlights and captions), records the Chrome screencast and encodes `scripts/video/out/account-focus-walkthrough.mp4` with chapters. It needs Python Playwright and ffmpeg. The script lives in `scripts/video/`.
+`make video` starts the app offline, drives it with Playwright (a visible cursor, highlights and captions), records the Chrome screencast and encodes `scripts/video/out/account-focus-walkthrough.mp4` with chapters. It needs Python Playwright and ffmpeg. The script lives in `scripts/video/`. Set `FOCUS_ORBIT_DIR` to GTM Orbit's `orbit/` folder to film the real hand-off. To add real Slack footage, record with `FOCUS_SLACK_SPLICE=4`, then run `scripts/video/splice.py <slack.mp4> <captions.json> [crop]`.
 
 ## Testing
 
@@ -248,7 +248,7 @@ Errors come back as `{"error": "…"}` with 400 (bad input), 404 (unknown accoun
 cd app && npm test
 ```
 
-20 tests. The unit tests cover scoring, routing, cooldowns, the validator, gap detection and opted-out contacts, and check that generated files are up to date. One test runs the generated Snowflake procedure against the seed data and checks it produces the same brief as offline mode. The smoke test starts the real server on a free port and walks the workflow over HTTP, including the failure paths.
+21 tests. The unit tests cover scoring, routing, cooldowns, the validator, gap detection and opted-out contacts, and check that generated files are up to date. One test runs the generated Snowflake procedure against the seed data and checks it produces the same brief as offline mode. The smoke test starts the real server on a free port and walks the workflow over HTTP, including the failure paths and the hand-off to a stand-in GTM Orbit.
 
 ## Project layout
 

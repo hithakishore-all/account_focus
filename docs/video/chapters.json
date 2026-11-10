@@ -7,49 +7,49 @@
   "color": "#a99dff"
  },
  {
-  "t": 6.06,
+  "t": 6.08,
   "title": "Five picks, not fifty",
   "persona": "Alex",
   "role": "account executive",
   "color": "#4dc2c8"
  },
  {
-  "t": 11.33,
+  "t": 11.37,
   "title": "Why now, with evidence",
   "persona": "Alex",
   "role": "account executive",
   "color": "#4dc2c8"
  },
  {
-  "t": 16.95,
+  "t": 17.0,
   "title": "Four numbers, not one",
   "persona": "Account Focus",
   "role": "the engine",
   "color": "#a99dff"
  },
  {
-  "t": 23.09,
+  "t": 23.13,
   "title": "Every pick shows its working",
   "persona": "Account Focus",
   "role": "the engine",
   "color": "#a99dff"
  },
  {
-  "t": 30.15,
+  "t": 30.18,
   "title": "Uncited claims are removed",
   "persona": "Account Focus",
   "role": "the engine",
   "color": "#a99dff"
  },
  {
-  "t": 36.49,
+  "t": 36.51,
   "title": "Evidence you can check",
   "persona": "Alex",
   "role": "account executive",
   "color": "#4dc2c8"
  },
  {
-  "t": 46.56,
+  "t": 46.54,
   "title": "Exec prep, public vs internal",
   "persona": "Alex",
   "role": "account executive",
@@ -63,63 +63,91 @@
   "color": "#4dc2c8"
  },
  {
-  "t": 68.2,
+  "t": 70.01,
+  "title": "Orbit picks it up",
+  "persona": "GTM Orbit",
+  "role": "outreach agents",
+  "color": "#7fd18b"
+ },
+ {
+  "t": 83.51,
   "title": "Hot account, wrong people",
   "persona": "Alex",
   "role": "account executive",
   "color": "#4dc2c8"
  },
  {
-  "t": 76.25,
+  "t": 91.6,
   "title": "Gaps found for you",
   "persona": "Account Focus",
   "role": "the engine",
   "color": "#a99dff"
  },
  {
-  "t": 85.12,
+  "t": 100.49,
   "title": "Contradictions surface",
   "persona": "Account Focus",
   "role": "the engine",
   "color": "#a99dff"
  },
  {
-  "t": 96.04,
+  "t": 111.36,
   "title": "Our own questions don't count",
   "persona": "Account Focus",
   "role": "the engine",
   "color": "#a99dff"
  },
  {
-  "t": 105.42,
+  "t": 120.68,
   "title": "Unknown is not low",
   "persona": "Account Focus",
   "role": "the engine",
   "color": "#a99dff"
  },
  {
-  "t": 112.74,
+  "t": 128.02,
   "title": "Reject with a reason",
   "persona": "Alex",
   "role": "account executive",
   "color": "#4dc2c8"
  },
  {
-  "t": 125.07,
-  "title": "The same brief in Slack",
+  "t": 141.71,
+  "title": "The same five, in Slack",
   "persona": "Alex",
   "role": "account executive",
   "color": "#4dc2c8"
  },
  {
-  "t": 133.84,
+  "t": 154.71,
+  "title": "One account, on demand",
+  "persona": "Alex",
+  "role": "account executive",
+  "color": "#4dc2c8"
+ },
+ {
+  "t": 172.71,
+  "title": "Exec prep before the call",
+  "persona": "Alex",
+  "role": "account executive",
+  "color": "#4dc2c8"
+ },
+ {
+  "t": 193.11,
+  "title": "Approved in GTM Orbit",
+  "persona": "GTM Orbit",
+  "role": "outreach agents",
+  "color": "#7fd18b"
+ },
+ {
+  "t": 203.73,
   "title": "Proof, not persuasion",
   "persona": "Dev",
   "role": "RevOps",
   "color": "#f0914f"
  },
  {
-  "t": 151.13,
+  "t": 221.04,
   "title": "Try it yourself",
   "persona": "Account Focus",
   "role": "the engine",

@@ -6,6 +6,8 @@
 - New settings `ORBIT_URL` (default `http://127.0.0.1:3030`) and `ORBIT_HANDOFF=off`.
 - The old "Sent to Orbit" message showed even though nothing was sent; it now reports what actually happened.
 - README: running Account Focus and GTM Orbit side by side.
+- Walkthrough re-recorded (about 3¾ min): the real hand-off into GTM Orbit's console and a live Slack recording of `/focus`, `/focus keystone`, `/focus prep keystone` and the approval in Orbit. New `scripts/video/splice.py`; the recorder can start GTM Orbit (`FOCUS_ORBIT_DIR`).
+- 75-second LinkedIn cut (GIF and MP4).
 
 ## 1.0.0 · 2026-11-09
 

@@ -35,7 +35,7 @@ if (fs.existsSync(chaptersFile)) {
     <div class="wt-vid"><video id="wt-video" controls playsinline preload="metadata" poster="${POSTER}" src="${VIDEO}"></video></div>
     <div class="wt-side">
       <h2 id="wt-h">Watch the walkthrough</h2>
-      <p class="sub">The console below, driven end to end. About 2½ minutes, no sound: captions and highlights explain each step. Click a chapter to jump.</p>
+      <p class="sub">The console below, driven end to end, then the real Slack bot and the hand-off into GTM Orbit. About 3¾ minutes, no sound: captions explain each step. Click a chapter to jump.</p>
       <ol class="wt-chapters" id="wt-chapters">${items}</ol>
     </div>
   </div>
