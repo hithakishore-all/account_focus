@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0 · 2026-11-10
+
+- **Prepare outreach in Orbit** now starts GTM Orbit's outreach brief through Orbit's existing `POST /api/runs` (GTM Orbit unchanged). The console shows the result and an **Open in GTM Orbit** link. The audit trail records `ORBIT_RUN_STARTED` or `ORBIT_NOT_REACHED`.
+- New settings `ORBIT_URL` (default `http://127.0.0.1:3030`) and `ORBIT_HANDOFF=off`.
+- The old "Sent to Orbit" message showed even though nothing was sent; it now reports what actually happened.
+- README: running Account Focus and GTM Orbit side by side.
+
 ## 1.0.0 · 2026-11-09
 
 First release.

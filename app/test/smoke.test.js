@@ -12,18 +12,24 @@ function freePort() {
   return new Promise((resolve) => { const s = net.createServer().listen(0, '127.0.0.1', () => { const p = s.address().port; s.close(() => resolve(p)); }); });
 }
 
-let proc, base;
+let proc, base, orbit, orbitCalls = [];
 test.before(async () => {
+  // a stand-in for GTM Orbit's POST /api/runs, so the hand-off is tested end to end
+  const orbitPort = await freePort();
+  orbit = require('http').createServer((q, r) => { let b = ''; q.on('data', (d) => { b += d; }); q.on('end', () => {
+    orbitCalls.push({ method: q.method, url: q.url, body: JSON.parse(b || '{}') });
+    r.setHeader('content-type', 'application/json'); r.end(JSON.stringify({ jobId: 'job_test' })); }); }).listen(orbitPort, '127.0.0.1');
   const port = await freePort();
   base = `http://127.0.0.1:${port}`;
-  proc = spawn(process.execPath, [path.join(__dirname, '..', 'server.js'), '--offline', '--no-slack', `--port=${port}`], { stdio: ['ignore', 'pipe', 'pipe'] });
+  proc = spawn(process.execPath, [path.join(__dirname, '..', 'server.js'), '--offline', '--no-slack', `--port=${port}`],
+    { stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, ORBIT_URL: `http://127.0.0.1:${orbitPort}`, ORBIT_HANDOFF: '' } });
   await new Promise((resolve, reject) => {
     const t = setTimeout(() => reject(new Error('server did not start')), 8000);
     proc.stdout.on('data', (d) => { if (String(d).includes('console at')) { clearTimeout(t); resolve(); } });
     proc.on('exit', (c) => reject(new Error('server exited with ' + c)));
   });
 });
-test.after(() => { if (proc) proc.kill('SIGTERM'); });
+test.after(() => { if (proc) proc.kill('SIGTERM'); if (orbit) orbit.close(); });
 
 const get = (p) => fetch(base + p).then(async (r) => ({ status: r.status, body: await r.json() }));
 const post = (p, b) => fetch(base + p, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(b || {}) })
@@ -114,4 +120,15 @@ test('Slack blocks build for the brief, an account and exec prep', async () => {
   assert.equal(B.prepBlocks(p)[0].type, 'header');
   assert.equal(B.rejectModal('GTM-0024', 'Keystone', ['A', 'B']).blocks[1].element.options.length, 2);
   assert.ok(JSON.stringify(blocks).length < 30000, 'Slack messages must stay under the size limit');
+});
+
+test('hand-off starts an outreach brief in GTM Orbit and logs it', async () => {
+  const r = await post('/api/accounts/GTM-0024/handoff');
+  assert.equal(r.status, 200);
+  assert.equal(r.body.orbit.status, 'started');
+  assert.equal(r.body.orbit.job_id, 'job_test');
+  assert.match(r.body.orbit.console_url, /#GTM-0024$/);
+  assert.deepEqual(orbitCalls.at(-1), { method: 'POST', url: '/api/runs', body: { account: 'GTM-0024' } });
+  const a = await get('/api/audit?limit=5');
+  assert.ok(a.body.some((e) => e.event === 'ORBIT_RUN_STARTED'));
 });

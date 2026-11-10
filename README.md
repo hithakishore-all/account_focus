@@ -17,6 +17,7 @@ Account Focus is the daily decision layer inside GTM Orbit. Orbit keeps the cust
 - [Ways to run it](#ways-to-run-it)
 - [Using the console](#using-the-console)
 - [Using the Slack bot](#using-the-slack-bot)
+- [Running with GTM Orbit](#running-with-gtm-orbit)
 - [The demo records](#the-demo-records)
 - [How it works](#how-it-works)
 - [Beyond the prototype](#beyond-the-prototype)
@@ -110,6 +111,24 @@ Decisions made in Slack appear in the console and the audit trail, and the other
 
 ![The Slack brief](docs/screenshots/slack-brief.png)
 
+## Running with GTM Orbit
+
+**Prepare outreach in Orbit** on a pick starts GTM Orbit's outreach brief for that account (Discover → Research → Compose → Validate → your approval). It calls Orbit's existing `POST /api/runs`, so Orbit's code doesn't change. Both apps use the same 25 account keys.
+
+Run both at the same time, each in its own Terminal window:
+
+```bash
+# window 1: GTM Orbit (port 3030)
+cd ~/Documents/GTM_Orbit/orbit && npm run offline
+
+# window 2: Account Focus (port 3200)
+cd ~/Documents/account-focus/app && npm run offline
+```
+
+They don't clash. They use different ports (3030 and 3200), different Slack apps (`/orbit` and `/focus`) and separate `.env` files. After a hand-off, the console shows **Open in GTM Orbit**, which opens Orbit's console on that account, and the audit trail records `ORBIT_RUN_STARTED`. If Orbit isn't running, the hand-off record is still saved and the console tells you to start Orbit. Set `ORBIT_URL` if Orbit runs on another port, or `ORBIT_HANDOFF=off` to only save the record.
+
+The hosted demo on GitHub Pages has no Orbit to call, so there it only shows the hand-off payload.
+
 ## The demo records
 
 The fictional AE Alex Rivera at Acme owns 25 accounts. Demo "today" is pinned to 9 Nov 2026. Ten accounts each prove one behaviour:
@@ -151,13 +170,13 @@ flowchart LR
 | Score | Events, roles, data quality | Attractiveness, Momentum, Readiness, Confidence; Priority = √(A × M) | Deterministic |
 | Pick | Scores, cooldowns | Four ranked picks and one exploration slot | ≤ 3 per motion; 14-day cooldown after a rejection |
 | Explain | Drafts (scripted or Cortex), evidence index | Why now, exec prep, next best action, gaps | Validator removes any sentence without valid evidence |
-| Act | Seller decision | Feedback, hand-off to GTM Orbit, audit events | One decision per pick per day; nothing is sent |
+| Act | Seller decision | Feedback, hand-off to GTM Orbit, audit events | One decision per pick per day; nothing is sent to customers. Orbit drafts outreach and waits for approval |
 
 The scoring engine is one file, `app/lib/core.js`. Offline mode runs it in Node; `npm run engine-sql` embeds it in a Snowflake JavaScript stored procedure; a test runs that generated procedure and checks it gives the same brief. Details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Beyond the prototype
 
-- **GTM Orbit's agents and Slack bot** can read `AF_RUN` and `AF_HANDOFF`, or the HTTP API, to start outreach from a Focus pick.
+- **GTM Orbit's agents** can also read `AF_RUN` and `AF_HANDOFF` in Snowflake directly, for batch hand-offs.
 - **Claude via MCP:** wrap `/api/brief`, `/api/accounts/:key` and `/api/accounts/:key/prep` as MCP tools so an assistant can answer "what should I work on today?"
 - **Snowflake Intelligence or a Cortex Agent** over `V_BRIEF`, `V_LATEST_SCORE` and `V_SIGNAL` for questions like "which accounts have a new exec and no relationship?"
 - **Streamlit in Snowflake** for a manager team view.
@@ -195,6 +214,8 @@ Copy `app/.env.example` to `app/.env`. Nothing is needed for offline mode.
 | `SLACK_BOT_TOKEN` / `SLACK_APP_TOKEN` | — | `xoxb-…` and `xapp-…` |
 | `FOCUS_SELLER_SLACK_IDS` | empty (anyone) | Who may decide on picks in Slack |
 | `FOCUS_BRIEF_CHANNEL` | — | Where `npm run send-brief` posts |
+| `ORBIT_URL` | `http://127.0.0.1:3030` | GTM Orbit's server, called by the hand-off |
+| `ORBIT_HANDOFF` | on | `off` saves the hand-off record without calling Orbit |
 
 Flags: `--offline`, `--no-slack`, `--port=3201`, `--host=0.0.0.0`.
 

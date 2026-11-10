@@ -202,6 +202,9 @@ button.cite:hover { border-color: var(--accent); color: var(--accent); }
 .handoff { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line-soft); display: grid; gap: 8px; }
 .handoff p { font-size: .86rem; color: var(--ink-2); }
 .handoff pre { margin: 0; max-height: 180px; overflow: auto; font: .72rem/1.45 var(--mono); background: var(--panel-2); padding: 10px; border-radius: 8px; white-space: pre-wrap; }
+.handoff p.orbit-status { font-weight: 600; color: var(--ink); }
+.handoff p.orbit-status.unreachable, .handoff p.orbit-status.rejected { color: var(--danger, #b42318); }
+.handoff p.orbit-status a { margin-left: 6px; font-weight: 600; }
 .prep { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line-soft); }
 .prep-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
 .prep-sec { margin-top: 12px; }

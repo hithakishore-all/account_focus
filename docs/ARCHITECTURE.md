@@ -136,6 +136,7 @@ One decision per pick per day (a second attempt returns 409). Only today's five 
 | `BRIEF_DM_SENT` | slack | `npm run send-brief` posted the brief |
 | `PICK_ACCEPTED` / `PICK_SNOOZED` / `PICK_REJECTED` (HUMAN) | seller | A decision in the console or Slack |
 | `HANDOFF_TO_ORBIT` | seller | Prepare outreach |
+| `ORBIT_RUN_STARTED` / `ORBIT_NOT_REACHED` | system | Result of calling GTM Orbit |
 
 ## Security model
 
@@ -154,4 +155,4 @@ One decision per pick per day (a second attempt returns 409). Only today's five 
 | JavaScript procedure, not SQL scoring | Keeps one engine for offline, tests and Snowflake |
 | Scripted wording by default | Snowflake trials block AI functions; the validator runs either way |
 | Pinned demo date | The demo looks the same every day |
-| Hand-off as a record, not a call into Orbit | Orbit stays unchanged; it can read `AF_HANDOFF` or the API when wired in |
+| Hand-off saves a record, then calls Orbit's existing `POST /api/runs` | Orbit's code stays unchanged; if Orbit is down the record is kept and the seller is told |

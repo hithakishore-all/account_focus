@@ -139,6 +139,7 @@
     var hand = '';
     if (inFive && act.kind !== 'Rescue') {
       hand = '<div class="handoff"><p>Hand this account to Orbit\'s outreach brief. Focus passes its why now, contacts and evidence IDs; Orbit drafts, validates and waits for your approval.</p><div><button class="ghost" type="button" id="handoff">Prepare outreach in Orbit</button></div>' +
+        (state.handoff && state.handoff.account_key === a.key && state.handoff.orbit ? '<p class="orbit-status ' + esc(state.handoff.orbit.status) + '">' + esc(state.handoff.orbit.message) + ' <a href="' + esc(state.handoff.orbit.console_url) + '" target="_blank" rel="noopener">Open in GTM Orbit</a></p>' : '') +
         (state.handoff && state.handoff.account_key === a.key ? '<pre>' + esc(JSON.stringify({ target: state.handoff.target, account_key: state.handoff.account_key, action: state.handoff.action.title, why_now: state.handoff.why_now, evidence_refs: state.handoff.evidence_refs, contacts: state.handoff.contacts.map(function (c) { return c.name + ' (' + c.role + ')'; }) }, null, 2)) + '</pre>' : '') + '</div>';
     }
     $('move').innerHTML = '<p class="move-kind">' + (act.kind === 'Hold' || act.kind === 'Deprioritize' ? 'No move today' : 'Next move · ' + act.kind) + '</p>' +
@@ -265,7 +266,7 @@
     if (b.id === 'replay') return replay();
     if (b.id === 'openPrep') return api.prep(state.current).then(function (p) { state.prep = p; state.prepOpen = true; renderMove(); }).catch(fail);
     if (b.id === 'closePrep') { state.prepOpen = false; return renderMove(); }
-    if (b.id === 'handoff') return api.handoff(state.current).then(function (h) { state.handoff = h; renderMove(); refreshTrail(); toast('Sent to Orbit\'s outreach brief with Focus context.'); }).catch(fail);
+    if (b.id === 'handoff') return api.handoff(state.current).then(function (h) { state.handoff = h; renderMove(); refreshTrail(); toast(h.orbit ? h.orbit.message : 'Hand-off saved. The hosted demo has no Orbit to call; run both apps locally to see Orbit start the brief.'); }).catch(fail);
     if (b.id === 'rejectCancel') return $('rejectDlg').close();
     if (b.id === 'resetBtn') return api.reset().then(function () { state.handoff = null; return Promise.all([refreshBrief(), refreshTrail(), reloadAccount()]); }).then(function () { toast('Demo decisions cleared.'); }).catch(fail);
   });

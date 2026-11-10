@@ -15,6 +15,24 @@ function createStore(cfg) {
   return require('./lib/store-snowflake').createSnowflakeStore(cfg);
 }
 
+/* Hand-off: start GTM Orbit's outreach brief through Orbit's own API (POST /api/runs). Never throws:
+   if Orbit is off or unreachable, the hand-off record is still saved and the reply says why. */
+async function sendToOrbit(orbit, h) {
+  const consoleUrl = orbit.url + '/#' + encodeURIComponent(h.account_key);
+  if (!orbit.enabled) return { status: 'off', console_url: consoleUrl, message: 'Orbit hand-off is turned off (ORBIT_HANDOFF=off).' };
+  try {
+    const r = await fetch(orbit.url + '/api/runs', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ account: h.account_key }), signal: AbortSignal.timeout(4000)
+    });
+    const body = await r.json().catch(() => ({}));
+    if (!r.ok) return { status: 'rejected', console_url: consoleUrl, message: 'GTM Orbit answered ' + r.status + ': ' + (body.error || 'no detail') };
+    return { status: 'started', job_id: body.jobId || null, console_url: consoleUrl, message: 'GTM Orbit started an outreach brief for ' + h.account_name + '.' };
+  } catch (e) {
+    return { status: 'unreachable', console_url: consoleUrl, message: 'GTM Orbit is not running at ' + orbit.url + '. Start it, then hand off again.' };
+  }
+}
+
 function createServer(cfg, store) {
   const engine = createEngine(store);
   const app = express();
@@ -44,7 +62,14 @@ function createServer(cfg, store) {
   app.get('/api/accounts/:key/prep', wrap((req) => engine.prep(req.params.key)));
   app.post('/api/accounts/:key/decision', wrap((req) => engine.decide(req.params.key, {
     decision: req.body && req.body.decision, reason: req.body && req.body.reason, actor: actor(req), via: 'web' })));
-  app.post('/api/accounts/:key/handoff', wrap((req) => engine.handoff(req.params.key, { actor: actor(req) })));
+  app.post('/api/accounts/:key/handoff', wrap(async (req) => {
+    const h = await engine.handoff(req.params.key, { actor: actor(req) });
+    h.orbit = await sendToOrbit(cfg.orbit || { enabled: false, url: 'http://127.0.0.1:3030' }, h);
+    await engine.logAudit({ actor: 'Account Focus', level: 'SYSTEM',
+      event: h.orbit.status === 'started' ? 'ORBIT_RUN_STARTED' : 'ORBIT_NOT_REACHED',
+      detail: h.account_name + ' · ' + h.orbit.message + (h.orbit.job_id ? ' · job ' + h.orbit.job_id : '') });
+    return h;
+  }));
   app.get('/api/audit', wrap((req) => engine.audit(Math.min(500, Number(req.query.limit) || 200))));
   app.get('/api/evaluation', wrap(() => engine.evaluation()));
   app.get('/api/reasons', wrap(() => engine.REASONS));

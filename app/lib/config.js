@@ -25,6 +25,11 @@ function load() {
       briefChannel: env.FOCUS_BRIEF_CHANNEL,
       consoleUrl: env.FOCUS_PUBLIC_URL || null
     },
+    orbit: {
+      // GTM Orbit's local server. The hand-off calls its existing POST /api/runs; Orbit's code is unchanged.
+      enabled: env.ORBIT_HANDOFF !== 'off',
+      url: (env.ORBIT_URL || 'http://127.0.0.1:3030').replace(/\/+$/, '')
+    },
     snowflake: {
       account: env.SNOWFLAKE_ACCOUNT, username: env.SNOWFLAKE_USER, privateKeyPath: env.SNOWFLAKE_PRIVATE_KEY_PATH,
       privateKeyPass: env.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE || undefined,
