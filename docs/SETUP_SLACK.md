@@ -2,6 +2,8 @@
 
 About 10 minutes. Works with offline mode too. You need a Slack workspace where you can install apps (a free workspace you create is fine).
 
+**Already running GTM Orbit's Slack bot?** Install Account Focus as its own app in the same workspace. It has its own name, `/focus` command and tokens, so it doesn't clash with `/orbit`. Don't reuse Orbit's tokens: two programs sharing one app-level token would each receive some of the other's commands.
+
 ## 1. Create the app from the manifest
 
 [api.slack.com/apps](https://api.slack.com/apps) → **Create New App** → **From a manifest** → pick your workspace → paste the contents of `app/slack-manifest.yml` → **Create**.
