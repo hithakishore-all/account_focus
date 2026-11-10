@@ -4,7 +4,7 @@
 
 Account Focus is the daily decision layer inside GTM Orbit. Orbit keeps the customer, the seller and the company's go-to-market strategy connected as account conditions change. Account Focus puts that context to work each morning: it brings forward the five account-and-motion combinations most worth a seller's attention, explains why now, names who to engage, and recommends what to say and do next. Every recommendation links to its evidence, a validator removes any claim it cannot cite, and seller decisions flow back into the orbit.
 
-**[Live demo](https://hithakishore-all.github.io/account-focus/)** · [Walkthrough video (2½ min)](https://hithakishore-all.github.io/img/account-focus-walkthrough.mp4) · [PRD](docs/PRD.md) · [Design](docs/DESIGN.md) · [Architecture](docs/ARCHITECTURE.md)
+**[Live demo](https://hithakishore-all.github.io/account-focus/)** · [Walkthrough video (2½ min, Loom)](https://www.loom.com/share/17492ac05c424095ac32a1b6b04245fb) · [PRD](docs/PRD.md) · [Design](docs/DESIGN.md) · [Architecture](docs/ARCHITECTURE.md)
 
 ![The Focus view: today's five, the account, and the next move](docs/screenshots/console.png)
 
