@@ -14,3 +14,4 @@ snowflake/08_sync_salesforce.sql
 
 # walkthrough recordings (frames and mp4) are large; the published video lives on the portfolio site
 scripts/video/out/
+__pycache__/
