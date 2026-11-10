@@ -280,6 +280,13 @@ dialog::backdrop { background: rgba(14, 23, 27, .45); }
 .toast.show { opacity: 1; }
 .foot { color: var(--ink-3); font-size: .8rem; text-align: center; padding-block: 4px 28px; }
 
+@media (max-width: 1380px) {
+  .shell { grid-template-columns: 288px minmax(0, 1fr) 336px; gap: 14px; }
+  .acct { padding: 20px 20px 22px; }
+  .stage { padding: 8px; } .stage .out { font-size: .72rem; }
+  .tiles { grid-template-columns: repeat(4, minmax(104px, auto)); }
+  .actions .primary { padding: 9px 14px; } .actions .danger, .actions .ghost { padding: 8px 11px; }
+}
 @media (max-width: 1260px) {
   .shell { grid-template-columns: 300px minmax(0, 1fr); }
   .move { grid-column: 1 / -1; position: static; max-height: none; }
@@ -302,6 +309,21 @@ dialog::backdrop { background: rgba(14, 23, 27, .45); }
 }
 </style>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%230b6e79' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%2313222e'/%3E%3Ccircle cx='26' cy='9' r='3.4' fill='%23c25a12'/%3E%3C/svg%3E">
+<style>
+.wt { padding-block: 22px 4px; }
+.wt-grid { display: grid; grid-template-columns: minmax(0, 1.9fr) minmax(260px, 1fr); gap: 18px; align-items: start; }
+.wt-vid video { display: block; width: 100%; aspect-ratio: 16 / 10; border-radius: 14px; background: #0b141a; box-shadow: var(--shadow); }
+.wt-side { display: grid; gap: 8px; }
+.wt-side h2, .wt-try h2 { font-size: 1.15rem; }
+.wt-chapters { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 2px; max-height: 470px; overflow-y: auto; }
+.wt-chapters button { width: 100%; text-align: left; display: grid; grid-template-columns: 42px 98px minmax(0, 1fr); gap: 8px; align-items: baseline; border: 0; background: none; border-radius: 8px; padding: 6px 8px; font-size: .9rem; }
+.wt-chapters button:hover { background: var(--panel-2); }
+.wt-chapters button[aria-current="true"] { background: var(--accent-soft); }
+.wt-time { font: 500 .78rem var(--mono); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.wt-who { font-size: .8rem; font-weight: 600; }
+.wt-try { margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--line); display: grid; gap: 4px; }
+@media (max-width: 900px) { .wt-grid { grid-template-columns: minmax(0, 1fr); } .wt-chapters { max-height: none; } }
+</style>
 </head>
 <body>
 <header class="top gutter">
@@ -316,6 +338,17 @@ dialog::backdrop { background: rgba(14, 23, 27, .45); }
   </nav>
   <span class="mode" id="mode">Loading…</span>
 </header>
+<section class="wt gutter" aria-labelledby="wt-h">
+  <div class="wt-grid">
+    <div class="wt-vid"><video id="wt-video" controls playsinline preload="metadata" poster="https://hithakishore-all.github.io/img/account-focus-walkthrough-poster.jpg" src="https://hithakishore-all.github.io/img/account-focus-walkthrough.mp4"></video></div>
+    <div class="wt-side">
+      <h2 id="wt-h">Watch the walkthrough</h2>
+      <p class="sub">The console below, driven end to end. About 2½ minutes, no sound: captions and highlights explain each step. Click a chapter to jump.</p>
+      <ol class="wt-chapters" id="wt-chapters"><li><button type="button" data-t="0.0"><span class="wt-time">0:00</span><span class="wt-who" style="color:var(--explore)">Account Focus</span><span class="wt-title">What Account Focus is</span></button></li><li><button type="button" data-t="6.1"><span class="wt-time">0:06</span><span class="wt-who" style="color:var(--accent)">Alex</span><span class="wt-title">Five picks, not fifty</span></button></li><li><button type="button" data-t="11.4"><span class="wt-time">0:11</span><span class="wt-who" style="color:var(--accent)">Alex</span><span class="wt-title">Why now, with evidence</span></button></li><li><button type="button" data-t="17.0"><span class="wt-time">0:17</span><span class="wt-who" style="color:var(--explore)">Account Focus</span><span class="wt-title">Four numbers, not one</span></button></li><li><button type="button" data-t="23.1"><span class="wt-time">0:23</span><span class="wt-who" style="color:var(--explore)">Account Focus</span><span class="wt-title">Every pick shows its working</span></button></li><li><button type="button" data-t="30.2"><span class="wt-time">0:30</span><span class="wt-who" style="color:var(--explore)">Account Focus</span><span class="wt-title">Uncited claims are removed</span></button></li><li><button type="button" data-t="36.6"><span class="wt-time">0:36</span><span class="wt-who" style="color:var(--accent)">Alex</span><span class="wt-title">Evidence you can check</span></button></li><li><button type="button" data-t="46.8"><span class="wt-time">0:46</span><span class="wt-who" style="color:var(--accent)">Alex</span><span class="wt-title">Exec prep, public vs internal</span></button></li><li><button type="button" data-t="56.1"><span class="wt-time">0:56</span><span class="wt-who" style="color:var(--accent)">Alex</span><span class="wt-title">Accept, then hand off to Orbit</span></button></li><li><button type="button" data-t="68.4"><span class="wt-time">1:08</span><span class="wt-who" style="color:var(--accent)">Alex</span><span class="wt-title">Hot account, wrong people</span></button></li><li><button type="button" data-t="76.5"><span class="wt-time">1:16</span><span class="wt-who" style="color:var(--explore)">Account Focus</span><span class="wt-title">Gaps found for you</span></button></li><li><button type="button" data-t="85.3"><span class="wt-time">1:25</span><span class="wt-who" style="color:var(--explore)">Account Focus</span><span class="wt-title">Contradictions surface</span></button></li><li><button type="button" data-t="96.3"><span class="wt-time">1:36</span><span class="wt-who" style="color:var(--explore)">Account Focus</span><span class="wt-title">Our own questions don't count</span></button></li><li><button type="button" data-t="105.6"><span class="wt-time">1:45</span><span class="wt-who" style="color:var(--explore)">Account Focus</span><span class="wt-title">Unknown is not low</span></button></li><li><button type="button" data-t="112.9"><span class="wt-time">1:52</span><span class="wt-who" style="color:var(--accent)">Alex</span><span class="wt-title">Reject with a reason</span></button></li><li><button type="button" data-t="125.3"><span class="wt-time">2:05</span><span class="wt-who" style="color:var(--accent)">Alex</span><span class="wt-title">The same brief in Slack</span></button></li><li><button type="button" data-t="134.0"><span class="wt-time">2:14</span><span class="wt-who" style="color:var(--human)">Dev</span><span class="wt-title">Proof, not persuasion</span></button></li><li><button type="button" data-t="151.3"><span class="wt-time">2:31</span><span class="wt-who" style="color:var(--explore)">Account Focus</span><span class="wt-title">Where to try it</span></button></li></ol>
+    </div>
+  </div>
+  <div class="wt-try"><h2>Try it yourself</h2><p class="sub">The same console with the same fictional book of 25 accounts. Click a pick, open the evidence, accept or reject. Nothing leaves your browser.</p></div>
+</section>
 
 <main id="view-focus">
   <section class="day gutter" aria-labelledby="dayTitle">
@@ -798,6 +831,16 @@ dialog::backdrop { background: rgba(14, 23, 27, .45); }
   }).catch(function (e) {
     $('acct').innerHTML = '<p class="empty">Could not load Account Focus: ' + esc(e.message) + '</p>';
     $('mode').textContent = 'Not connected';
+  });
+})();
+</script>
+<script>
+(function () {
+  var v = document.getElementById('wt-video'), bs = Array.prototype.slice.call(document.querySelectorAll('#wt-chapters button'));
+  bs.forEach(function (b) { b.addEventListener('click', function () { v.currentTime = Number(b.dataset.t) + 0.05; v.play().catch(function () {}); }); });
+  v.addEventListener('timeupdate', function () {
+    var cur = 0; bs.forEach(function (b, i) { if (v.currentTime >= Number(b.dataset.t)) cur = i; });
+    bs.forEach(function (b, i) { b.setAttribute('aria-current', String(i === cur)); });
   });
 })();
 </script>

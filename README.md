@@ -4,7 +4,7 @@
 
 Account Focus is the daily decision layer inside GTM Orbit. Orbit keeps the customer, the seller and the company's go-to-market strategy connected as account conditions change. Account Focus puts that context to work each morning: it brings forward the five account-and-motion combinations most worth a seller's attention, explains why now, names who to engage, and recommends what to say and do next. Every recommendation links to its evidence, a validator removes any claim it cannot cite, and seller decisions flow back into the orbit.
 
-**[Live demo](https://hithakishore-all.github.io/account-focus/)** · [PRD](docs/PRD.md) · [Design](docs/DESIGN.md) · [Architecture](docs/ARCHITECTURE.md)
+**[Live demo](https://hithakishore-all.github.io/account-focus/)** · [Walkthrough video (2½ min)](https://hithakishore-all.github.io/img/account-focus-walkthrough.mp4) · [PRD](docs/PRD.md) · [Design](docs/DESIGN.md) · [Architecture](docs/ARCHITECTURE.md)
 
 ![The Focus view: today's five, the account, and the next move](docs/screenshots/console.png)
 
@@ -217,6 +217,10 @@ Settings in Snowflake (`ACCOUNT_FOCUS.CORE.AF_CONFIG`): `demo_today` (pinned dat
 
 Errors come back as `{"error": "…"}` with 400 (bad input), 404 (unknown account or route) or 409 (already decided today).
 
+## Re-recording the walkthrough
+
+`make video` starts the app offline, drives it with Playwright (a visible cursor, highlights and captions), records the Chrome screencast and encodes `scripts/video/out/account-focus-walkthrough.mp4` with chapters. It needs Python Playwright and ffmpeg. The script lives in `scripts/video/`.
+
 ## Testing
 
 ```bash
@@ -248,7 +252,7 @@ account-focus/
 │   └── seed/                    accounts, signals, contacts, drafts, prep, catalog, value map, evaluation data
 ├── salesforce/seed.apex         fictional CRM records (generated)
 ├── snowflake/                   01_setup … 07_checks, 08_sync_salesforce.sample.sql
-├── scripts/export-salesforce.sh
+├── scripts/                     export-salesforce.sh · video/ (walkthrough recorder)
 ├── demo/index.html              static build of the console (generated)
 └── docs/                        PRD · DESIGN · ARCHITECTURE · SETUP_* · TROUBLESHOOTING · screenshots · diagrams
 ```

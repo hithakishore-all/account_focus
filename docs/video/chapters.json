@@ -1,0 +1,128 @@
+[
+ {
+  "t": -0.0,
+  "title": "Account Focus",
+  "persona": "Account Focus",
+  "role": "the engine",
+  "color": "#a99dff"
+ },
+ {
+  "t": 6.09,
+  "title": "Five picks, not fifty",
+  "persona": "Alex",
+  "role": "account executive",
+  "color": "#4dc2c8"
+ },
+ {
+  "t": 11.38,
+  "title": "Why now, with evidence",
+  "persona": "Alex",
+  "role": "account executive",
+  "color": "#4dc2c8"
+ },
+ {
+  "t": 17.01,
+  "title": "Four numbers, not one",
+  "persona": "Account Focus",
+  "role": "the engine",
+  "color": "#a99dff"
+ },
+ {
+  "t": 23.14,
+  "title": "Every pick shows its working",
+  "persona": "Account Focus",
+  "role": "the engine",
+  "color": "#a99dff"
+ },
+ {
+  "t": 30.24,
+  "title": "Uncited claims are removed",
+  "persona": "Account Focus",
+  "role": "the engine",
+  "color": "#a99dff"
+ },
+ {
+  "t": 36.61,
+  "title": "Evidence you can check",
+  "persona": "Alex",
+  "role": "account executive",
+  "color": "#4dc2c8"
+ },
+ {
+  "t": 46.76,
+  "title": "Exec prep, public vs internal",
+  "persona": "Alex",
+  "role": "account executive",
+  "color": "#4dc2c8"
+ },
+ {
+  "t": 56.07,
+  "title": "Accept, then hand off to Orbit",
+  "persona": "Alex",
+  "role": "account executive",
+  "color": "#4dc2c8"
+ },
+ {
+  "t": 68.38,
+  "title": "Hot account, wrong people",
+  "persona": "Alex",
+  "role": "account executive",
+  "color": "#4dc2c8"
+ },
+ {
+  "t": 76.46,
+  "title": "Gaps found for you",
+  "persona": "Account Focus",
+  "role": "the engine",
+  "color": "#a99dff"
+ },
+ {
+  "t": 85.32,
+  "title": "Contradictions surface",
+  "persona": "Account Focus",
+  "role": "the engine",
+  "color": "#a99dff"
+ },
+ {
+  "t": 96.25,
+  "title": "Our own questions don't count",
+  "persona": "Account Focus",
+  "role": "the engine",
+  "color": "#a99dff"
+ },
+ {
+  "t": 105.61,
+  "title": "Unknown is not low",
+  "persona": "Account Focus",
+  "role": "the engine",
+  "color": "#a99dff"
+ },
+ {
+  "t": 112.94,
+  "title": "Reject with a reason",
+  "persona": "Alex",
+  "role": "account executive",
+  "color": "#4dc2c8"
+ },
+ {
+  "t": 125.32,
+  "title": "The same brief in Slack",
+  "persona": "Alex",
+  "role": "account executive",
+  "color": "#4dc2c8"
+ },
+ {
+  "t": 134.04,
+  "title": "Proof, not persuasion",
+  "persona": "Dev",
+  "role": "RevOps",
+  "color": "#f0914f"
+ },
+ {
+  "t": 151.35,
+  "title": "Try it yourself",
+  "persona": "Account Focus",
+  "role": "the engine",
+  "color": "#a99dff"
+ }
+]
