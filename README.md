@@ -58,8 +58,8 @@ Everyone now ranks accounts. Account Focus explains the rank, checks that the se
 You need [Node.js 20 or newer](https://nodejs.org/) and git.
 
 ```bash
-git clone https://github.com/hithakishore-all/account-focus.git
-cd account-focus/app
+git clone https://github.com/hithakishore-all/account_focus.git
+cd account_focus/app
 npm ci
 npm run offline
 ```

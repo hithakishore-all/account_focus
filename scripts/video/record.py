@@ -206,7 +206,7 @@ async def main():
             await nohl(); await fw("() => window.__fw.nocap()")
             rec.mark("Try it yourself", ENGINE)
             await fw("c => window.__fw.card(c)", {"logo": "GTM Orbit", "title": "Account Focus", "tag": "Try it: hithakishore-all.github.io/account-focus",
-                "one": "Code, Snowflake scripts, Slack bot and docs: github.com/hithakishore-all/account-focus",
+                "one": "Code, Snowflake scripts, Slack bot and docs: github.com/hithakishore-all/account_focus",
                 "small": "FICTIONAL DATA · 20 AUTOMATED TESTS · RUNS OFFLINE WITH ONE COMMAND"})
             await page.wait_for_timeout(5000)
             await rec.stop()
