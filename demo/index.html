@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Account Focus · demo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Account Focus · GTM Orbit family, refreshed.
+   Layout: Orbit's top bar, a day strip of four tiles, then picks rail | account | next move, audit trail below.
+   Color: cool mist ground, deep teal accent for progress, amber for "needs a human", violet only for the exploration slot. */
+:root {
+  --bg: #f1f4f3; --panel: #ffffff; --panel-2: #f6f8f7; --line: #dbe2e0; --line-soft: #e8edeb;
+  --ink: #13222e; --ink-2: #3e4d58; --ink-3: #66737d;
+  --accent: #0b6e79; --accent-soft: #dcefee; --on-accent: #ffffff;
+  --human: #b9530f; --human-soft: #fbeadb;
+  --explore: #5b4fc4; --explore-soft: #ebe8fb;
+  --good: #1f7a45; --good-soft: #e2f2e8; --bad: #b42323; --bad-soft: #fbe5e3; --warn: #875900; --warn-soft: #f6ecd3;
+  --ring-track: #e3e9e7; --shadow: 0 1px 2px rgba(19,34,46,.06), 0 4px 14px rgba(19,34,46,.05);
+  --gong: #6d48b8; --sf: #1c67a6; --pub: #875900; --use: #22768b;
+  --slack-bg: #ffffff; --slack-ink: #1d1c1d; --slack-line: #e3e3e3;
+  --display: "Sora", "Avenir Next", system-ui, sans-serif;
+  --text: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0e171b; --panel: #142026; --panel-2: #19272e; --line: #263840; --line-soft: #1f2f36;
+  --ink: #e7eef0; --ink-2: #b6c3c8; --ink-3: #8a989e;
+  --accent: #4dc2c8; --accent-soft: #133539; --on-accent: #08262a;
+  --human: #f0914f; --human-soft: #3a2416; --explore: #a99dff; --explore-soft: #262248;
+  --good: #63d396; --good-soft: #153424; --bad: #ff7d74; --bad-soft: #3d1d1c; --warn: #e8b552; --warn-soft: #3a2f16;
+  --ring-track: #24363d; --shadow: none;
+  --gong: #b89dff; --sf: #7cbcff; --pub: #e8c06a; --use: #7fd8ef;
+  --slack-bg: #1a1d21; --slack-ink: #d1d2d3; --slack-line: #35373b; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0e171b; --panel: #142026; --panel-2: #19272e; --line: #263840; --line-soft: #1f2f36;
+  --ink: #e7eef0; --ink-2: #b6c3c8; --ink-3: #8a989e;
+  --accent: #4dc2c8; --accent-soft: #133539; --on-accent: #08262a;
+  --human: #f0914f; --human-soft: #3a2416; --explore: #a99dff; --explore-soft: #262248;
+  --good: #63d396; --good-soft: #153424; --bad: #ff7d74; --bad-soft: #3d1d1c; --warn: #e8b552; --warn-soft: #3a2f16;
+  --ring-track: #24363d; --shadow: none;
+  --gong: #b89dff; --sf: #7cbcff; --pub: #e8c06a; --use: #7fd8ef;
+  --slack-bg: #1a1d21; --slack-ink: #d1d2d3; --slack-line: #35373b; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 var(--text); -webkit-font-smoothing: antialiased; }
+h1, h2, h3 { font-family: var(--display); font-weight: 600; letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
+h2 { font-size: 1.02rem; } h3 { font-size: .94rem; }
+p { margin: 0; }
+button { font: inherit; color: inherit; cursor: pointer; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+.sub { color: var(--ink-3); font-size: .875rem; }
+.mono { font-family: var(--mono); font-size: .78em; }
+.gutter { padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px)); }
+.empty { color: var(--ink-3); padding: 20px 0; }
+
+/* top bar */
+.top { display: flex; align-items: center; gap: 12px 20px; flex-wrap: wrap; padding-block: 12px; background: var(--panel); border-bottom: 1px solid var(--line); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--panel); }
+.brand { display: flex; align-items: center; gap: 9px; color: var(--ink); text-decoration: none; margin-right: auto; }
+.mark { width: 28px; height: 28px; color: var(--accent); flex: none; }
+.mark-core { fill: var(--ink); } .mark-moon { fill: var(--human); }
+.brand-name { font: 700 1.08rem var(--display); letter-spacing: -.02em; }
+.crumb { color: var(--ink-3); }
+.product { font: 600 1.08rem var(--display); color: var(--accent); }
+.view-switch { display: flex; gap: 3px; padding: 3px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel-2); }
+.view-link { border: 0; border-radius: 7px; background: transparent; color: var(--ink-2); padding: 6px 12px; font-size: .88rem; }
+.view-link[aria-current="page"] { background: var(--panel); color: var(--accent); box-shadow: var(--shadow); font-weight: 600; }
+.mode { display: inline-flex; align-items: center; gap: 7px; border-radius: 999px; padding: 4px 11px; font-size: .8rem; font-weight: 600; white-space: nowrap; background: var(--warn-soft); color: var(--warn); }
+.mode::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.mode.live { background: var(--good-soft); color: var(--good); }
+
+.ghost { border: 1px solid var(--line); background: var(--panel); border-radius: 9px; padding: 7px 12px; font-size: .875rem; color: var(--ink-2); }
+.ghost:hover { border-color: var(--accent); color: var(--accent); }
+.primary { border: 0; background: var(--accent); color: var(--on-accent); border-radius: 10px; padding: 10px 18px; font-weight: 600; }
+.primary:hover { filter: brightness(1.08); }
+.danger { border: 1px solid var(--bad); background: transparent; color: var(--bad); border-radius: 10px; padding: 9px 14px; font-weight: 600; }
+button:disabled { opacity: .5; cursor: default; filter: none; }
+
+/* day strip */
+.day { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px 24px; align-items: end; padding-block: 20px 4px; }
+.day h1 { font-size: clamp(1.35rem, 2.3vw, 1.8rem); }
+.day .sub b { color: var(--ink-2); font-weight: 600; }
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(118px, auto)); gap: 8px; }
+.tile { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 9px 13px; display: grid; gap: 0; }
+.tile b { font: 600 1.25rem/1.2 var(--display); font-variant-numeric: tabular-nums; }
+.tile span { font-size: .78rem; color: var(--ink-3); line-height: 1.25; }
+.tile.warn b { color: var(--human); }
+
+/* focus grid */
+.shell { display: grid; grid-template-columns: 318px minmax(0, 1fr) 380px; gap: 16px; padding-block: 16px; align-items: start; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; min-width: 0; box-shadow: var(--shadow); }
+
+/* rail */
+.rail { padding: 14px 10px 10px; }
+.rail-head { padding: 2px 8px 10px; display: grid; gap: 2px; }
+.picks { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.pick { width: 100%; text-align: left; border: 1px solid var(--line-soft); background: var(--panel); border-radius: 12px; padding: 10px 11px; display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 2px 11px; align-items: start; }
+.pick:hover { border-color: var(--line); background: var(--panel-2); }
+.pick[aria-current="true"] { background: var(--accent-soft); border-color: transparent; }
+.ring { width: 44px; height: 44px; grid-row: 1 / 4; }
+.ring text { font: 600 13px var(--display); fill: var(--ink); }
+.ring .track { stroke: var(--ring-track); } .ring .val { stroke: var(--accent); }
+.pick.explore .ring .val { stroke: var(--explore); }
+.pname { font-weight: 600; line-height: 1.25; display: flex; gap: 6px; align-items: baseline; }
+.pname .n { font: 500 .72rem var(--mono); color: var(--ink-3); }
+.pwhy { font-size: .84rem; color: var(--ink-2); line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.pmeta { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 3px; }
+.tag { border-radius: 999px; padding: 0 8px; font-size: .74rem; background: var(--panel-2); border: 1px solid var(--line-soft); color: var(--ink-2); white-space: nowrap; line-height: 1.6; }
+.tag.k-Pursue, .tag.k-Expand { background: var(--accent-soft); color: var(--accent); border-color: transparent; font-weight: 600; }
+.tag.k-Multithread { background: var(--human-soft); color: var(--human); border-color: transparent; font-weight: 600; }
+.tag.k-Rescue { background: var(--bad-soft); color: var(--bad); border-color: transparent; font-weight: 600; }
+.tag.k-Verify, .tag.k-Research { background: var(--warn-soft); color: var(--warn); border-color: transparent; }
+.tag.explore { background: var(--explore-soft); color: var(--explore); border-color: transparent; }
+.tag.d-accepted { background: var(--good-soft); color: var(--good); border-color: transparent; }
+.tag.d-snoozed { background: var(--warn-soft); color: var(--warn); border-color: transparent; }
+.tag.d-rejected { background: var(--panel-2); color: var(--ink-3); text-decoration: line-through; }
+.rest-head { margin: 16px 8px 6px; display: flex; justify-content: space-between; align-items: baseline; }
+.rest { list-style: none; margin: 0; padding: 0; max-height: 420px; overflow-y: auto; }
+.rest button { width: 100%; text-align: left; border: 0; background: none; border-radius: 9px; padding: 8px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 8px; border-bottom: 1px solid var(--line-soft); }
+.rest button:hover { background: var(--panel-2); }
+.rest button[aria-current="true"] { background: var(--accent-soft); }
+.rest .rn { font-weight: 600; font-size: .92rem; }
+.rest .rs { font: 600 .88rem var(--display); font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.rest .rr { grid-column: 1 / 3; font-size: .78rem; color: var(--ink-3); }
+.rail-foot { padding: 10px 8px 4px; color: var(--ink-3); font-size: .78rem; }
+
+/* account */
+.acct { padding: 22px 24px 24px; }
+.acct-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 18px; align-items: end; }
+.acct-name { font-size: clamp(1.45rem, 2.4vw, 1.95rem); line-height: 1.1; }
+.facts { color: var(--ink-2); font-size: .9rem; margin-top: 4px; }
+.prio { text-align: right; }
+.prio-big { font: 700 2.4rem/1 var(--display); font-variant-numeric: tabular-nums; }
+.prio-lab { color: var(--ink-3); font-size: .78rem; }
+.why { margin-top: 16px; padding: 13px 15px; border-radius: 12px; background: var(--panel-2); border-left: 3px solid var(--accent); }
+.why-lab { font: 500 .7rem var(--mono); letter-spacing: .08em; color: var(--accent); text-transform: uppercase; }
+.why p { font-size: 1.04rem; margin-top: 3px; max-width: 72ch; }
+.cites { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
+.cite { font-family: var(--mono); font-size: .7rem; border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; background: var(--panel); color: var(--ink-2); }
+button.cite:hover { border-color: var(--accent); color: var(--accent); }
+
+.meters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 24px; margin-top: 16px; }
+.meter { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 10px; align-items: baseline; }
+.meter-name { font-size: .86rem; font-weight: 600; color: var(--ink-2); }
+.meter-val { font: 600 1.15rem/1 var(--display); font-variant-numeric: tabular-nums; }
+.bar { grid-column: 1 / 3; height: 6px; border-radius: 3px; background: var(--ring-track); overflow: hidden; }
+.bar > i { display: block; height: 100%; border-radius: 3px; background: var(--accent); }
+.meter.low .bar > i { background: var(--human); } .meter.lowc .bar > i { background: var(--warn); }
+.meter-note { grid-column: 1 / 3; font-size: .77rem; color: var(--ink-3); line-height: 1.3; }
+.formula { margin-top: 10px; font-size: .8rem; color: var(--ink-3); }
+.formula b { font-family: var(--mono); font-weight: 500; color: var(--ink-2); font-size: .78rem; }
+
+.pipe { margin-top: 18px; padding: 14px; border-radius: 14px; background: var(--panel-2); }
+.pipe-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.stages { list-style: none; margin: 12px 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; counter-reset: st; }
+.stage { display: grid; gap: 4px; align-content: start; padding: 9px 10px; border-radius: 10px; border: 1px solid var(--line-soft); background: var(--panel); min-height: 86px; }
+.stage .dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--line); }
+.stage b { font-size: .86rem; } .stage .out { font-size: .76rem; color: var(--ink-2); line-height: 1.3; }
+.stage.active { border-color: var(--human); } .stage.active .dot { border-color: var(--human); background: var(--human-soft); animation: pulse 1.1s infinite; }
+.stage.done .dot { border-color: var(--accent); background: var(--accent); }
+.stage.flag { border-color: var(--bad); } .stage.flag .dot { border-color: var(--bad); background: var(--bad); }
+@keyframes pulse { 50% { box-shadow: 0 0 0 5px var(--human-soft); } }
+@media (prefers-reduced-motion: reduce) { .stage.active .dot { animation: none; } }
+.removed { margin-top: 10px; font-size: .86rem; padding: 8px 11px; border-radius: 9px; background: var(--bad-soft); }
+.removed s { color: var(--bad); }
+
+.tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); margin-top: 20px; overflow-x: auto; }
+.tab { border: 0; background: none; padding: 9px 13px; font-weight: 600; color: var(--ink-3); border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; }
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+.tab .n { font: 500 .7rem var(--mono); color: var(--ink-3); margin-left: 4px; }
+.tabpanel { padding-top: 12px; }
+.sig { list-style: none; margin: 0; padding: 0; }
+.sig li { display: grid; grid-template-columns: 118px minmax(0, 1fr); gap: 2px 14px; padding: 10px 6px; border-bottom: 1px solid var(--line-soft); border-radius: 8px; transition: background .5s; }
+.sig li.hl { background: var(--accent-soft); }
+.sig .src { font-size: .78rem; font-weight: 700; }
+.src-Gong { color: var(--gong); } .src-Salesforce { color: var(--sf); } .src-Public { color: var(--pub); } .src-Usage, .src-Intent { color: var(--use); }
+.sig .meta { font-size: .76rem; color: var(--ink-3); }
+.sig .txt { font-size: .93rem; } .sig .who { font-size: .8rem; color: var(--ink-2); }
+.side { font: 500 .64rem var(--mono); letter-spacing: .06em; text-transform: uppercase; border-radius: 4px; padding: 0 5px; margin-left: 6px; }
+.side.inside { background: var(--accent-soft); color: var(--accent); } .side.outside { background: var(--warn-soft); color: var(--warn); }
+.counted { font-size: .76rem; } .counted.context { color: var(--ink-3); } .counted.not_counted { color: var(--bad); } .counted.half { color: var(--warn); } .counted.counted { color: var(--good); }
+.roles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.role { border: 1px solid var(--line); border-radius: 10px; padding: 9px 11px; display: grid; gap: 1px; align-content: start; }
+.role.engaged { background: var(--good-soft); border-color: transparent; }
+.role.mapped { background: var(--warn-soft); border-color: transparent; }
+.role.missing { border-style: dashed; }
+.role b { font-size: .86rem; } .role span { font-size: .8rem; color: var(--ink-2); } .role small { font-size: .74rem; color: var(--ink-3); }
+.blocked { margin-top: 10px; font-size: .84rem; color: var(--ink-3); }
+.gap { padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line-soft); margin-bottom: 8px; display: grid; gap: 3px; }
+.gap b { font-size: .9rem; } .gap p { font-size: .9rem; color: var(--ink-2); }
+.gap.high { background: var(--human-soft); border-color: transparent; }
+.vmap { width: 100%; border-collapse: collapse; font-size: .88rem; min-width: 560px; }
+.vmap th { text-align: left; color: var(--ink-3); font-weight: 600; font-size: .76rem; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.vmap td { padding: 8px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+.tbl-wrap { overflow-x: auto; }
+
+/* next move */
+.move { padding: 18px; position: sticky; top: calc(76px + env(safe-area-inset-top, 0px)); max-height: calc(100vh - 92px); overflow: auto; }
+.move-kind { font: 500 .7rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--human); }
+.move h2 { font-size: 1.18rem; margin-top: 3px; }
+.move .who { margin-top: 6px; font-size: .92rem; color: var(--ink-2); }
+.points { margin: 12px 0 0; padding-left: 18px; display: grid; gap: 6px; font-size: .93rem; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.decided { margin-top: 12px; padding: 10px 12px; border-radius: 10px; font-size: .9rem; }
+.decided.accepted { background: var(--good-soft); } .decided.rejected { background: var(--bad-soft); } .decided.snoozed, .decided.info { background: var(--warn-soft); }
+.handoff { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line-soft); display: grid; gap: 8px; }
+.handoff p { font-size: .86rem; color: var(--ink-2); }
+.handoff pre { margin: 0; max-height: 180px; overflow: auto; font: .72rem/1.45 var(--mono); background: var(--panel-2); padding: 10px; border-radius: 8px; white-space: pre-wrap; }
+.prep { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line-soft); }
+.prep-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.prep-sec { margin-top: 12px; }
+.prep-sec h3 { font: 700 .82rem var(--text); color: var(--ink-3); letter-spacing: .02em; }
+.prep-sec ol, .prep-sec ul { margin: 4px 0 0; padding-left: 18px; display: grid; gap: 5px; font-size: .9rem; }
+.pov { font-size: 1rem; margin-top: 4px; }
+.vis { font: 600 .6rem var(--mono); letter-spacing: .05em; text-transform: uppercase; border-radius: 4px; padding: 0 5px; margin-left: 4px; vertical-align: 1px; }
+.vis.public { background: var(--accent-soft); color: var(--accent); } .vis.internal { background: var(--human-soft); color: var(--human); }
+
+/* audit */
+.trail { margin-bottom: 16px; }
+.trail-head { padding: 14px 18px 8px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.trail-wrap { overflow: auto; max-height: 300px; }
+.trail-table { width: 100%; border-collapse: collapse; font-size: .84rem; min-width: 700px; }
+.trail-table th { position: sticky; top: 0; background: var(--panel); text-align: left; color: var(--ink-3); font-weight: 600; font-size: .76rem; padding: 7px 18px; border-bottom: 1px solid var(--line); }
+.trail-table td { padding: 6px 18px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+.trail-table td.evt { font-family: var(--mono); font-size: .76rem; }
+.trail-table tr.WARN td.evt { color: var(--bad); } .trail-table tr.HUMAN td.evt { color: var(--human); }
+.trail-table td.t { color: var(--ink-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* slack view */
+.slack-wrap { max-width: 780px; margin: 18px auto; }
+.slack-note { color: var(--ink-2); font-size: .92rem; margin-bottom: 10px; }
+.slack { background: var(--slack-bg); color: var(--slack-ink); border: 1px solid var(--slack-line); border-radius: 12px; padding: 16px 18px; font: 15px/1.46 -apple-system, "Segoe UI", system-ui, sans-serif; }
+.sl-row { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 10px; }
+.sl-ava { width: 36px; height: 36px; border-radius: 8px; background: var(--accent); display: grid; place-items: center; color: var(--on-accent); }
+.sl-ava svg { width: 24px; height: 24px; }
+.sl-name { font-weight: 800; } .sl-app { font-size: .7rem; background: var(--slack-line); border-radius: 3px; padding: 0 4px; margin-left: 4px; font-weight: 600; } .sl-time { color: #868686; font-size: .78rem; margin-left: 6px; }
+.sl-block { border-top: 1px solid var(--slack-line); padding: 10px 0; display: grid; gap: 6px; }
+.sl-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.sl-btn { border: 1px solid var(--slack-line); background: transparent; color: var(--slack-ink); border-radius: 6px; padding: 3px 10px; font-size: .85rem; font-weight: 700; }
+.sl-btn.go { background: #007a5a; border-color: #007a5a; color: #fff; }
+.sl-btn.no { color: #e01e5a; }
+.sl-ctx { font-size: .78rem; color: #868686; }
+.sl-code { font: .78rem var(--mono); background: rgba(127,127,127,.15); border-radius: 3px; padding: 0 3px; }
+
+/* evaluation */
+.eval { max-width: 1200px; margin: 0 auto; padding-block: 24px 32px; }
+.eval h1 { font-size: clamp(1.5rem, 2.6vw, 2.1rem); margin-top: 4px; }
+.eyebrow { color: var(--accent); font: 500 .72rem var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.eval-intro { color: var(--ink-2); max-width: 70ch; margin-top: 6px; }
+.disclaimer { margin-top: 16px; padding: 11px 14px; border-radius: 10px; background: var(--warn-soft); font-size: .9rem; max-width: 90ch; }
+.kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+.kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 15px 16px; display: grid; gap: 8px; align-content: start; box-shadow: var(--shadow); }
+.kpi .lab { color: var(--ink-3); font-size: .86rem; }
+.cmp { display: grid; gap: 6px; }
+.cmp div { display: flex; justify-content: space-between; gap: 10px; font-size: .9rem; color: var(--ink-2); }
+.cmp b { color: var(--ink); font: 600 1.05rem var(--display); font-variant-numeric: tabular-nums; }
+.cmp .focus span::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; background: var(--accent); vertical-align: 1px; }
+.delta { border-top: 1px solid var(--line-soft); padding-top: 8px; color: var(--accent); font: 600 .98rem var(--display); }
+.delta small { color: var(--ink-3); font: 400 .78rem var(--text); }
+.eval-sec { margin-top: 26px; } .eval-sec h2 { font-size: 1.15rem; }
+.steps4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 10px; }
+.steps4 article { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: grid; gap: 5px; align-content: start; }
+.steps4 b { font-size: .92rem; } .steps4 p { color: var(--ink-2); font-size: .86rem; }
+
+dialog { border: 1px solid var(--line); border-radius: 14px; padding: 0; background: var(--panel); color: var(--ink); max-width: 440px; width: calc(100% - 32px); }
+dialog::backdrop { background: rgba(14, 23, 27, .45); }
+.dlg { padding: 20px; display: grid; gap: 10px; }
+.dlg fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 6px; }
+.dlg label { display: flex; gap: 8px; align-items: center; font-size: .95rem; }
+.dlg-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.form-error { color: var(--bad); font-size: .86rem; }
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 10px; font-size: .9rem; opacity: 0; pointer-events: none; transition: opacity .2s; max-width: calc(100% - 32px); z-index: 20; }
+.toast.show { opacity: 1; }
+.foot { color: var(--ink-3); font-size: .8rem; text-align: center; padding-block: 4px 28px; }
+
+@media (max-width: 1260px) {
+  .shell { grid-template-columns: 300px minmax(0, 1fr); }
+  .move { grid-column: 1 / -1; position: static; max-height: none; }
+}
+@media (max-width: 900px) {
+  .day { grid-template-columns: minmax(0, 1fr); }
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 860px) {
+  .gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .meters { grid-template-columns: minmax(0, 1fr); }
+  .roles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stages { grid-template-columns: minmax(0, 1fr); } .stage { min-height: 0; }
+  .acct { padding: 18px 16px; }
+  .acct-head { grid-template-columns: minmax(0, 1fr); } .prio { text-align: left; }
+  .sig li { grid-template-columns: minmax(0, 1fr); }
+  .kpis, .steps4 { grid-template-columns: minmax(0, 1fr); }
+  .top { position: static; } .brand-name, .crumb { display: none; }
+}
+</style>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%230b6e79' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%2313222e'/%3E%3Ccircle cx='26' cy='9' r='3.4' fill='%23c25a12'/%3E%3C/svg%3E">
+</head>
+<body>
+<header class="top gutter">
+  <a class="brand" href="#focus" aria-label="GTM Orbit, Account Focus">
+    <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="2.6"/><circle cx="16" cy="16" r="4" class="mark-core"/><circle cx="26" cy="9" r="3.4" class="mark-moon"/></svg>
+    <span class="brand-name">GTM Orbit</span><span class="crumb">/</span><span class="product">Account Focus</span>
+  </a>
+  <nav class="view-switch" aria-label="Views">
+    <button class="view-link" type="button" data-view="focus">Focus</button>
+    <button class="view-link" type="button" data-view="slack">Slack brief</button>
+    <button class="view-link" type="button" data-view="evaluation">Evaluation</button>
+  </nav>
+  <span class="mode" id="mode">Loading…</span>
+</header>
+
+<main id="view-focus">
+  <section class="day gutter" aria-labelledby="dayTitle">
+    <div class="day-head">
+      <h1 id="dayTitle">Good morning.</h1>
+      <p class="sub" id="daySub"></p>
+    </div>
+    <div class="tiles" id="tiles"></div>
+  </section>
+  <div class="shell gutter">
+    <section class="panel rail" aria-labelledby="railTitle">
+      <div class="rail-head"><h2 id="railTitle">Today's five</h2><p class="sub">Ranked by attractiveness × momentum</p></div>
+      <ol class="picks" id="picks"></ol>
+      <div class="rest-head"><h2>Rest of your book</h2><span class="sub">why not today</span></div>
+      <ul class="rest" id="rest"></ul>
+      <p class="rail-foot">Unknown is never ranked low. A rejected account stays out for 14 days unless a strong new event lands.</p>
+    </section>
+    <section class="panel acct" id="acct" aria-live="polite"><p class="empty">Loading account…</p></section>
+    <aside class="panel move" id="move" aria-label="Next move"></aside>
+  </div>
+  <div class="gutter">
+    <section class="panel trail" aria-labelledby="trailTitle">
+      <div class="trail-head"><div><h2 id="trailTitle">Audit trail</h2><p class="sub">Every score, pick, generated sentence and seller decision writes one event.</p></div><button class="ghost" type="button" id="resetBtn" hidden>Reset demo decisions</button></div>
+      <div class="trail-wrap"><table class="trail-table"><thead><tr><th>Time (UTC)</th><th>Who</th><th>Event</th><th>Detail</th></tr></thead><tbody id="trail"></tbody></table></div>
+    </section>
+  </div>
+</main>
+
+<main id="view-slack" hidden>
+  <div class="slack-wrap gutter">
+    <p class="slack-note">The same brief arrives as a direct message at 8:00 each workday. These buttons use the same engine as the console, so decisions stay in sync.</p>
+    <div class="slack" id="slack"></div>
+  </div>
+</main>
+
+<main id="view-evaluation" hidden>
+  <div class="eval gutter" id="eval"></div>
+</main>
+
+<footer class="foot gutter" id="foot">Fictional accounts, people and companies. Salesforce, Gong (simulated), product usage and public signals meet in Snowflake. Nothing is sent without a human.</footer>
+
+<dialog id="rejectDlg">
+  <form method="dialog" class="dlg" id="rejectForm">
+    <h3 id="rejectTitle">Why reject this pick?</h3>
+    <p class="sub">Your reason goes to the team that can fix it.</p>
+    <fieldset id="reasons"><legend class="sub">Reason</legend></fieldset>
+    <p class="form-error" id="rejectError" hidden></p>
+    <div class="dlg-actions"><button class="ghost" type="button" id="rejectCancel">Cancel</button><button class="danger" type="submit">Reject pick</button></div>
+  </form>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>window.FOCUS_FIXTURES = {"version":"af_v1.0","as_of":"2026-11-09","model":"scripted","owner":{"id":"005ORB000000001AAA","name":"Alex Rivera","email":"ae@acme.example","slack_handle":"alex.rivera"},"seller":{"company":"Acme","domain":"acme.example"},"brief":{"picks":["GTM-0024","GTM-0011","GTM-0012","GTM-0001","GTM-0002"],"rest":["GTM-0019","GTM-0003","GTM-0006","GTM-0009","GTM-0023","GTM-0025","GTM-0020","GTM-0015","GTM-0008","GTM-0014","GTM-0005","GTM-0021","GTM-0018","GTM-0013","GTM-0004","GTM-0017","GTM-0016","GTM-0022","GTM-0010","GTM-0007"]},"accounts":{"GTM-0024":{"key":"GTM-0024","salesforce_id":"001ORB000000024AAA","name":"Keystone Elevator Services","industry":"Machinery","region":"NA","employees":4200,"type":"Prospect","motion":"New logo","baseline_score":0.85,"baseline_age_days":0,"scores":{"A":85,"M":91,"R":88,"C":92,"P":88},"components":{"A":{"fit":88,"whitespace":82,"alignment":80},"M":{"value":91,"raw":2.452,"events_used":5},"C":[]},"action":{"kind":"Pursue","title":"Request an executive meeting with Dana Whitfield","who":"Dana Whitfield, CFO · with Luis Ortega","due":"2026-11-12","points":["Tie one technician schedule to the 12% service-cost program","Bring the Bluepeak Utilities overtime result","Ask to include COO Renee Albright"]},"why":{"text":"Dana Whitfield, CFO for seven weeks, said budget is set aside for Q1 on the Nov 4 call, a week after the CEO announced a 12% service-cost program.","refs":["GONG-9120#4","PUB-ER-0024-Q3","PUB-NEWS-0024-01"],"removed":[{"text":"Keystone is moving off its current scheduling vendor this quarter.","reason":"no evidence ID"}]},"signals":[{"ref":"SF-OPP-006ORB000000031AAA","side":"inside","source":"Salesforce","type":"New opportunity","date":"2026-11-05","text":"Keystone · Service Scheduling Platform · Discovery · $240,000","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"GONG-9120#4","side":"inside","source":"Gong","type":"Budget","date":"2026-11-04","text":"\"We have budget set aside for this in Q1 if the numbers hold up.\"","speaker":"Dana Whitfield, CFO","speaker_side":"customer","count":"counted","polarity":"buy"},{"ref":"GONG-9120#7","side":"inside","source":"Gong","type":"Timeline","date":"2026-11-04","text":"\"We want every technician on one schedule before the spring maintenance season.\"","speaker":"Luis Ortega, VP Service Operations","speaker_side":"customer","count":"counted","polarity":"buy"},{"ref":"INTENT-0024-TECH_SCHEDULING","side":"outside","source":"Intent","type":"Research intent","date":"2026-11-01","text":"\"technician scheduling\" at 74/100, up from 41 four weeks earlier.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"PUB-ER-0024-Q3","side":"outside","source":"Public","type":"Stated strategy","date":"2026-10-28","text":"\"We are launching a program to take 12% out of service delivery cost by the end of 2027.\" (CEO, Q3 earnings call)","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"PUB-NEWS-0024-01","side":"outside","source":"Public","type":"Executive change","date":"2026-09-22","text":"Keystone names Dana Whitfield Chief Financial Officer.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"SF-OPP-006ORB000000019AAA","side":"inside","source":"Salesforce","type":"Closed lost","date":"2024-08-15","text":"Keystone · Scheduling Pilot · Closed Lost · lost to an incumbent on price","speaker":null,"speaker_side":null,"count":"context","polarity":"buy"}],"events":[{"key":"KEY-BUDGET","lead":"GONG-9120#4","family":"gong_buying","polarity":"buy","strength":0.9,"count_weight":1,"date":"2026-11-05","corroboration":2,"refs":["SF-OPP-006ORB000000031AAA","GONG-9120#4"]},{"key":"KEY-TIMELINE","lead":"GONG-9120#7","family":"gong_buying","polarity":"buy","strength":0.7,"count_weight":1,"date":"2026-11-04","corroboration":1,"refs":["GONG-9120#7"]},{"key":"INTENT-0024-TECH_SCHEDULING","lead":"INTENT-0024-TECH_SCHEDULING","family":"intent","polarity":"buy","strength":0.6,"count_weight":1,"date":"2026-11-01","corroboration":1,"refs":["INTENT-0024-TECH_SCHEDULING"]},{"key":"PUB-ER-0024-Q3","lead":"PUB-ER-0024-Q3","family":"strategy","polarity":"buy","strength":0.8,"count_weight":1,"date":"2026-10-28","corroboration":1,"refs":["PUB-ER-0024-Q3"]},{"key":"PUB-NEWS-0024-01","lead":"PUB-NEWS-0024-01","family":"exec_change","polarity":"buy","strength":0.9,"count_weight":1,"date":"2026-09-22","corroboration":1,"refs":["PUB-NEWS-0024-01"]},{"key":"SF-OPP-006ORB000000019AAA","lead":"SF-OPP-006ORB000000019AAA","family":"opportunity","polarity":"buy","strength":0,"count_weight":1,"date":"2024-08-15","corroboration":1,"refs":["SF-OPP-006ORB000000019AAA"]}],"roles":{"economic_buyer":{"state":"engaged","contact_id":"003ORB000000081AAA","name":"Dana Whitfield","title":"CFO","last_engaged":"2026-11-04","days_since":5},"champion":{"state":"engaged","contact_id":"003ORB000000082AAA","name":"Luis Ortega","title":"VP Service Operations","last_engaged":"2026-11-04","days_since":5},"technical_evaluator":{"state":"engaged","contact_id":"003ORB000000083AAA","name":"Sam Okafor","title":"IT Director","last_engaged":"2026-10-30","days_since":10},"executive_sponsor":{"state":"mapped","contact_id":"003ORB000000088AAA","name":"Renee Albright","title":"COO","last_engaged":null,"days_since":null}},"blocked":[],"gaps":[{"type":"Executive sponsor not engaged","severity":"low","refs":["SF-CON-003ORB000000088AAA"],"text":"Renee Albright (COO) is mapped as executive sponsor but has not joined a call."}],"valuemap":[{"priority":"Take 12% out of service delivery cost by end of 2027","ref":"PUB-ER-0024-Q3","vis":"public","value_prop":"One schedule for every technician cuts drive time and overtime","proof":"Bluepeak Utilities (fictional): overtime down 18% in two quarters after moving 600 technicians to one schedule.","inside":"\"We want every technician on one schedule before the spring maintenance season.\"","inside_ref":"GONG-9120#7"},{"priority":"Fund the change in Q1 if the numbers hold","ref":"GONG-9120#4","vis":"internal","value_prop":"One schedule for every technician cuts drive time and overtime","proof":"Bluepeak Utilities (fictional): overtime down 18% in two quarters after moving 600 technicians to one schedule.","inside":"Keystone · Service Scheduling Platform · Discovery · $240,000","inside_ref":"SF-OPP-006ORB000000031AAA"}],"prep":{"exec":"Dana Whitfield, CFO","contact":"003ORB000000081AAA","pov":{"text":"We believe split technician schedules are costing Keystone overtime and drive time it needs back for the 12% program, because each region plans crews in its own tool.","refs":["PUB-ER-0024-Q3","GONG-9120#7"]},"priorities":[{"text":"Take 12% out of service delivery cost by the end of 2027","vis":"public","ref":"PUB-ER-0024-Q3"},{"text":"Every technician on one schedule before the spring season","vis":"internal","ref":"GONG-9120#7"},{"text":"Fund the change in Q1 if the numbers hold","vis":"internal","ref":"GONG-9120#4"}],"questions":["Which cost lines does the 12% program measure first: overtime, drive time or subcontractors?","What would \"the numbers hold up\" need to show for a Q1 decision?","Who else signs off on a cross-region tool change?"],"proof":"Bluepeak Utilities (fictional): overtime down 18% in two quarters after moving 600 technicians to one schedule.","landmines":[{"text":"Keystone chose an incumbent over Acme on price in 2024","vis":"internal","ref":"SF-OPP-006ORB000000019AAA"},{"text":"The Q1 budget remark was made on a private call; do not quote it back as public","vis":"internal","ref":"GONG-9120#4"}],"ask":"A 45-minute working session with Dana and Luis to size overtime savings for the Q1 business case.","removed":0},"slot":"ranked","rank":1,"rest_reason":null,"decision":null,"pipeline":{"signals":"7 signals, 6 counted, 6 events","score":"A 85 · M 91 · R 88 · C 92","pick":"Rank 1 of 5, new logo slot","explain":"2 sentences drafted","validate":"1 uncited claim removed"}},"GTM-0001":{"key":"GTM-0001","salesforce_id":"001ORB000000001AAA","name":"Northstar Field Services","industry":"Consulting","region":"NA","employees":1800,"type":"Customer","motion":"Expansion","baseline_score":0.87,"baseline_age_days":0,"scores":{"A":81,"M":79,"R":38,"C":88,"P":80},"components":{"A":{"fit":84,"whitespace":78,"alignment":76},"M":{"value":79,"raw":1.54,"events_used":3},"C":["2 buying roles unmapped"]},"action":{"kind":"Multithread","title":"Ask Riley to bring in the budget owner and the dispatch owner","who":"Riley Chen, Director Field Operations","due":"2026-11-13","points":["Offer a 30-minute dispatch integration review for their system owner","Ask who signs off on the $185,000 before Q1 planning closes","Invite Jordan Patel; he is named on calls but has never attended"]},"why":{"text":"Riley Chen says Jordan Patel wants a decision before Q1 planning closes, but nobody who owns the budget or the dispatch integration has joined a call.","refs":["GONG-8812#6","GONG-8812#4","SF-OPP-006ORB000000002AAA"],"removed":[]},"signals":[{"ref":"SF-OPP-006ORB000000002AAA","side":"inside","source":"Salesforce","type":"Opportunity","date":"2026-10-23","text":"Regional Scheduling Expansion · Qualification · $185,000 · next step: confirm technical evaluator","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"INTENT-0001-FIELD_SERVICE_SCHEDULING","side":"outside","source":"Intent","type":"Research intent","date":"2026-10-19","text":"\"field service scheduling\" at 70/100, up from 48 four weeks earlier.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"GONG-8812#2","side":"inside","source":"Gong","type":"Pain","date":"2026-10-14","text":"\"We're running three different scheduling tools across our field regions. It's a mess for dispatch.\"","speaker":"Riley Chen, Director Field Operations","speaker_side":"customer","count":"counted","polarity":"buy"},{"ref":"GONG-8812#3","side":"inside","source":"Gong","type":"Priority alignment","date":"2026-10-14","text":"\"The goal is to consolidate scheduling onto one platform and keep dispatch data in one place.\"","speaker":"Riley Chen, Director Field Operations","speaker_side":"customer","count":"counted","polarity":"buy"},{"ref":"GONG-8812#4","side":"inside","source":"Gong","type":"Objection","date":"2026-10-14","text":"\"The big question is integration. Our dispatch system has to stay the source for job status.\"","speaker":"Riley Chen, Director Field Operations","speaker_side":"customer","count":"counted","polarity":"buy"},{"ref":"GONG-8812#6","side":"inside","source":"Gong","type":"Timeline","date":"2026-10-14","text":"\"Jordan wants a decision before Q1 planning closes.\"","speaker":"Riley Chen, Director Field Operations","speaker_side":"customer","count":"counted","polarity":"buy"}],"events":[{"key":"NS-TIMELINE","lead":"GONG-8812#6","family":"gong_buying","polarity":"buy","strength":0.9,"count_weight":1,"date":"2026-10-23","corroboration":2,"refs":["SF-OPP-006ORB000000002AAA","GONG-8812#6"]},{"key":"NS-PAIN","lead":"GONG-8812#2","family":"gong_buying","polarity":"buy","strength":0.8,"count_weight":1,"date":"2026-10-19","corroboration":2,"refs":["INTENT-0001-FIELD_SERVICE_SCHEDULING","GONG-8812#2","GONG-8812#3"]},{"key":"NS-OBJECTION","lead":"GONG-8812#4","family":"gong_buying","polarity":"buy","strength":0.3,"count_weight":1,"date":"2026-10-14","corroboration":1,"refs":["GONG-8812#4"]}],"roles":{"economic_buyer":{"state":"missing"},"champion":{"state":"engaged","contact_id":"003ORB000000001AAA","name":"Riley Chen","title":"Director, Field Operations","last_engaged":"2026-10-14","days_since":26},"technical_evaluator":{"state":"missing"},"executive_sponsor":{"state":"mapped","contact_id":"003ORB000000002AAA","name":"Jordan Patel","title":"VP, Business Systems","last_engaged":null,"days_since":null}},"blocked":[{"name":"Morgan Ellis","title":"Operations Manager","reason":"opted out of email"}],"gaps":[{"type":"Single-threaded","severity":"high","refs":["GONG-8812#2","GONG-8812#3","GONG-8812#4"],"text":"Every customer statement in the last 90 days comes from Riley Chen. Bring in the people who own the budget and the decision."},{"type":"Stalled next step","severity":"medium","refs":["SF-OPP-006ORB000000002AAA"],"text":"The opportunity's next step has been open 17 days."},{"type":"Executive sponsor not engaged","severity":"low","refs":["SF-CON-003ORB000000002AAA"],"text":"Jordan Patel (VP, Business Systems) is mapped as executive sponsor but has not joined a call."}],"valuemap":[{"priority":"Consolidate scheduling onto one platform","ref":"GONG-8812#3","vis":"internal","value_prop":"Scheduling, dispatch sync and job notes in one platform, with named tools retired","proof":"Bluepeak Utilities (fictional): retired three field tools in one quarter.","inside":"\"We're running three different scheduling tools across our field regions. It's a mess for dispatch.\"","inside_ref":"GONG-8812#2"},{"priority":"Dispatch stays the source for job status","ref":"GONG-8812#4","vis":"internal","value_prop":"Dispatch Connect syncs job status both ways; your dispatch system stays the system of record","proof":"Harrow Lifts (fictional): connected to their dispatch system and live across 4 regions in 9 weeks.","inside":"Regional Scheduling Expansion · Qualification · $185,000 · next step: confirm technical evaluator","inside_ref":"SF-OPP-006ORB000000002AAA"}],"prep":{"exec":"Jordan Patel, VP Business Systems","contact":"003ORB000000002AAA","pov":{"text":"We believe three regional scheduling tools are slowing Northstar's dispatch, and one platform that keeps dispatch as the source of job status removes that without a risky migration.","refs":["GONG-8812#2","GONG-8812#4"]},"priorities":[{"text":"Consolidate scheduling onto one platform","vis":"internal","ref":"GONG-8812#3"},{"text":"Keep dispatch the source for job status","vis":"internal","ref":"GONG-8812#4"},{"text":"Decide before Q1 planning closes","vis":"internal","ref":"GONG-8812#6"}],"questions":["What has to be true about the dispatch integration for you to sign off?","Who owns the budget for the regional rollout?","What did the second-region rollout teach you about adoption?"],"proof":"Harrow Lifts (fictional): connected to their dispatch system and live across 4 regions in 9 weeks.","landmines":[{"text":"Morgan Ellis opted out of email; do not copy them","vis":"internal","ref":"SF-CON-003ORB000000003AAA"}],"ask":"A dispatch integration review with your system owner next week.","removed":0},"slot":"ranked","rank":4,"rest_reason":null,"decision":null,"pipeline":{"signals":"6 signals, 6 counted, 3 events","score":"A 81 · M 79 · R 38 · C 88","pick":"Rank 4 of 5, expansion slot","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0011":{"key":"GTM-0011","salesforce_id":"001ORB000000011AAA","name":"Pacific Crest Home Services","industry":"Construction","region":"NA","employees":2600,"type":"Prospect","motion":"New logo","baseline_score":0.84,"baseline_age_days":0,"scores":{"A":78,"M":87,"R":63,"C":90,"P":82},"components":{"A":{"fit":80,"whitespace":76,"alignment":78},"M":{"value":87,"raw":2.02,"events_used":3},"C":["1 buying role unmapped"]},"action":{"kind":"Pursue","title":"Reframe the proposal as a consolidation before procurement reviews it","who":"Tom Becker, Director Operations","due":"2026-11-14","points":["Map which of the 14 vendors Acme replaces, by name","Show logins removed per technician per day","Resubmit as a replacement and ask Tom to bring in CFO Grace Liu"]},"why":{"text":"The CEO committed to cutting field-software vendors from 14 to 5, and procurement now wants every new tool to replace one, yet our open proposal is a $90,000 add-on.","refs":["PUB-LTR-0011-2026","GONG-9033#5","SF-OPP-006ORB000000044AAA"],"removed":[]},"signals":[{"ref":"GONG-9033#2","side":"inside","source":"Gong","type":"Pain","date":"2026-11-03","text":"\"Our techs log into four apps before the first job.\"","speaker":"Tom Becker, Director Operations","speaker_side":"customer","count":"counted","polarity":"buy"},{"ref":"GONG-9033#5","side":"inside","source":"Gong","type":"Process","date":"2026-11-03","text":"\"Procurement now wants every new tool to replace at least one we already pay for.\"","speaker":"Ana Ruiz, Procurement Manager","speaker_side":"customer","count":"counted","polarity":"buy"},{"ref":"SF-OPP-006ORB000000044AAA","side":"inside","source":"Salesforce","type":"Opportunity","date":"2026-10-30","text":"Pacific Crest · Dispatch Add-on · Proposal · $90,000","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"PUB-LTR-0011-2026","side":"outside","source":"Public","type":"Stated strategy","date":"2026-10-20","text":"\"We will consolidate from 14 field-software vendors to 5 by 2028.\" (Marcus Bell, CEO, shareholder letter)","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"}],"events":[{"key":"PC-PAIN","lead":"GONG-9033#2","family":"gong_buying","polarity":"buy","strength":0.8,"count_weight":1,"date":"2026-11-03","corroboration":1,"refs":["GONG-9033#2"]},{"key":"PC-CONSOL","lead":"GONG-9033#5","family":"gong_buying","polarity":"buy","strength":0.8,"count_weight":1,"date":"2026-11-03","corroboration":2,"refs":["GONG-9033#5","PUB-LTR-0011-2026"]},{"key":"PC-OPP","lead":"SF-OPP-006ORB000000044AAA","family":"opportunity","polarity":"buy","strength":0.7,"count_weight":1,"date":"2026-10-30","corroboration":1,"refs":["SF-OPP-006ORB000000044AAA"]}],"roles":{"economic_buyer":{"state":"mapped","contact_id":"003ORB000000113AAA","name":"Grace Liu","title":"CFO","last_engaged":null,"days_since":null},"champion":{"state":"engaged","contact_id":"003ORB000000111AAA","name":"Tom Becker","title":"Director, Operations","last_engaged":"2026-11-03","days_since":6},"technical_evaluator":{"state":"engaged","contact_id":"003ORB000000112AAA","name":"Kevin Osei","title":"IT Manager","last_engaged":"2026-10-27","days_since":13},"executive_sponsor":{"state":"missing"}},"blocked":[],"gaps":[{"type":"Narrative mismatch","severity":"high","refs":["GONG-9033#5","PUB-LTR-0011-2026","SF-OPP-006ORB000000044AAA"],"text":"The customer is asking for consolidation, but the open opportunity is pitched as an add-on. Reframe it as a replacement."}],"valuemap":[{"priority":"Consolidate from 14 field-software vendors to 5","ref":"PUB-LTR-0011-2026","vis":"public","value_prop":"Scheduling, dispatch sync and job notes in one platform, with named tools retired","proof":"Bluepeak Utilities (fictional): retired three field tools in one quarter.","inside":"\"Our techs log into four apps before the first job.\"","inside_ref":"GONG-9033#2"},{"priority":"Every new tool must replace one","ref":"GONG-9033#5","vis":"internal","value_prop":"Scheduling, dispatch sync and job notes in one platform, with named tools retired","proof":"Bluepeak Utilities (fictional): retired three field tools in one quarter.","inside":"Pacific Crest · Dispatch Add-on · Proposal · $90,000","inside_ref":"SF-OPP-006ORB000000044AAA"}],"prep":{"exec":"Marcus Bell, CEO","contact":null,"pov":{"text":"We believe Pacific Crest can reach its 14-to-5 vendor goal faster if scheduling, dispatch sync and job notes come off three tools and onto one.","refs":["PUB-LTR-0011-2026","GONG-9033#2"]},"priorities":[{"text":"Consolidate from 14 field-software vendors to 5 by 2028","vis":"public","ref":"PUB-LTR-0011-2026"},{"text":"Every new tool replaces one already paid for","vis":"internal","ref":"GONG-9033#5"},{"text":"Fewer apps for technicians before the first job","vis":"internal","ref":"GONG-9033#2"}],"questions":["Which vendor categories are first in line for consolidation?","How will you measure the consolidation: contracts, spend or technician time?","Who decides which tools survive?"],"proof":"Bluepeak Utilities (fictional): retired three field tools in one quarter.","landmines":[{"text":"Our open proposal is an add-on; lead with replacement, not with that proposal","vis":"internal","ref":"SF-OPP-006ORB000000044AAA"}],"ask":"Agree a two-week replacement assessment with Tom Becker's team.","removed":0},"slot":"ranked","rank":2,"rest_reason":null,"decision":null,"pipeline":{"signals":"4 signals, 4 counted, 3 events","score":"A 78 · M 87 · R 63 · C 90","pick":"Rank 2 of 5, new logo slot","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0012":{"key":"GTM-0012","salesforce_id":"001ORB000000012AAA","name":"Meridian Senior Living","industry":"Healthcare","region":"NA","employees":3100,"type":"Customer","motion":"Renewal risk","baseline_score":0.79,"baseline_age_days":0,"scores":{"A":76,"M":87,"R":63,"C":92,"P":81},"components":{"A":{"fit":78,"whitespace":70,"alignment":80},"M":{"value":87,"raw":2.066,"events_used":5},"C":[]},"action":{"kind":"Rescue","title":"Re-engage Hannah Cole with a fix-first note, then propose the review","who":"Hannah Cole · copy the customer success manager","due":"2026-11-11","points":["Lead with the fix date for the night-staff shift swap case","Ask how the new three-division structure changes her team","Propose the regional directors review she offered in September"]},"why":{"text":"Champion Hannah Cole has been silent for 47 days, weekly active schedulers fell 31%, and the $310,000 renewal is 84 days away.","refs":["GONG-8790#9","USAGE-0012-WAU","SF-CTR-00000412"],"removed":[]},"signals":[{"ref":"SF-CTR-00000412","side":"inside","source":"Salesforce","type":"Renewal","date":"2026-11-09","text":"Contract renews 1 Feb 2027 · $310,000 ARR","speaker":null,"speaker_side":null,"count":"counted","polarity":"risk"},{"ref":"USAGE-0012-WAU","side":"inside","source":"Usage","type":"Usage drop","date":"2026-11-07","text":"Weekly active schedulers down 31% in 60 days (212 to 146).","speaker":null,"speaker_side":null,"count":"counted","polarity":"risk"},{"ref":"SF-CASE-00001044","side":"inside","source":"Salesforce","type":"Open escalation","date":"2026-10-29","text":"Case · High priority · \"Shift swap sync failing for night staff\" · open 11 days","speaker":null,"speaker_side":null,"count":"counted","polarity":"risk"},{"ref":"PUB-NEWS-0012-01","side":"outside","source":"Public","type":"Reorganization","date":"2026-10-15","text":"Meridian reorganizes regional operations into three divisions.","speaker":null,"speaker_side":null,"count":"counted","polarity":"risk"},{"ref":"GONG-8790#9","side":"inside","source":"Gong","type":"Commitment","date":"2026-09-23","text":"\"Let's do a full review with my regional directors in October.\"","speaker":"Hannah Cole, Director Clinical Operations","speaker_side":"customer","count":"counted","polarity":"risk"}],"events":[{"key":"SF-CTR-00000412","lead":"SF-CTR-00000412","family":"renewal","polarity":"risk","strength":0.8,"count_weight":1,"date":"2026-11-09","corroboration":1,"refs":["SF-CTR-00000412"]},{"key":"USAGE-0012-WAU","lead":"USAGE-0012-WAU","family":"usage","polarity":"risk","strength":0.9,"count_weight":1,"date":"2026-11-07","corroboration":1,"refs":["USAGE-0012-WAU"]},{"key":"SF-CASE-00001044","lead":"SF-CASE-00001044","family":"engagement","polarity":"risk","strength":0.7,"count_weight":1,"date":"2026-10-29","corroboration":1,"refs":["SF-CASE-00001044"]},{"key":"PUB-NEWS-0012-01","lead":"PUB-NEWS-0012-01","family":"exec_change","polarity":"risk","strength":0.6,"count_weight":1,"date":"2026-10-15","corroboration":1,"refs":["PUB-NEWS-0012-01"]},{"key":"GONG-8790#9","lead":"GONG-8790#9","family":"gong_buying","polarity":"risk","strength":0.6,"count_weight":1,"date":"2026-09-23","corroboration":1,"refs":["GONG-8790#9"]}],"roles":{"economic_buyer":{"state":"mapped","contact_id":"003ORB000000122AAA","name":"Paul Hartley","title":"CFO","last_engaged":"2026-06-10","days_since":152},"champion":{"state":"engaged","contact_id":"003ORB000000121AAA","name":"Hannah Cole","title":"Director, Clinical Operations","last_engaged":"2026-09-23","days_since":47},"technical_evaluator":{"state":"mapped","contact_id":"003ORB000000123AAA","name":"Irene Vos","title":"IT Lead","last_engaged":"2026-08-18","days_since":83},"executive_sponsor":{"state":"mapped","contact_id":"003ORB000000124AAA","name":"Daniel Shore","title":"COO","last_engaged":"2026-05-20","days_since":173}},"blocked":[],"gaps":[{"type":"Stalled commitment","severity":"medium","refs":["GONG-8790#9"],"text":"The customer committed to a next step 47 days ago and it has not happened."},{"type":"Champion risk","severity":"high","refs":["GONG-8790#9"],"text":"Hannah Cole has not engaged in 47 days."},{"type":"Executive sponsor not engaged","severity":"low","refs":["SF-CON-003ORB000000124AAA"],"text":"Daniel Shore (COO) is mapped as executive sponsor but has not joined a call."}],"valuemap":[],"prep":null,"slot":"ranked","rank":3,"rest_reason":null,"decision":null,"pipeline":{"signals":"5 signals, 5 counted, 5 events","score":"A 76 · M 87 · R 63 · C 92","pick":"Rank 3 of 5, renewal risk slot","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0002":{"key":"GTM-0002","salesforce_id":"001ORB000000002AAA","name":"Juniper Ridge Health","industry":"Healthcare","region":"EMEA","employees":5400,"type":"Customer","motion":"Expansion","baseline_score":0.81,"baseline_age_days":1,"scores":{"A":82,"M":48,"R":25,"C":53,"P":63},"components":{"A":{"fit":82,"whitespace":90,"alignment":72},"M":{"value":48,"raw":0.647,"events_used":2},"C":["evidence is public only","no customer call in 90 days","2 buying roles unmapped"]},"action":{"kind":"Multithread","title":"Ask Elena Rossi for an introduction to the new CIO","who":"Elena Rossi, Head of Homecare Operations","due":"2026-11-16","points":["Share homecare results Elena can bring to the CIO","Ask what Priya Nandakumar is prioritising in her first 90 days","Offer a short briefing on scheduling across all five divisions"]},"why":{"text":"A new CIO, Priya Nandakumar, started 38 days ago and the company is hiring clinical scheduling analysts, but nobody at Acme has met her.","refs":["PUB-NEWS-0002-01","PUB-JOBS-0002"],"removed":[]},"signals":[{"ref":"PUB-JOBS-0002","side":"outside","source":"Public","type":"Hiring","date":"2026-10-20","text":"3 open roles for \"Field Clinical Scheduling Analyst\" across two regions.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"PUB-NEWS-0002-01","side":"outside","source":"Public","type":"Executive change","date":"2026-10-02","text":"Juniper Ridge Health appoints Priya Nandakumar as Chief Information Officer.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"}],"events":[{"key":"PUB-JOBS-0002","lead":"PUB-JOBS-0002","family":"hiring","polarity":"buy","strength":0.8,"count_weight":1,"date":"2026-10-20","corroboration":1,"refs":["PUB-JOBS-0002"]},{"key":"PUB-NEWS-0002-01","lead":"PUB-NEWS-0002-01","family":"exec_change","polarity":"buy","strength":0.9,"count_weight":1,"date":"2026-10-02","corroboration":1,"refs":["PUB-NEWS-0002-01"]}],"roles":{"economic_buyer":{"state":"missing"},"champion":{"state":"mapped","contact_id":"003ORB000000021AAA","name":"Tomás Ferreira","title":"Scheduling Manager","last_engaged":"2026-08-12","days_since":89},"technical_evaluator":{"state":"missing"},"executive_sponsor":{"state":"mapped","contact_id":"003ORB000000022AAA","name":"Elena Rossi","title":"Head of Homecare Operations","last_engaged":"2026-08-30","days_since":71}},"blocked":[],"gaps":[{"type":"New executive, no relationship","severity":"high","refs":["PUB-NEWS-0002-01"],"text":"Priya Nandakumar started 38 days ago and nobody at the seller has met them."},{"type":"Champion risk","severity":"high","refs":[],"text":"Tomás Ferreira has not engaged in 89 days."},{"type":"Executive sponsor not engaged","severity":"low","refs":["SF-CON-003ORB000000022AAA"],"text":"Elena Rossi (Head of Homecare Operations) is mapped as executive sponsor but has not joined a call."}],"valuemap":[{"priority":"Hiring for clinical field scheduling","ref":"PUB-JOBS-0002","vis":"public","value_prop":"Scale scheduling from one division to many without new tools","proof":"Bluepeak Utilities (fictional): retired three field tools in one quarter.","inside":null,"inside_ref":null}],"prep":null,"slot":"exploration","rank":6,"rest_reason":null,"decision":null,"pipeline":{"signals":"2 signals, 2 counted, 2 events","score":"A 82 · M 48 · R 25 · C 53","pick":"Exploration slot","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0019":{"key":"GTM-0019","salesforce_id":"001ORB000000019AAA","name":"Heartland Foodservice Distributors","industry":"Food & Beverage","region":"NA","employees":2200,"type":"Customer","motion":"Expansion","baseline_score":0.77,"baseline_age_days":0,"scores":{"A":70,"M":69,"R":75,"C":92,"P":69},"components":{"A":{"fit":72,"whitespace":70,"alignment":66},"M":{"value":69,"raw":1.171,"events_used":2},"C":[]},"action":{"kind":"Expand","title":"Propose seats for the Midwest depots","who":"Greg Tanner, VP Distribution","due":"2026-11-17","points":["Show the 96% seat use","Price the Midwest depots as one add-on","Ask Greg to bring in CFO Lisa Grant"]},"why":{"text":"Seats are at 96% of contract and the Midwest depots asked to join after the pilot.","refs":["USAGE-0019-SEATS","GONG-9101#3"],"removed":[]},"signals":[{"ref":"USAGE-0019-SEATS","side":"inside","source":"Usage","type":"Seat ceiling","date":"2026-11-06","text":"288 of 300 seats in use (96%).","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"GONG-9101#3","side":"inside","source":"Gong","type":"Expansion","date":"2026-10-27","text":"\"The Midwest depots want in after the pilot.\"","speaker":"Greg Tanner, VP Distribution","speaker_side":"customer","count":"counted","polarity":"buy"}],"events":[{"key":"USAGE-0019-SEATS","lead":"USAGE-0019-SEATS","family":"usage","polarity":"buy","strength":0.9,"count_weight":1,"date":"2026-11-06","corroboration":1,"refs":["USAGE-0019-SEATS"]},{"key":"GONG-9101#3","lead":"GONG-9101#3","family":"gong_buying","polarity":"buy","strength":0.7,"count_weight":1,"date":"2026-10-27","corroboration":1,"refs":["GONG-9101#3"]}],"roles":{"economic_buyer":{"state":"mapped","contact_id":"003ORB000000193AAA","name":"Lisa Grant","title":"CFO","last_engaged":"2026-07-15","days_since":117},"champion":{"state":"engaged","contact_id":"003ORB000000191AAA","name":"Greg Tanner","title":"VP Distribution","last_engaged":"2026-10-27","days_since":13},"technical_evaluator":{"state":"engaged","contact_id":"003ORB000000192AAA","name":"Ray Kim","title":"IT Director","last_engaged":"2026-10-30","days_since":10},"executive_sponsor":{"state":"mapped","contact_id":"003ORB000000194AAA","name":"Ann Doyle","title":"COO","last_engaged":"2026-06-02","days_since":160}},"blocked":[],"gaps":[{"type":"Single-threaded","severity":"high","refs":["GONG-9101#3"],"text":"Every customer statement in the last 90 days comes from Greg Tanner. Bring in the people who own the budget and the decision."},{"type":"Executive sponsor not engaged","severity":"low","refs":["SF-CON-003ORB000000194AAA"],"text":"Ann Doyle (COO) is mapped as executive sponsor but has not joined a call."}],"valuemap":[],"prep":null,"slot":"held","rank":5,"rest_reason":"Priority 69 · held, five slots full","decision":null,"pipeline":{"signals":"2 signals, 2 counted, 2 events","score":"A 70 · M 69 · R 75 · C 92","pick":"Priority 69 · held, five slots full","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0003":{"key":"GTM-0003","salesforce_id":"001ORB000000003AAA","name":"Cobalt Ledger Systems","industry":"Finance","region":"NA","employees":900,"type":"Customer","motion":"Expansion","baseline_score":0.76,"baseline_age_days":6,"scores":{"A":72,"M":40,"R":13,"C":41,"P":54},"components":{"A":{"fit":74,"whitespace":70,"alignment":70},"M":{"value":40,"raw":0.516,"events_used":2},"C":["baseline score 6 days old","a call speaker is not matched to a CRM contact","3 buying roles unmapped"]},"action":{"kind":"Verify","title":"Confirm who \"Chris M.\" is and refresh the score","who":"You · about 10 minutes","due":"2026-11-10","points":["Check the Oct 30 call participants","Link the speaker to a CRM contact (likely Chris Moreno, Controller)","The account is rescored within the hour after the fix"]},"why":{"text":"Someone asked for the reporting module before year-end close, but the speaker is not matched to any CRM contact and the baseline score is 6 days old.","refs":["GONG-8981#2","GONG-8981#5"],"removed":[]},"signals":[{"ref":"GONG-8981#2","side":"inside","source":"Gong","type":"Interest","date":"2026-10-30","text":"\"We'd like to see the reporting module for the audit team.\"","speaker":"\"Chris M.\" (not matched to a CRM contact)","speaker_side":"customer","count":"half","polarity":"buy"},{"ref":"GONG-8981#5","side":"inside","source":"Gong","type":"Timeline","date":"2026-10-30","text":"\"If it works we would want it before year-end close.\"","speaker":"\"Chris M.\" (not matched to a CRM contact)","speaker_side":"customer","count":"half","polarity":"buy"}],"events":[{"key":"GONG-8981#2","lead":"GONG-8981#2","family":"gong_buying","polarity":"buy","strength":0.7,"count_weight":0.5,"date":"2026-10-30","corroboration":1,"refs":["GONG-8981#2"]},{"key":"GONG-8981#5","lead":"GONG-8981#5","family":"gong_buying","polarity":"buy","strength":0.6,"count_weight":0.5,"date":"2026-10-30","corroboration":1,"refs":["GONG-8981#5"]}],"roles":{"economic_buyer":{"state":"missing"},"champion":{"state":"missing"},"technical_evaluator":{"state":"mapped","contact_id":"003ORB000000031AAA","name":"Ivy Lam","title":"Systems Analyst","last_engaged":"2026-09-02","days_since":68},"executive_sponsor":{"state":"missing"}},"blocked":[],"gaps":[{"type":"Identity unverified","severity":"high","refs":["GONG-8981#2","GONG-8981#5"],"text":"A call speaker is not matched to any CRM contact. Confirm who they are before treating them as a champion."}],"valuemap":[],"prep":null,"slot":"verify","rank":7,"rest_reason":"Verify first · confidence 41","decision":null,"pipeline":{"signals":"2 signals, 2 counted, 2 events","score":"A 72 · M 40 · R 13 · C 41","pick":"Verify first · confidence 41","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0017":{"key":"GTM-0017","salesforce_id":"001ORB000000017AAA","name":"Copperline Fiber Services","industry":"Telecommunications","region":"NA","employees":1300,"type":"Prospect","motion":"New logo","baseline_score":0.83,"baseline_age_days":0,"scores":{"A":74,"M":0,"R":25,"C":86,"P":0},"components":{"A":{"fit":78,"whitespace":72,"alignment":68},"M":{"value":0,"raw":-0.516,"events_used":1},"C":["3 buying roles unmapped"]},"action":{"kind":"Hold","title":"Set a watch for the network build finishing","who":"Rescore on a new budget or executive event","due":null,"points":["Revisit in Q2 2027","Rescore automatically on a new executive or funding event"]},"why":{"text":"All 9 budget and pricing tracker hits were questions asked by our side, and the customer said nothing new is moving until the network build finishes next summer.","refs":["GONG-8955#3","GONG-8955#6"],"removed":[]},"signals":[{"ref":"GONG-8955#3","side":"inside","source":"Gong","type":"Tracker: Budget","date":"2026-10-21","text":"\"Do you have budget allocated for this year?\" (one of 9 budget and pricing tracker hits, all spoken by Acme)","speaker":"Alex Rivera, Acme","speaker_side":"seller","count":"not_counted","polarity":"buy"},{"ref":"GONG-8955#6","side":"inside","source":"Gong","type":"Timing risk","date":"2026-10-21","text":"\"We're not looking at anything new until the network build finishes next summer.\"","speaker":"Nina Park, Network Operations Lead","speaker_side":"customer","count":"counted","polarity":"buy"}],"events":[{"key":"GONG-8955#3","lead":"GONG-8955#3","family":"gong_buying","polarity":"buy","strength":0.8,"count_weight":0,"date":"2026-10-21","corroboration":1,"refs":["GONG-8955#3"]},{"key":"GONG-8955#6","lead":"GONG-8955#6","family":"gong_buying","polarity":"buy","strength":-0.8,"count_weight":1,"date":"2026-10-21","corroboration":1,"refs":["GONG-8955#6"]}],"roles":{"economic_buyer":{"state":"missing"},"champion":{"state":"engaged","contact_id":"003ORB000000171AAA","name":"Nina Park","title":"Network Operations Lead","last_engaged":"2026-10-21","days_since":19},"technical_evaluator":{"state":"missing"},"executive_sponsor":{"state":"missing"}},"blocked":[],"gaps":[],"valuemap":[],"prep":null,"slot":"watch","rank":21,"rest_reason":"Watching · momentum 0","decision":null,"pipeline":{"signals":"2 signals, 1 counted, 2 events","score":"A 74 · M 0 · R 25 · C 86","pick":"Watching · momentum 0","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0007":{"key":"GTM-0007","salesforce_id":"001ORB000000007AAA","name":"Quarry & Pine Manufacturing","industry":"Machinery","region":"NA","employees":null,"type":"Prospect","motion":"New logo","baseline_score":null,"baseline_age_days":null,"scores":{"A":null,"M":null,"R":0,"C":14,"P":null},"components":{"A":{"fit":null,"whitespace":null,"alignment":null},"M":{"value":0,"raw":0,"events_used":0},"C":["no baseline score","missing firmographics","no customer call in 90 days","4 buying roles unmapped"]},"action":{"kind":"Research","title":"Fill in the basics so it can be scored","who":"You or your SDR","due":null,"points":["Add employee count and industry","Find one operations leader","The account is rescored within the hour"]},"why":{"text":"Not scored: there is no employee count, no baseline score and only one contact with no title.","refs":["SF-ACC-001ORB000000007AAA"],"removed":[]},"signals":[{"ref":"SF-ACC-001ORB000000007AAA","side":"inside","source":"Salesforce","type":"Missing data","date":"2026-05-12","text":"No employee count, no baseline score, 1 contact with no title.","speaker":null,"speaker_side":null,"count":"context","polarity":"buy"}],"events":[{"key":"SF-ACC-001ORB000000007AAA","lead":"SF-ACC-001ORB000000007AAA","family":"firmographic","polarity":"buy","strength":0,"count_weight":1,"date":"2026-05-12","corroboration":1,"refs":["SF-ACC-001ORB000000007AAA"]}],"roles":{"economic_buyer":{"state":"missing"},"champion":{"state":"missing"},"technical_evaluator":{"state":"missing"},"executive_sponsor":{"state":"missing"}},"blocked":[],"gaps":[],"valuemap":[],"prep":null,"slot":"unscored","rank":null,"rest_reason":"Not scored · missing data","decision":null,"pipeline":{"signals":"1 signals, 0 counted, 1 events","score":"Not scored","pick":"Not scored · missing data","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0010":{"key":"GTM-0010","salesforce_id":"001ORB000000010AAA","name":"Kestrel Biotech","industry":"Biotechnology","region":"EMEA","employees":140,"type":"Prospect","motion":"New logo","baseline_score":0.41,"baseline_age_days":4,"scores":{"A":27,"M":0,"R":13,"C":56,"P":0},"components":{"A":{"fit":22,"whitespace":30,"alignment":36},"M":{"value":0,"raw":0,"events_used":0},"C":["baseline score 4 days old","no customer call in 90 days","3 buying roles unmapped"]},"action":{"kind":"Deprioritize","title":"Skip this account for now","who":"No action needed","due":null,"points":["Rescore only if field operations appear"]},"why":{"text":"140 employees and no field service operations put Kestrel outside the ideal customer profile.","refs":["SF-ACC-001ORB000000010AAA"],"removed":[]},"signals":[{"ref":"SF-ACC-001ORB000000010AAA","side":"inside","source":"Salesforce","type":"Firmographics","date":"2026-07-02","text":"140 employees · lab operations · no field technicians.","speaker":null,"speaker_side":null,"count":"context","polarity":"buy"}],"events":[{"key":"SF-ACC-001ORB000000010AAA","lead":"SF-ACC-001ORB000000010AAA","family":"firmographic","polarity":"buy","strength":0,"count_weight":1,"date":"2026-07-02","corroboration":1,"refs":["SF-ACC-001ORB000000010AAA"]}],"roles":{"economic_buyer":{"state":"missing"},"champion":{"state":"mapped","contact_id":"003ORB000000101AAA","name":"Owen Hale","title":"Lab Manager","last_engaged":"2026-04-08","days_since":215},"technical_evaluator":{"state":"missing"},"executive_sponsor":{"state":"missing"}},"blocked":[],"gaps":[],"valuemap":[],"prep":null,"slot":"deprioritized","rank":24,"rest_reason":"Deprioritized · outside ICP","decision":null,"pipeline":{"signals":"1 signals, 0 counted, 1 events","score":"A 27 · M 0 · R 13 · C 56","pick":"Deprioritized · outside ICP","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0013":{"key":"GTM-0013","salesforce_id":"001ORB000000013AAA","name":"Ironbridge Construction Group","industry":"Construction","region":"NA","employees":1500,"type":"Prospect","motion":"New logo","baseline_score":0.74,"baseline_age_days":1,"scores":{"A":50,"M":2,"R":25,"C":78,"P":10},"components":{"A":{"fit":53,"whitespace":43,"alignment":55},"M":{"value":2,"raw":0.016,"events_used":2},"C":["no customer call in 90 days","2 buying roles unmapped"]},"action":{"kind":"Hold","title":"Watch for a stronger signal","who":"Logan Foster, Director of Operations","due":null,"points":["Rescore on a new executive, funding or usage event"]},"why":{"text":"Recent intent on 09-03 and engagement on 09-19.","refs":["INTENT-0013-2","ENG-0013-1"],"removed":[]},"signals":[{"ref":"ENG-0013-1","side":"inside","source":"Salesforce","type":"Engagement","date":"2026-09-19","text":"Opened the field scheduling guide and attended a webinar.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"INTENT-0013-2","side":"outside","source":"Intent","type":"Intent","date":"2026-09-03","text":"\"workforce scheduling\" at 48/100.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"}],"events":[{"key":"ENG-0013-1","lead":"ENG-0013-1","family":"engagement","polarity":"buy","strength":0.35,"count_weight":1,"date":"2026-09-19","corroboration":1,"refs":["ENG-0013-1"]},{"key":"INTENT-0013-2","lead":"INTENT-0013-2","family":"intent","polarity":"buy","strength":0.45,"count_weight":1,"date":"2026-09-03","corroboration":1,"refs":["INTENT-0013-2"]}],"roles":{"economic_buyer":{"state":"missing"},"champion":{"state":"mapped","contact_id":"003ORB0013000000AAA","name":"Logan Foster","title":"Director of Operations","last_engaged":"2026-07-20","days_since":112},"technical_evaluator":{"state":"missing"},"executive_sponsor":{"state":"mapped","contact_id":"003ORB0013010000AAA","name":"Harper Nolan","title":"COO","last_engaged":null,"days_since":null}},"blocked":[],"gaps":[{"type":"Champion risk","severity":"high","refs":[],"text":"Logan Foster has not engaged in 112 days."}],"valuemap":[],"prep":null,"slot":"watch","rank":19,"rest_reason":"Watching · momentum 2","decision":null,"pipeline":{"signals":"2 signals, 2 counted, 2 events","score":"A 50 · M 2 · R 25 · C 78","pick":"Watching · momentum 2","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0016":{"key":"GTM-0016","salesforce_id":"001ORB000000016AAA","name":"Lakeshore Regional Medical Center","industry":"Healthcare","region":"NA","employees":2900,"type":"Prospect","motion":"New logo","baseline_score":0.73,"baseline_age_days":5,"scores":{"A":59,"M":0,"R":25,"C":31,"P":0},"components":{"A":{"fit":72,"whitespace":45,"alignment":46},"M":{"value":0,"raw":0.005,"events_used":1},"C":["baseline score 5 days old","evidence is public only","no customer call in 90 days","3 buying roles unmapped"]},"action":{"kind":"Verify","title":"Check the data before acting","who":"You","due":null,"points":["Fix the low-confidence inputs","The account is rescored within the hour"]},"why":{"text":"Recent intent on 09-14.","refs":["INTENT-0016-1"],"removed":[]},"signals":[{"ref":"INTENT-0016-1","side":"outside","source":"Intent","type":"Intent","date":"2026-09-14","text":"\"workforce scheduling\" at 50/100.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"}],"events":[{"key":"INTENT-0016-1","lead":"INTENT-0016-1","family":"intent","polarity":"buy","strength":0.55,"count_weight":1,"date":"2026-09-14","corroboration":1,"refs":["INTENT-0016-1"]}],"roles":{"economic_buyer":{"state":"missing"},"champion":{"state":"missing"},"technical_evaluator":{"state":"engaged","contact_id":"003ORB0016000000AAA","name":"Morgan Lowe","title":"IT Manager","last_engaged":"2026-09-15","days_since":55},"executive_sponsor":{"state":"missing"}},"blocked":[],"gaps":[],"valuemap":[],"prep":null,"slot":"verify","rank":22,"rest_reason":"Verify first · confidence 31","decision":null,"pipeline":{"signals":"1 signals, 1 counted, 1 events","score":"A 59 · M 0 · R 25 · C 31","pick":"Verify first · confidence 31","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0005":{"key":"GTM-0005","salesforce_id":"001ORB000000005AAA","name":"Verdant Grid Energy","industry":"Energy","region":"EMEA","employees":3600,"type":"Customer","motion":"Expansion","baseline_score":0.72,"baseline_age_days":2,"scores":{"A":57,"M":6,"R":38,"C":55,"P":18},"components":{"A":{"fit":62,"whitespace":48,"alignment":57},"M":{"value":6,"raw":0.061,"events_used":1},"C":["evidence is public only","no customer call in 90 days","1 buying role unmapped"]},"action":{"kind":"Hold","title":"Watch for a stronger signal","who":"Kendall Hughes, Director of Operations","due":null,"points":["Rescore on a new executive, funding or usage event"]},"why":{"text":"Recent hiring on 10-07.","refs":["PUB-JOBS-0005-1"],"removed":[]},"signals":[{"ref":"PUB-JOBS-0005-1","side":"outside","source":"Public","type":"Hiring","date":"2026-10-07","text":"1 open operations roles posted.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"}],"events":[{"key":"PUB-JOBS-0005-1","lead":"PUB-JOBS-0005-1","family":"hiring","polarity":"buy","strength":0.34,"count_weight":1,"date":"2026-10-07","corroboration":1,"refs":["PUB-JOBS-0005-1"]}],"roles":{"economic_buyer":{"state":"mapped","contact_id":"003ORB0005010000AAA","name":"Taylor Ellison","title":"CFO","last_engaged":"2026-07-07","days_since":125},"champion":{"state":"mapped","contact_id":"003ORB0005000000AAA","name":"Kendall Hughes","title":"Director of Operations","last_engaged":null,"days_since":null},"technical_evaluator":{"state":"missing"},"executive_sponsor":{"state":"mapped","contact_id":"003ORB0005020000AAA","name":"Quinn Price","title":"COO","last_engaged":null,"days_since":null}},"blocked":[],"gaps":[],"valuemap":[],"prep":null,"slot":"watch","rank":16,"rest_reason":"Watching · momentum 6","decision":null,"pipeline":{"signals":"1 signals, 1 counted, 1 events","score":"A 57 · M 6 · R 38 · C 55","pick":"Watching · momentum 6","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0014":{"key":"GTM-0014","salesforce_id":"001ORB000000014AAA","name":"Summit Valley Credit Union","industry":"Banking","region":"NA","employees":700,"type":"Prospect","motion":"New logo","baseline_score":0.71,"baseline_age_days":2,"scores":{"A":56,"M":7,"R":13,"C":76,"P":20},"components":{"A":{"fit":48,"whitespace":68,"alignment":56},"M":{"value":7,"raw":0.074,"events_used":1},"C":["no customer call in 90 days","3 buying roles unmapped"]},"action":{"kind":"Hold","title":"Watch for a stronger signal","who":"You","due":null,"points":["Rescore on a new executive, funding or usage event"]},"why":{"text":"Recent engagement on 10-22.","refs":["ENG-0014-1"],"removed":[]},"signals":[{"ref":"ENG-0014-1","side":"inside","source":"Salesforce","type":"Engagement","date":"2026-10-22","text":"Opened the field scheduling guide and attended a webinar.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"}],"events":[{"key":"ENG-0014-1","lead":"ENG-0014-1","family":"engagement","polarity":"buy","strength":0.36,"count_weight":1,"date":"2026-10-22","corroboration":1,"refs":["ENG-0014-1"]}],"roles":{"economic_buyer":{"state":"mapped","contact_id":"003ORB0014000000AAA","name":"Blake Mendes","title":"CFO","last_engaged":"2026-07-12","days_since":120},"champion":{"state":"missing"},"technical_evaluator":{"state":"missing"},"executive_sponsor":{"state":"missing"}},"blocked":[],"gaps":[],"valuemap":[],"prep":null,"slot":"watch","rank":15,"rest_reason":"Watching · momentum 7","decision":null,"pipeline":{"signals":"1 signals, 1 counted, 1 events","score":"A 56 · M 7 · R 13 · C 76","pick":"Watching · momentum 7","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0021":{"key":"GTM-0021","salesforce_id":"001ORB000000021AAA","name":"Harbor Point Hospitality Group","industry":"Hospitality","region":"NA","employees":2400,"type":"Prospect","motion":"New logo","baseline_score":0.7,"baseline_age_days":0,"scores":{"A":49,"M":5,"R":25,"C":53,"P":16},"components":{"A":{"fit":51,"whitespace":52,"alignment":40},"M":{"value":5,"raw":0.051,"events_used":2},"C":["evidence is public only","no customer call in 90 days","2 buying roles unmapped"]},"action":{"kind":"Hold","title":"Watch for a stronger signal","who":"Logan Ortiz, Director of Operations","due":null,"points":["Rescore on a new executive, funding or usage event"]},"why":{"text":"Recent hiring on 09-07 and intent on 09-20.","refs":["PUB-JOBS-0021-1","INTENT-0021-2"],"removed":[]},"signals":[{"ref":"INTENT-0021-2","side":"outside","source":"Intent","type":"Intent","date":"2026-09-20","text":"\"workforce scheduling\" at 51/100.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"PUB-JOBS-0021-1","side":"outside","source":"Public","type":"Hiring","date":"2026-09-07","text":"2 open operations roles posted.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"}],"events":[{"key":"INTENT-0021-2","lead":"INTENT-0021-2","family":"intent","polarity":"buy","strength":0.38,"count_weight":1,"date":"2026-09-20","corroboration":1,"refs":["INTENT-0021-2"]},{"key":"PUB-JOBS-0021-1","lead":"PUB-JOBS-0021-1","family":"hiring","polarity":"buy","strength":0.41,"count_weight":1,"date":"2026-09-07","corroboration":1,"refs":["PUB-JOBS-0021-1"]}],"roles":{"economic_buyer":{"state":"missing"},"champion":{"state":"mapped","contact_id":"003ORB0021000000AAA","name":"Logan Ortiz","title":"Director of Operations","last_engaged":"2026-08-06","days_since":95},"technical_evaluator":{"state":"mapped","contact_id":"003ORB0021010000AAA","name":"Blake Brooks","title":"IT Manager","last_engaged":"2026-07-29","days_since":103},"executive_sponsor":{"state":"missing"}},"blocked":[],"gaps":[{"type":"Champion risk","severity":"high","refs":[],"text":"Logan Ortiz has not engaged in 95 days."}],"valuemap":[],"prep":null,"slot":"watch","rank":17,"rest_reason":"Watching · momentum 5","decision":null,"pipeline":{"signals":"2 signals, 2 counted, 2 events","score":"A 49 · M 5 · R 25 · C 53","pick":"Watching · momentum 5","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0004":{"key":"GTM-0004","salesforce_id":"001ORB000000004AAA","name":"Harborline Logistics","industry":"Transportation","region":"NA","employees":3300,"type":"Customer","motion":"Expansion","baseline_score":0.69,"baseline_age_days":0,"scores":{"A":56,"M":1,"R":25,"C":53,"P":7},"components":{"A":{"fit":57,"whitespace":58,"alignment":51},"M":{"value":1,"raw":0.005,"events_used":1},"C":["evidence is public only","no customer call in 90 days","2 buying roles unmapped"]},"action":{"kind":"Hold","title":"Watch for a stronger signal","who":"You","due":null,"points":["Rescore on a new executive, funding or usage event"]},"why":{"text":"Recent intent on 09-17.","refs":["INTENT-0004-1"],"removed":[]},"signals":[{"ref":"INTENT-0004-1","side":"outside","source":"Intent","type":"Intent","date":"2026-09-17","text":"\"workforce scheduling\" at 59/100.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"}],"events":[{"key":"INTENT-0004-1","lead":"INTENT-0004-1","family":"intent","polarity":"buy","strength":0.52,"count_weight":1,"date":"2026-09-17","corroboration":1,"refs":["INTENT-0004-1"]}],"roles":{"economic_buyer":{"state":"mapped","contact_id":"003ORB0004000000AAA","name":"Parker Nolan","title":"CFO","last_engaged":null,"days_since":null},"champion":{"state":"missing"},"technical_evaluator":{"state":"missing"},"executive_sponsor":{"state":"mapped","contact_id":"003ORB0004010000AAA","name":"Reese Garcia","title":"COO","last_engaged":"2026-07-19","days_since":113}},"blocked":[],"gaps":[],"valuemap":[],"prep":null,"slot":"watch","rank":20,"rest_reason":"Watching · momentum 1","decision":null,"pipeline":{"signals":"1 signals, 1 counted, 1 events","score":"A 56 · M 1 · R 25 · C 53","pick":"Watching · momentum 1","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0015":{"key":"GTM-0015","salesforce_id":"001ORB000000015AAA","name":"Granite State Utilities","industry":"Utilities","region":"NA","employees":1900,"type":"Prospect","motion":"New logo","baseline_score":0.68,"baseline_age_days":0,"scores":{"A":63,"M":9,"R":25,"C":53,"P":24},"components":{"A":{"fit":63,"whitespace":58,"alignment":70},"M":{"value":9,"raw":0.096,"events_used":1},"C":["evidence is public only","no customer call in 90 days","2 buying roles unmapped"]},"action":{"kind":"Hold","title":"Watch for a stronger signal","who":"You","due":null,"points":["Rescore on a new executive, funding or usage event"]},"why":{"text":"Recent intent on 10-27.","refs":["INTENT-0015-1"],"removed":[]},"signals":[{"ref":"INTENT-0015-1","side":"outside","source":"Intent","type":"Intent","date":"2026-10-27","text":"\"workforce scheduling\" at 51/100.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"}],"events":[{"key":"INTENT-0015-1","lead":"INTENT-0015-1","family":"intent","polarity":"buy","strength":0.59,"count_weight":1,"date":"2026-10-27","corroboration":1,"refs":["INTENT-0015-1"]}],"roles":{"economic_buyer":{"state":"missing"},"champion":{"state":"missing"},"technical_evaluator":{"state":"mapped","contact_id":"003ORB0015010000AAA","name":"Morgan Lowe","title":"IT Manager","last_engaged":null,"days_since":null},"executive_sponsor":{"state":"mapped","contact_id":"003ORB0015000000AAA","name":"Finley Mendes","title":"COO","last_engaged":"2026-08-02","days_since":99}},"blocked":[],"gaps":[],"valuemap":[],"prep":null,"slot":"watch","rank":13,"rest_reason":"Watching · momentum 9","decision":null,"pipeline":{"signals":"1 signals, 1 counted, 1 events","score":"A 63 · M 9 · R 25 · C 53","pick":"Watching · momentum 9","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0023":{"key":"GTM-0023","salesforce_id":"001ORB000000023AAA","name":"Atlas Fleet Maintenance","industry":"Transportation","region":"NA","employees":1100,"type":"Customer","motion":"Expansion","baseline_score":0.67,"baseline_age_days":0,"scores":{"A":69,"M":18,"R":13,"C":76,"P":35},"components":{"A":{"fit":76,"whitespace":71,"alignment":47},"M":{"value":18,"raw":0.196,"events_used":3},"C":["no customer call in 90 days","3 buying roles unmapped"]},"action":{"kind":"Hold","title":"Watch for a stronger signal","who":"You","due":null,"points":["Rescore on a new executive, funding or usage event"]},"why":{"text":"Recent hiring on 09-03 and hiring on 10-14.","refs":["PUB-JOBS-0023-3","PUB-JOBS-0023-1"],"removed":[]},"signals":[{"ref":"PUB-JOBS-0023-1","side":"outside","source":"Public","type":"Hiring","date":"2026-10-14","text":"1 open operations roles posted.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"ENG-0023-2","side":"inside","source":"Salesforce","type":"Engagement","date":"2026-09-11","text":"Opened the field scheduling guide and attended a webinar.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"PUB-JOBS-0023-3","side":"outside","source":"Public","type":"Hiring","date":"2026-09-03","text":"3 open operations roles posted.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"}],"events":[{"key":"PUB-JOBS-0023-1","lead":"PUB-JOBS-0023-1","family":"hiring","polarity":"buy","strength":0.59,"count_weight":1,"date":"2026-10-14","corroboration":1,"refs":["PUB-JOBS-0023-1"]},{"key":"ENG-0023-2","lead":"ENG-0023-2","family":"engagement","polarity":"buy","strength":0.48,"count_weight":1,"date":"2026-09-11","corroboration":1,"refs":["ENG-0023-2"]},{"key":"PUB-JOBS-0023-3","lead":"PUB-JOBS-0023-3","family":"hiring","polarity":"buy","strength":0.6,"count_weight":1,"date":"2026-09-03","corroboration":1,"refs":["PUB-JOBS-0023-3"]}],"roles":{"economic_buyer":{"state":"missing"},"champion":{"state":"missing"},"technical_evaluator":{"state":"mapped","contact_id":"003ORB0023000000AAA","name":"Taylor Ortiz","title":"IT Manager","last_engaged":"2026-06-26","days_since":136},"executive_sponsor":{"state":"missing"}},"blocked":[],"gaps":[],"valuemap":[],"prep":null,"slot":"watch","rank":10,"rest_reason":"Watching · momentum 18","decision":null,"pipeline":{"signals":"3 signals, 3 counted, 3 events","score":"A 69 · M 18 · R 13 · C 76","pick":"Watching · momentum 18","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0009":{"key":"GTM-0009","salesforce_id":"001ORB000000009AAA","name":"Brightwater Insurance","industry":"Insurance","region":"NA","employees":2100,"type":"Prospect","motion":"New logo","baseline_score":0.66,"baseline_age_days":1,"scores":{"A":68,"M":19,"R":63,"C":80,"P":36},"components":{"A":{"fit":68,"whitespace":70,"alignment":67},"M":{"value":19,"raw":0.206,"events_used":2},"C":["no customer call in 90 days","1 buying role unmapped"]},"action":{"kind":"Hold","title":"Watch for a stronger signal","who":"Avery Nolan, Director of Operations","due":null,"points":["Rescore on a new executive, funding or usage event"]},"why":{"text":"Recent engagement on 10-15 and hiring on 10-22.","refs":["ENG-0009-2","PUB-JOBS-0009-1"],"removed":[]},"signals":[{"ref":"PUB-JOBS-0009-1","side":"outside","source":"Public","type":"Hiring","date":"2026-10-22","text":"3 open operations roles posted.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"ENG-0009-2","side":"inside","source":"Salesforce","type":"Engagement","date":"2026-10-15","text":"Opened the field scheduling guide and attended a webinar.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"}],"events":[{"key":"PUB-JOBS-0009-1","lead":"PUB-JOBS-0009-1","family":"hiring","polarity":"buy","strength":0.55,"count_weight":1,"date":"2026-10-22","corroboration":1,"refs":["PUB-JOBS-0009-1"]},{"key":"ENG-0009-2","lead":"ENG-0009-2","family":"engagement","polarity":"buy","strength":0.56,"count_weight":1,"date":"2026-10-15","corroboration":1,"refs":["ENG-0009-2"]}],"roles":{"economic_buyer":{"state":"engaged","contact_id":"003ORB0009020000AAA","name":"Morgan Jensen","title":"CFO","last_engaged":"2026-09-23","days_since":47},"champion":{"state":"engaged","contact_id":"003ORB0009010000AAA","name":"Avery Nolan","title":"Director of Operations","last_engaged":"2026-10-28","days_since":12},"technical_evaluator":{"state":"missing"},"executive_sponsor":{"state":"mapped","contact_id":"003ORB0009000000AAA","name":"Quinn Hughes","title":"COO","last_engaged":"2026-08-16","days_since":85}},"blocked":[],"gaps":[],"valuemap":[],"prep":null,"slot":"watch","rank":9,"rest_reason":"Watching · momentum 19","decision":null,"pipeline":{"signals":"2 signals, 2 counted, 2 events","score":"A 68 · M 19 · R 63 · C 80","pick":"Watching · momentum 19","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0018":{"key":"GTM-0018","salesforce_id":"001ORB000000018AAA","name":"Bayview Property Management","industry":"Other","region":"NA","employees":600,"type":"Customer","motion":"Expansion","baseline_score":0.64,"baseline_age_days":0,"scores":{"A":61,"M":3,"R":50,"C":55,"P":14},"components":{"A":{"fit":73,"whitespace":49,"alignment":51},"M":{"value":3,"raw":0.035,"events_used":3},"C":["evidence is public only","no customer call in 90 days","1 buying role unmapped"]},"action":{"kind":"Hold","title":"Watch for a stronger signal","who":"You","due":null,"points":["Rescore on a new executive, funding or usage event"]},"why":{"text":"Recent intent on 10-10 and intent on 09-12.","refs":["INTENT-0018-2","INTENT-0018-3"],"removed":[]},"signals":[{"ref":"INTENT-0018-2","side":"outside","source":"Intent","type":"Intent","date":"2026-10-10","text":"\"workforce scheduling\" at 55/100.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"INTENT-0018-3","side":"outside","source":"Intent","type":"Intent","date":"2026-09-12","text":"\"workforce scheduling\" at 61/100.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"INTENT-0018-1","side":"outside","source":"Intent","type":"Intent","date":"2026-09-09","text":"\"workforce scheduling\" at 47/100.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"}],"events":[{"key":"INTENT-0018-2","lead":"INTENT-0018-2","family":"intent","polarity":"buy","strength":0.59,"count_weight":1,"date":"2026-10-10","corroboration":1,"refs":["INTENT-0018-2"]},{"key":"INTENT-0018-3","lead":"INTENT-0018-3","family":"intent","polarity":"buy","strength":0.57,"count_weight":1,"date":"2026-09-12","corroboration":1,"refs":["INTENT-0018-3"]},{"key":"INTENT-0018-1","lead":"INTENT-0018-1","family":"intent","polarity":"buy","strength":0.31,"count_weight":1,"date":"2026-09-09","corroboration":1,"refs":["INTENT-0018-1"]}],"roles":{"economic_buyer":{"state":"engaged","contact_id":"003ORB0018000000AAA","name":"Devon Nolan","title":"CFO","last_engaged":"2026-10-09","days_since":31},"champion":{"state":"missing"},"technical_evaluator":{"state":"mapped","contact_id":"003ORB0018020000AAA","name":"Sage Abbott","title":"IT Manager","last_engaged":null,"days_since":null},"executive_sponsor":{"state":"mapped","contact_id":"003ORB0018010000AAA","name":"Sage Garcia","title":"COO","last_engaged":"2026-06-19","days_since":143}},"blocked":[],"gaps":[],"valuemap":[],"prep":null,"slot":"watch","rank":18,"rest_reason":"Watching · momentum 3","decision":null,"pipeline":{"signals":"3 signals, 3 counted, 3 events","score":"A 61 · M 3 · R 50 · C 55","pick":"Watching · momentum 3","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0008":{"key":"GTM-0008","salesforce_id":"001ORB000000008AAA","name":"Lumen Arc Media","industry":"Media","region":"NA","employees":800,"type":"Prospect","motion":"New logo","baseline_score":0.63,"baseline_age_days":0,"scores":{"A":58,"M":7,"R":13,"C":76,"P":20},"components":{"A":{"fit":52,"whitespace":68,"alignment":57},"M":{"value":7,"raw":0.068,"events_used":3},"C":["no customer call in 90 days","3 buying roles unmapped"]},"action":{"kind":"Hold","title":"Watch for a stronger signal","who":"Sage Shah, Director of Operations","due":null,"points":["Rescore on a new executive, funding or usage event"]},"why":{"text":"Recent intent on 10-12 and intent on 10-17.","refs":["INTENT-0008-1","INTENT-0008-3"],"removed":[]},"signals":[{"ref":"INTENT-0008-3","side":"outside","source":"Intent","type":"Intent","date":"2026-10-17","text":"\"workforce scheduling\" at 61/100.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"INTENT-0008-1","side":"outside","source":"Intent","type":"Intent","date":"2026-10-12","text":"\"workforce scheduling\" at 59/100.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"ENG-0008-2","side":"inside","source":"Salesforce","type":"Engagement","date":"2026-08-31","text":"Opened the field scheduling guide and attended a webinar.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"}],"events":[{"key":"INTENT-0008-3","lead":"INTENT-0008-3","family":"intent","polarity":"buy","strength":0.37,"count_weight":1,"date":"2026-10-17","corroboration":1,"refs":["INTENT-0008-3"]},{"key":"INTENT-0008-1","lead":"INTENT-0008-1","family":"intent","polarity":"buy","strength":0.58,"count_weight":1,"date":"2026-10-12","corroboration":1,"refs":["INTENT-0008-1"]},{"key":"ENG-0008-2","lead":"ENG-0008-2","family":"engagement","polarity":"buy","strength":0.31,"count_weight":1,"date":"2026-08-31","corroboration":1,"refs":["ENG-0008-2"]}],"roles":{"economic_buyer":{"state":"missing"},"champion":{"state":"mapped","contact_id":"003ORB0008000000AAA","name":"Sage Shah","title":"Director of Operations","last_engaged":"2026-07-20","days_since":112},"technical_evaluator":{"state":"missing"},"executive_sponsor":{"state":"missing"}},"blocked":[],"gaps":[{"type":"Champion risk","severity":"high","refs":[],"text":"Sage Shah has not engaged in 112 days."}],"valuemap":[],"prep":null,"slot":"watch","rank":14,"rest_reason":"Watching · momentum 7","decision":null,"pipeline":{"signals":"3 signals, 3 counted, 3 events","score":"A 58 · M 7 · R 13 · C 76","pick":"Watching · momentum 7","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0020":{"key":"GTM-0020","salesforce_id":"001ORB000000020AAA","name":"Cascade Water District","industry":"Government","region":"NA","employees":450,"type":"Prospect","motion":"New logo","baseline_score":0.61,"baseline_age_days":1,"scores":{"A":56,"M":11,"R":13,"C":76,"P":25},"components":{"A":{"fit":60,"whitespace":54,"alignment":47},"M":{"value":11,"raw":0.112,"events_used":3},"C":["no customer call in 90 days","3 buying roles unmapped"]},"action":{"kind":"Hold","title":"Watch for a stronger signal","who":"Sage Ortiz, Director of Operations","due":null,"points":["Rescore on a new executive, funding or usage event"]},"why":{"text":"Recent intent on 09-21 and engagement on 10-28.","refs":["INTENT-0020-2","ENG-0020-3"],"removed":[]},"signals":[{"ref":"ENG-0020-3","side":"inside","source":"Salesforce","type":"Engagement","date":"2026-10-28","text":"Opened the field scheduling guide and attended a webinar.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"INTENT-0020-2","side":"outside","source":"Intent","type":"Intent","date":"2026-09-21","text":"\"workforce scheduling\" at 62/100.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"INTENT-0020-1","side":"outside","source":"Intent","type":"Intent","date":"2026-09-01","text":"\"workforce scheduling\" at 57/100.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"}],"events":[{"key":"ENG-0020-3","lead":"ENG-0020-3","family":"engagement","polarity":"buy","strength":0.38,"count_weight":1,"date":"2026-10-28","corroboration":1,"refs":["ENG-0020-3"]},{"key":"INTENT-0020-2","lead":"INTENT-0020-2","family":"intent","polarity":"buy","strength":0.42,"count_weight":1,"date":"2026-09-21","corroboration":1,"refs":["INTENT-0020-2"]},{"key":"INTENT-0020-1","lead":"INTENT-0020-1","family":"intent","polarity":"buy","strength":0.33,"count_weight":1,"date":"2026-09-01","corroboration":1,"refs":["INTENT-0020-1"]}],"roles":{"economic_buyer":{"state":"missing"},"champion":{"state":"mapped","contact_id":"003ORB0020000000AAA","name":"Sage Ortiz","title":"Director of Operations","last_engaged":"2026-08-12","days_since":89},"technical_evaluator":{"state":"missing"},"executive_sponsor":{"state":"missing"}},"blocked":[],"gaps":[{"type":"Champion risk","severity":"high","refs":[],"text":"Sage Ortiz has not engaged in 89 days."}],"valuemap":[],"prep":null,"slot":"watch","rank":12,"rest_reason":"Watching · momentum 11","decision":null,"pipeline":{"signals":"3 signals, 3 counted, 3 events","score":"A 56 · M 11 · R 13 · C 76","pick":"Watching · momentum 11","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0006":{"key":"GTM-0006","salesforce_id":"001ORB000000006AAA","name":"Tessellate Retail Group","industry":"Retail","region":"APAC","employees":5200,"type":"Customer","motion":"Expansion","baseline_score":0.58,"baseline_age_days":3,"scores":{"A":68,"M":28,"R":25,"C":76,"P":44},"components":{"A":{"fit":73,"whitespace":65,"alignment":58},"M":{"value":28,"raw":0.329,"events_used":3},"C":["no customer call in 90 days","3 buying roles unmapped"]},"action":{"kind":"Hold","title":"Watch for a stronger signal","who":"You","due":null,"points":["Rescore on a new executive, funding or usage event"]},"why":{"text":"Recent engagement on 10-28 and hiring on 09-28.","refs":["ENG-0006-3","PUB-JOBS-0006-2"],"removed":[]},"signals":[{"ref":"ENG-0006-3","side":"inside","source":"Salesforce","type":"Engagement","date":"2026-10-28","text":"Opened the field scheduling guide and attended a webinar.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"ENG-0006-1","side":"inside","source":"Salesforce","type":"Engagement","date":"2026-10-27","text":"Opened the field scheduling guide and attended a webinar.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"PUB-JOBS-0006-2","side":"outside","source":"Public","type":"Hiring","date":"2026-09-28","text":"1 open operations roles posted.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"}],"events":[{"key":"ENG-0006-3","lead":"ENG-0006-3","family":"engagement","polarity":"buy","strength":0.52,"count_weight":1,"date":"2026-10-28","corroboration":1,"refs":["ENG-0006-3"]},{"key":"ENG-0006-1","lead":"ENG-0006-1","family":"engagement","polarity":"buy","strength":0.4,"count_weight":1,"date":"2026-10-27","corroboration":1,"refs":["ENG-0006-1"]},{"key":"PUB-JOBS-0006-2","lead":"PUB-JOBS-0006-2","family":"hiring","polarity":"buy","strength":0.51,"count_weight":1,"date":"2026-09-28","corroboration":1,"refs":["PUB-JOBS-0006-2"]}],"roles":{"economic_buyer":{"state":"missing"},"champion":{"state":"missing"},"technical_evaluator":{"state":"engaged","contact_id":"003ORB0006000000AAA","name":"Blake Brooks","title":"IT Manager","last_engaged":"2026-09-22","days_since":48},"executive_sponsor":{"state":"missing"}},"blocked":[],"gaps":[],"valuemap":[],"prep":null,"slot":"watch","rank":8,"rest_reason":"Watching · momentum 28","decision":null,"pipeline":{"signals":"3 signals, 3 counted, 3 events","score":"A 68 · M 28 · R 25 · C 76","pick":"Watching · momentum 28","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0025":{"key":"GTM-0025","salesforce_id":"001ORB000000025AAA","name":"Southern Cross Facilities Group","industry":"Consulting","region":"APAC","employees":1400,"type":"Prospect","motion":"New logo","baseline_score":0.57,"baseline_age_days":0,"scores":{"A":69,"M":13,"R":13,"C":51,"P":30},"components":{"A":{"fit":74,"whitespace":67,"alignment":57},"M":{"value":13,"raw":0.137,"events_used":2},"C":["evidence is public only","no customer call in 90 days","3 buying roles unmapped"]},"action":{"kind":"Hold","title":"Watch for a stronger signal","who":"Morgan Garcia, Director of Operations","due":null,"points":["Rescore on a new executive, funding or usage event"]},"why":{"text":"Recent intent on 10-27 and hiring on 10-05.","refs":["INTENT-0025-1","PUB-JOBS-0025-2"],"removed":[]},"signals":[{"ref":"INTENT-0025-1","side":"outside","source":"Intent","type":"Intent","date":"2026-10-27","text":"\"workforce scheduling\" at 55/100.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"},{"ref":"PUB-JOBS-0025-2","side":"outside","source":"Public","type":"Hiring","date":"2026-10-05","text":"1 open operations roles posted.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"}],"events":[{"key":"INTENT-0025-1","lead":"INTENT-0025-1","family":"intent","polarity":"buy","strength":0.41,"count_weight":1,"date":"2026-10-27","corroboration":1,"refs":["INTENT-0025-1"]},{"key":"PUB-JOBS-0025-2","lead":"PUB-JOBS-0025-2","family":"hiring","polarity":"buy","strength":0.4,"count_weight":1,"date":"2026-10-05","corroboration":1,"refs":["PUB-JOBS-0025-2"]}],"roles":{"economic_buyer":{"state":"missing"},"champion":{"state":"mapped","contact_id":"003ORB0025000000AAA","name":"Morgan Garcia","title":"Director of Operations","last_engaged":null,"days_since":null},"technical_evaluator":{"state":"missing"},"executive_sponsor":{"state":"missing"}},"blocked":[],"gaps":[],"valuemap":[],"prep":null,"slot":"watch","rank":11,"rest_reason":"Watching · momentum 13","decision":null,"pipeline":{"signals":"2 signals, 2 counted, 2 events","score":"A 69 · M 13 · R 13 · C 51","pick":"Watching · momentum 13","explain":"1 sentence drafted","validate":"All claims cited"}},"GTM-0022":{"key":"GTM-0022","salesforce_id":"001ORB000000022AAA","name":"Thameside Veterinary Partners","industry":"Healthcare","region":"EMEA","employees":650,"type":"Prospect","motion":"New logo","baseline_score":0.44,"baseline_age_days":2,"scores":{"A":57,"M":0,"R":38,"C":55,"P":0},"components":{"A":{"fit":57,"whitespace":54,"alignment":61},"M":{"value":0,"raw":0.003,"events_used":1},"C":["evidence is public only","no customer call in 90 days","1 buying role unmapped"]},"action":{"kind":"Hold","title":"Watch for a stronger signal","who":"You","due":null,"points":["Rescore on a new executive, funding or usage event"]},"why":{"text":"Recent intent on 09-08.","refs":["INTENT-0022-1"],"removed":[]},"signals":[{"ref":"INTENT-0022-1","side":"outside","source":"Intent","type":"Intent","date":"2026-09-08","text":"\"workforce scheduling\" at 60/100.","speaker":null,"speaker_side":null,"count":"counted","polarity":"buy"}],"events":[{"key":"INTENT-0022-1","lead":"INTENT-0022-1","family":"intent","polarity":"buy","strength":0.5,"count_weight":1,"date":"2026-09-08","corroboration":1,"refs":["INTENT-0022-1"]}],"roles":{"economic_buyer":{"state":"mapped","contact_id":"003ORB0022010000AAA","name":"Quinn Mendes","title":"CFO","last_engaged":"2026-09-05","days_since":65},"champion":{"state":"missing"},"technical_evaluator":{"state":"mapped","contact_id":"003ORB0022020000AAA","name":"Reese Jensen","title":"IT Manager","last_engaged":"2026-08-04","days_since":97},"executive_sponsor":{"state":"mapped","contact_id":"003ORB0022000000AAA","name":"Taylor Hughes","title":"COO","last_engaged":"2026-08-08","days_since":93}},"blocked":[],"gaps":[],"valuemap":[],"prep":null,"slot":"watch","rank":23,"rest_reason":"Watching · momentum 0","decision":null,"pipeline":{"signals":"1 signals, 1 counted, 1 events","score":"A 57 · M 0 · R 38 · C 55","pick":"Watching · momentum 0","explain":"1 sentence drafted","validate":"All claims cited"}}},"stats":{"signals_read":61,"counted":57,"not_counted":1,"context":3,"events":56,"corroborated":4,"sentences":26,"removed":1},"audit":[{"at":"2026-11-09T06:00:04Z","actor":"scheduler","event":"FOCUS_SCORE_RUN","detail":"25 accounts scored · af_v1.0 · model scripted"},{"at":"2026-11-09T06:01:12Z","actor":"extractor","event":"SIGNALS_READ","detail":"61 signals read · 57 counted · 1 not counted (spoken by our side)"},{"at":"2026-11-09T06:01:40Z","actor":"extractor","event":"EVENTS_CLUSTERED","detail":"56 events · 4 corroborated"},{"at":"2026-11-09T06:02:31Z","actor":"validator","event":"CLAIM_REMOVED","level":"WARN","detail":"Keystone Elevator Services · \"Keystone is moving off its current scheduling vendor this quarter.\" · no evidence ID"},{"at":"2026-11-09T06:02:58Z","actor":"focus","event":"BRIEF_BUILT","detail":"Alex Rivera · 5 picks · 1 exploration slot"}],"evaluation":{"backtest":{"snapshots":96,"sellers":8,"precision_focus":0.6875,"precision_baseline":0.64375,"relative_lift":0.06796116504854369,"top_decile_lift":1.8190954773869346,"base_rate":0.41458333333333336},"extraction":{"segments":214,"tracker":{"precision":0.40875912408759124,"recall":0.5},"two_stage_rules":{"precision":0.8504672897196262,"recall":0.8125}},"groundedness":{"sentences":26,"removed":1}},"generated_from":"data/seed + app/lib/core.js"};</script>
+<script>
+/*
+ * Account Focus application engine: the rules that sit on top of a scoring run.
+ * Shared by the web console, the Slack bot and the static demo page, so all three behave the same.
+ * Works in Node and in the browser (no imports). A store supplies the run and persists decisions.
+ */
+(function (root) {
+  'use strict';
+  var DECISIONS = ['accepted', 'snoozed', 'rejected'];
+  var REASONS = ['Already working it', 'Wrong timing', 'Bad data', 'Not my account', 'Disagree with the signal'];
+
+  function HttpError(status, message) { var e = new Error(message); e.status = status; return e; }
+
+  function summary(a) {
+    return { key: a.key, name: a.name, motion: a.motion, industry: a.industry, region: a.region, scores: a.scores,
+             action: { kind: a.action.kind, title: a.action.title, due: a.action.due }, why: a.why.text,
+             why_refs: a.why.refs, slot: a.slot, rank: a.rank, rest_reason: a.rest_reason, decision: a.decision || null,
+             missing_roles: Object.keys(a.roles).filter(function (r) { return a.roles[r].state === 'missing'; }) };
+  }
+
+  /* An in-memory store over a fixtures snapshot (offline mode and the static demo). */
+  function createMemoryStore(run, clock) {
+    var feedback = [], audit = (run.audit || []).slice(), handoffs = [];
+    return {
+      mode: 'offline',
+      getRun: function () { return Promise.resolve(run); },
+      listFeedback: function () { return Promise.resolve(feedback.slice()); },
+      addFeedback: function (f) { feedback.push(f); return Promise.resolve(f); },
+      listAudit: function () { return Promise.resolve(audit.slice()); },
+      addAudit: function (e) { audit.push(e); return Promise.resolve(e); },
+      addHandoff: function (h) { handoffs.push(h); return Promise.resolve(h); },
+      reset: function () { feedback = []; audit = (run.audit || []).slice(); handoffs = []; return Promise.resolve(); },
+      now: clock || function () { return new Date().toISOString(); },
+      health: function () { return Promise.resolve({ ok: true }); }
+    };
+  }
+
+  function createEngine(store) {
+    function decisionsFor(run) {
+      return store.listFeedback().then(function (list) {
+        var today = run.as_of, m = {};
+        list.forEach(function (f) { if (f.day === today) m[f.account] = f; });
+        return m;
+      });
+    }
+    function withDecision(a, d) {
+      var c = JSON.parse(JSON.stringify(a));
+      c.decision = d[a.key] || null;
+      return c;
+    }
+    function load(key) {
+      return store.getRun().then(function (run) {
+        var a = run.accounts[key];
+        if (!a) {
+          var k = String(key || '').toLowerCase();
+          var hit = Object.keys(run.accounts).map(function (x) { return run.accounts[x]; })
+            .filter(function (x) { return x.key.toLowerCase() === k || x.name.toLowerCase().indexOf(k) >= 0; });
+          if (hit.length === 1) a = hit[0];
+          else if (hit.length > 1) throw HttpError(400, 'More than one account matches "' + key + '": ' + hit.map(function (x) { return x.name; }).join(', '));
+        }
+        if (!a) throw HttpError(404, 'No account matches "' + key + '".');
+        return { run: run, a: a };
+      });
+    }
+    return {
+      REASONS: REASONS,
+      brief: function () {
+        return store.getRun().then(function (run) {
+          return decisionsFor(run).then(function (d) {
+            var picks = run.brief.picks.map(function (k) { return summary(withDecision(run.accounts[k], d)); });
+            return { as_of: run.as_of, model: run.model, version: run.version, owner: run.owner, seller: run.seller, book_size: Object.keys(run.accounts).length,
+                     picks: picks, rest: run.brief.rest.map(function (k) { return summary(withDecision(run.accounts[k], d)); }),
+                     decided: picks.filter(function (p) { return p.decision; }).length, stats: run.stats };
+          });
+        });
+      },
+      account: function (key) {
+        return load(key).then(function (x) { return decisionsFor(x.run).then(function (d) { return withDecision(x.a, d); }); });
+      },
+      prep: function (key) {
+        return load(key).then(function (x) {
+          if (!x.a.prep) throw HttpError(404, 'No exec prep for ' + x.a.name + ' yet. In this prototype exec prep exists for Keystone, Northstar and Pacific Crest.');
+          return { account: x.a.key, name: x.a.name, prep: x.a.prep };
+        });
+      },
+      decide: function (key, body) {
+        body = body || {};
+        var decision = body.decision, reason = body.reason || null, actor = body.actor || 'unknown', via = body.via || 'web';
+        if (DECISIONS.indexOf(decision) < 0) return Promise.reject(HttpError(400, 'decision must be one of: ' + DECISIONS.join(', ') + '.'));
+        if (decision === 'rejected' && REASONS.indexOf(reason) < 0) return Promise.reject(HttpError(400, 'A rejection needs a reason: ' + REASONS.join(', ') + '.'));
+        if (decision !== 'rejected') reason = null;
+        return load(key).then(function (x) {
+          if (x.run.brief.picks.indexOf(x.a.key) < 0) throw HttpError(400, x.a.name + ' is not in today\'s five, so there is nothing to decide.');
+          return decisionsFor(x.run).then(function (d) {
+            if (d[x.a.key]) throw HttpError(409, x.a.name + ' was already ' + d[x.a.key].decision + ' today by ' + d[x.a.key].actor + '.');
+            var f = { account: x.a.key, decision: decision, reason: reason, actor: actor, via: via, day: x.run.as_of, at: store.now() };
+            return store.addFeedback(f).then(function () {
+              return store.addAudit({ at: f.at, actor: actor, event: 'PICK_' + decision.toUpperCase(), level: 'HUMAN',
+                detail: x.a.name + (reason ? ' · ' + reason : '') + ' · via ' + via });
+            }).then(function () { return f; });
+          });
+        });
+      },
+      handoff: function (key, body) {
+        body = body || {};
+        return load(key).then(function (x) {
+          var a = x.a;
+          var contacts = Object.keys(a.roles).filter(function (r) { return a.roles[r].contact_id; })
+            .map(function (r) { return { role: r, contact_id: a.roles[r].contact_id, name: a.roles[r].name, title: a.roles[r].title }; });
+          var h = { target: 'gtm-orbit/outreach-brief', account_key: a.key, salesforce_account_id: a.salesforce_id, account_name: a.name,
+                    motion: a.motion, action: a.action, why_now: a.why.text, evidence_refs: a.why.refs, contacts: contacts,
+                    requested_by: body.actor || 'unknown', at: store.now() };
+          return store.addHandoff(h).then(function () {
+            return store.addAudit({ at: h.at, actor: h.requested_by, event: 'HANDOFF_TO_ORBIT', detail: a.name + ' · why now + ' + h.evidence_refs.length + ' evidence IDs' });
+          }).then(function () { return h; });
+        });
+      },
+      audit: function (limit) {
+        return store.listAudit().then(function (l) { return l.slice().sort(function (x, y) { return x.at < y.at ? 1 : -1; }).slice(0, limit || 200); });
+      },
+      evaluation: function () {
+        return store.getRun().then(function (run) { return Object.assign({ as_of: run.as_of, stats: run.stats }, run.evaluation || {}); });
+      },
+      logAudit: function (e) { return store.addAudit(Object.assign({ at: store.now() }, e)); }
+    };
+  }
+
+  var api = { createEngine: createEngine, createMemoryStore: createMemoryStore, REASONS: REASONS, DECISIONS: DECISIONS, HttpError: HttpError };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  else root.FocusEngine = api;
+})(typeof window !== 'undefined' ? window : this);
+</script>
+<script>
+/* Account Focus web console. Talks to the HTTP API; the static demo swaps in the same engine in the browser. */
+(function () {
+  'use strict';
+  var ROLE_NAMES = { economic_buyer: 'Economic buyer', champion: 'Champion', technical_evaluator: 'Technical evaluator', executive_sponsor: 'Executive sponsor' };
+
+  /* ---------- API: HTTP, or the in-browser engine for the static demo ---------- */
+  function httpApi() {
+    function call(method, url, body) {
+      return fetch(url, { method: method, headers: body ? { 'content-type': 'application/json' } : {}, body: body ? JSON.stringify(body) : undefined })
+        .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || 'Request failed'); return j; }); });
+    }
+    return {
+      health: function () { return call('GET', '/api/health'); },
+      brief: function () { return call('GET', '/api/brief'); },
+      account: function (k) { return call('GET', '/api/accounts/' + encodeURIComponent(k)); },
+      prep: function (k) { return call('GET', '/api/accounts/' + encodeURIComponent(k) + '/prep'); },
+      decide: function (k, d, reason) { return call('POST', '/api/accounts/' + encodeURIComponent(k) + '/decision', { decision: d, reason: reason }); },
+      handoff: function (k) { return call('POST', '/api/accounts/' + encodeURIComponent(k) + '/handoff', {}); },
+      audit: function () { return call('GET', '/api/audit?limit=200'); },
+      evaluation: function () { return call('GET', '/api/evaluation'); },
+      reasons: function () { return call('GET', '/api/reasons'); },
+      reset: function () { return call('POST', '/api/reset', {}); }
+    };
+  }
+  function staticApi(fixtures) {
+    var store = FocusEngine.createMemoryStore(fixtures, function () { return new Date().toISOString(); });
+    var e = FocusEngine.createEngine(store);
+    var actor = 'Alex Rivera (demo)';
+    return {
+      health: function () { return Promise.resolve({ ok: true, mode: 'demo', as_of: fixtures.as_of, version: fixtures.version }); },
+      brief: e.brief, account: e.account, prep: e.prep,
+      decide: function (k, d, reason) { return e.decide(k, { decision: d, reason: reason, actor: actor, via: 'web' }); },
+      handoff: function (k) { return e.handoff(k, { actor: actor }); },
+      audit: function () { return e.audit(200); }, evaluation: e.evaluation,
+      reasons: function () { return Promise.resolve(FocusEngine.REASONS); },
+      reset: function () { return store.reset(); }
+    };
+  }
+  var api = window.FOCUS_FIXTURES ? staticApi(window.FOCUS_FIXTURES) : httpApi();
+
+  /* ---------- state ---------- */
+  var state = { brief: null, current: null, account: null, tab: 'signals', prepOpen: false, prep: null, handoff: null, mode: null };
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var cite = function (r) { return '<button class="cite" type="button" data-ref="' + esc(r) + '">' + esc(r) + '</button>'; };
+  var vis = function (v) { return '<span class="vis ' + v + '">' + v + '</span>'; };
+  function fmtDay(iso) { if (!iso) return ''; var d = new Date(iso + 'T00:00:00Z'); return d.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' }); }
+  function toast(msg) { var t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast.h); toast.h = setTimeout(function () { t.classList.remove('show'); }, 3600); }
+  function fail(e) { toast(e.message || 'Something went wrong.'); }
+
+  function ring(p, explore) {
+    var r = 18, c = 2 * Math.PI * r, v = p == null ? 0 : Math.max(0, Math.min(100, p));
+    return '<svg class="ring" viewBox="0 0 44 44" aria-hidden="true"><circle class="track" cx="22" cy="22" r="' + r + '" fill="none" stroke-width="4"/>' +
+      '<circle class="val" cx="22" cy="22" r="' + r + '" fill="none" stroke-width="4" stroke-linecap="round" stroke-dasharray="' + (c * v / 100).toFixed(1) + ' ' + c.toFixed(1) + '" transform="rotate(-90 22 22)"/>' +
+      '<text x="22" y="26.5" text-anchor="middle">' + (p == null ? '—' : p) + '</text></svg>';
+  }
+  function decisionTag(d) { if (!d) return ''; var t = { accepted: 'Accepted', snoozed: 'Snoozed', rejected: 'Rejected' }[d.decision]; return '<span class="tag d-' + d.decision + '">' + t + '</span>'; }
+
+  /* ---------- render ---------- */
+  function renderDay() {
+    var b = state.brief, s = b.stats;
+    $('dayTitle').textContent = 'Good morning, ' + b.owner.name.split(' ')[0] + '. Here are your five.';
+    $('daySub').innerHTML = '<b>' + fmtDay(b.as_of) + '</b> · ' + b.book_size + ' accounts in your book · scored 06:00 · model ' + esc(b.model) + ' · ' + esc(b.version);
+    var needData = b.rest.filter(function (r) { return r.slot === 'verify' || r.slot === 'unscored'; }).length;
+    $('tiles').innerHTML = [
+      ['<b>' + b.decided + ' / ' + b.picks.length + '</b><span>picks decided</span>', ''],
+      ['<b>' + s.counted + '</b><span>signals counted, ' + s.not_counted + ' from our side ignored</span>', ''],
+      ['<b>' + s.removed + '</b><span>uncited claim' + (s.removed === 1 ? '' : 's') + ' removed</span>', s.removed ? 'warn' : ''],
+      ['<b>' + needData + '</b><span>accounts need data</span>', needData ? 'warn' : '']
+    ].map(function (t) { return '<div class="tile ' + t[1] + '">' + t[0] + '</div>'; }).join('');
+  }
+
+  function renderRail() {
+    var b = state.brief;
+    $('picks').innerHTML = b.picks.map(function (p, i) {
+      var ex = p.slot === 'exploration';
+      return '<li><button class="pick' + (ex ? ' explore' : '') + '" type="button" data-key="' + p.key + '" aria-current="' + (p.key === state.current) + '">' + ring(p.scores.P, ex) +
+        '<span class="pname"><span class="n">' + (ex ? '✦' : i + 1) + '</span>' + esc(p.name) + '</span>' +
+        '<span class="pwhy">' + esc(p.why) + '</span>' +
+        '<span class="pmeta"><span class="tag">' + esc(p.motion) + '</span><span class="tag k-' + p.action.kind + '">' + p.action.kind + '</span>' + (ex ? '<span class="tag explore">Exploration</span>' : '') + decisionTag(p.decision) + '</span></button></li>';
+    }).join('');
+    $('rest').innerHTML = b.rest.map(function (r) {
+      return '<li><button type="button" data-key="' + r.key + '" aria-current="' + (r.key === state.current) + '"><span class="rn">' + esc(r.name) + '</span><span class="rs">' + (r.scores.P == null ? '—' : r.scores.P) + '</span><span class="rr">' + esc(r.rest_reason || '') + '</span></button></li>';
+    }).join('');
+  }
+
+  function meter(name, v, note, cls) {
+    return '<div class="meter ' + (cls || '') + '"><span class="meter-name">' + name + '</span><span class="meter-val">' + (v == null ? '—' : v) + '</span><div class="bar"><i style="width:' + (v || 0) + '%"></i></div><span class="meter-note">' + esc(note) + '</span></div>';
+  }
+
+  function renderAccount() {
+    var a = state.account; if (!a) return;
+    var s = a.scores, comp = a.components;
+    var aNote = s.A == null ? 'Not enough data' : 'Fit ' + comp.A.fit + ' · whitespace ' + comp.A.whitespace + ' · alignment ' + comp.A.alignment;
+    var mNote = s.M == null ? 'Not enough data' : comp.M.events_used + ' events used' + (a.motion === 'Renewal risk' ? ' (risk signals)' : '');
+    var missing = Object.keys(a.roles).filter(function (r) { return a.roles[r].state === 'missing'; }).map(function (r) { return ROLE_NAMES[r].toLowerCase(); });
+    var rNote = missing.length ? 'Missing: ' + missing.join(', ') : 'All four roles mapped';
+    var cNote = comp.C.length ? comp.C.join('; ') : 'Fresh data, matched speakers';
+    var sigTab = '<ul class="sig">' + a.signals.map(function (x) {
+      return '<li id="sig-' + esc(x.ref) + '"><div><div class="src src-' + x.source + '">' + x.source + '<span class="side ' + x.side + '">' + x.side + '</span></div><div class="meta">' + esc(x.date) + ' · ' + esc(x.type) + '</div></div>' +
+        '<div><p class="txt">' + esc(x.text) + '</p>' + (x.speaker ? '<p class="who">' + esc(x.speaker) + (x.speaker_side ? ' · ' + (x.speaker_side === 'customer' ? 'customer' : 'our side') : '') + '</p>' : '') +
+        '<p class="meta"><span class="mono">' + esc(x.ref) + '</span> · <span class="counted ' + x.count + '">' + ({ counted: 'counted', half: 'counted at half weight (speaker unverified)', not_counted: 'not counted: spoken by our side', context: 'context only, no score effect' })[x.count] + '</span></p></div></li>';
+    }).join('') + '</ul>';
+    var roleTab = '<div class="roles">' + Object.keys(a.roles).map(function (r) {
+      var x = a.roles[r], label = x.state === 'engaged' ? 'Engaged' : x.state === 'mapped' ? 'Mapped, not engaged' : 'Missing';
+      return '<div class="role ' + x.state + '"><b>' + ROLE_NAMES[r] + '</b><span>' + (x.name ? esc(x.name) + (x.title ? ', ' + esc(x.title) : '') : label) + '</span><small>' + (x.name ? label + (x.days_since != null ? ' · ' + x.days_since + ' days ago' : '') : 'nobody mapped yet') + '</small></div>';
+    }).join('') + '</div>' + (a.blocked.length ? '<p class="blocked">Never suggested: ' + a.blocked.map(function (b) { return esc(b.name + ', ' + b.title + ' (' + b.reason + ')'); }).join('; ') + '</p>' : '') +
+      '<p class="formula">Readiness counts required roles, not contacts: engaged in the last 60 days = 1, mapped = 0.5, missing = 0.</p>';
+    var gapTab = a.gaps.length ? a.gaps.map(function (g) { return '<div class="gap ' + g.severity + '"><b>' + esc(g.type) + '</b><p>' + esc(g.text) + '</p><div class="cites">' + g.refs.map(cite).join('') + '</div></div>'; }).join('') : '<p class="empty">No gaps or contradictions found.</p>';
+    var vTab = a.valuemap.length ? '<div class="tbl-wrap"><table class="vmap"><thead><tr><th>Their priority</th><th>Our value</th><th>Proof (fictional)</th><th>What they told us</th></tr></thead><tbody>' +
+      a.valuemap.map(function (v) { return '<tr><td>' + esc(v.priority) + ' ' + vis(v.vis) + '<div class="cites">' + cite(v.ref) + '</div></td><td>' + esc(v.value_prop) + '</td><td>' + esc(v.proof) + '</td><td>' + esc(v.inside || '—') + (v.inside_ref ? '<div class="cites">' + cite(v.inside_ref) + '</div>' : '') + '</td></tr>'; }).join('') +
+      '</tbody></table></div>' : '<p class="empty">No stated priority matched to a value proposition yet.</p>';
+    var tabs = [['signals', 'Signals', a.signals.length, sigTab], ['roles', 'Buying group', 4, roleTab], ['gaps', 'Gaps', a.gaps.length, gapTab], ['value', 'Value map', a.valuemap.length, vTab]];
+    var p = a.pipeline;
+    var stages = [['Signals', p.signals], ['Score', p.score], ['Pick', p.pick], ['Explain', p.explain], ['Validate', p.validate]];
+    $('acct').innerHTML =
+      '<div class="acct-head"><div><h2 class="acct-name">' + esc(a.name) + '</h2><p class="facts">' + esc(a.industry || '—') + ' · ' + esc(a.region) + ' · ' + (a.employees ? a.employees.toLocaleString('en-US') + ' employees' : 'employees unknown') + ' · ' + esc(a.motion) + ' · <span class="mono">' + a.key + '</span></p></div>' +
+      '<div class="prio"><div class="prio-big">' + (s.P == null ? '—' : s.P) + '</div><div class="prio-lab">' + (s.P == null ? 'not scored' : 'Focus priority') + ' · baseline ' + (a.baseline_score == null ? 'none' : a.baseline_score.toFixed(2)) + '</div></div></div>' +
+      '<div class="why"><span class="why-lab">Why now</span><p>' + esc(a.why.text) + '</p><div class="cites">' + a.why.refs.map(cite).join('') + '</div></div>' +
+      '<div class="meters">' + meter('Attractiveness', s.A, aNote) + meter(a.motion === 'Renewal risk' ? 'Risk momentum' : 'Momentum', s.M, mNote) +
+      meter('Readiness', s.R, rNote, s.R < 40 ? 'low' : '') + meter('Confidence', s.C, cNote, s.C < 50 ? 'lowc' : '') + '</div>' +
+      '<p class="formula">Priority <b>= √(Attractiveness × Momentum)</b>. Readiness and Confidence choose the action; they never move the rank.</p>' +
+      '<div class="pipe"><div class="pipe-head"><h3>How this pick was made</h3><button class="ghost" type="button" id="replay">Replay</button></div><ol class="stages" id="stages">' +
+      stages.map(function (x, i) { return '<li class="stage ' + (i === 4 && a.why.removed.length ? 'flag' : 'done') + '"><span class="dot"></span><b>' + x[0] + '</b><span class="out">' + esc(x[1]) + '</span></li>'; }).join('') + '</ol>' +
+      (a.why.removed.length ? '<p class="removed" id="removedLine">Validator removed: <s>' + esc(a.why.removed[0].text) + '</s> ' + esc(a.why.removed[0].reason.replace(/^./, function (c) { return c.toUpperCase(); })) + '.</p>' : '') + '</div>' +
+      '<div class="tabs" role="tablist">' + tabs.map(function (t) { return '<button class="tab" role="tab" type="button" data-tab="' + t[0] + '" aria-selected="' + (state.tab === t[0]) + '">' + t[1] + '<span class="n">' + t[2] + '</span></button>'; }).join('') + '</div>' +
+      '<div class="tabpanel" role="tabpanel">' + tabs.filter(function (t) { return t[0] === state.tab; })[0][3] + '</div>';
+  }
+
+  function renderMove() {
+    var a = state.account; if (!a) return;
+    var act = a.action, d = a.decision, inFive = a.slot === 'ranked' || a.slot === 'exploration';
+    var dec = '';
+    if (d) dec = '<p class="decided ' + d.decision + '">' + ({ accepted: 'Accepted. Added to today\'s plan.', snoozed: 'Snoozed for 3 days.', rejected: 'Rejected: ' + esc(d.reason) + '. Out for 14 days unless a strong new event lands.' })[d.decision] + ' <span class="sub">' + esc(d.actor) + '</span></p>';
+    var prep = '';
+    if (state.prepOpen && state.prep) prep = renderPrep(state.prep.prep);
+    else if (a.prep) prep = '<div class="prep"><div class="prep-head"><h3>Exec prep</h3><span class="sub">' + esc(a.prep.exec) + '</span></div><p class="sub" style="margin-top:6px">Point of view, their priorities, questions, proof and landmines. Every line is tagged public or internal.</p><div class="actions"><button class="ghost" type="button" id="openPrep">Open exec prep</button></div></div>';
+    else prep = '<div class="prep"><h3>Exec prep</h3><p class="sub" style="margin-top:6px">Not written for this account yet. In this prototype exec prep exists for Keystone, Northstar and Pacific Crest.</p></div>';
+    var hand = '';
+    if (inFive && act.kind !== 'Rescue') {
+      hand = '<div class="handoff"><p>Hand this account to Orbit\'s outreach brief. Focus passes its why now, contacts and evidence IDs; Orbit drafts, validates and waits for your approval.</p><div><button class="ghost" type="button" id="handoff">Prepare outreach in Orbit</button></div>' +
+        (state.handoff && state.handoff.account_key === a.key ? '<pre>' + esc(JSON.stringify({ target: state.handoff.target, account_key: state.handoff.account_key, action: state.handoff.action.title, why_now: state.handoff.why_now, evidence_refs: state.handoff.evidence_refs, contacts: state.handoff.contacts.map(function (c) { return c.name + ' (' + c.role + ')'; }) }, null, 2)) + '</pre>' : '') + '</div>';
+    }
+    $('move').innerHTML = '<p class="move-kind">' + (act.kind === 'Hold' || act.kind === 'Deprioritize' ? 'No move today' : 'Next move · ' + act.kind) + '</p>' +
+      '<h2>' + esc(act.title) + '</h2><p class="who">' + esc(act.who) + (act.due ? ' · due ' + fmtDay(act.due) : '') + '</p>' +
+      '<ol class="points">' + act.points.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ol>' +
+      (inFive ? '<div class="actions"><button class="primary" type="button" data-act="accepted"' + (d ? ' disabled' : '') + '>Accept</button><button class="ghost" type="button" data-act="snoozed"' + (d ? ' disabled' : '') + '>Snooze 3 days</button><button class="danger" type="button" data-act="rejected"' + (d ? ' disabled' : '') + '>Reject</button></div>' + dec
+        : '<p class="decided info">Not in today\'s five. ' + esc(a.rest_reason || '') + '</p>') + hand + prep;
+  }
+
+  function renderPrep(p) {
+    return '<div class="prep"><div class="prep-head"><h3>Exec prep · ' + esc(p.exec) + '</h3><button class="ghost" type="button" id="closePrep">Close</button></div>' +
+      '<div class="prep-sec"><h3>Point of view</h3>' + (p.pov ? '<p class="pov">' + esc(p.pov.text) + '</p><div class="cites">' + p.pov.refs.map(cite).join('') + '</div>' : '<p class="sub">No point of view passed the validator.</p>') + '</div>' +
+      '<div class="prep-sec"><h3>Their priorities, in their words</h3><ol>' + p.priorities.map(function (x) { return '<li>' + esc(x.text) + ' ' + vis(x.vis) + ' ' + cite(x.ref) + '</li>'; }).join('') + '</ol></div>' +
+      '<div class="prep-sec"><h3>Discovery questions</h3><ol>' + p.questions.map(function (q) { return '<li>' + esc(q) + '</li>'; }).join('') + '</ol></div>' +
+      '<div class="prep-sec"><h3>Proof</h3><p style="font-size:.9rem">' + esc(p.proof || '—') + '</p></div>' +
+      '<div class="prep-sec"><h3>Landmines</h3><ul>' + p.landmines.map(function (x) { return '<li>' + esc(x.text) + ' ' + vis(x.vis) + ' ' + cite(x.ref) + '</li>'; }).join('') + '</ul></div>' +
+      '<div class="prep-sec"><h3>The ask</h3><p style="font-size:.9rem">' + esc(p.ask) + '</p></div></div>';
+  }
+
+  function renderSlack() {
+    var b = state.brief;
+    $('slack').innerHTML = '<div class="sl-row"><div class="sl-ava"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="2.6"/><circle cx="16" cy="16" r="4" fill="currentColor"/></svg></div><div>' +
+      '<p><span class="sl-name">Account Focus</span><span class="sl-app">APP</span><span class="sl-time">8:00 AM</span></p>' +
+      '<p style="margin:4px 0 8px"><b>Your five for ' + fmtDay(b.as_of) + '</b> · ' + b.decided + ' of ' + b.picks.length + ' decided</p>' +
+      b.picks.map(function (p, i) {
+        var d = p.decision;
+        return '<div class="sl-block"><p><b>' + (p.slot === 'exploration' ? '✦ Exploration · ' : (i + 1) + '. ') + esc(p.name) + '</b> · ' + esc(p.motion) + ' · priority <b>' + p.scores.P + '</b></p><p>' + esc(p.why) + '</p><p><b>' + p.action.kind + ':</b> ' + esc(p.action.title) + (p.action.due ? ' (due ' + fmtDay(p.action.due) + ')' : '') + '</p>' +
+          (d ? '<p class="sl-ctx">' + ({ accepted: '✅ Accepted', snoozed: '⏸ Snoozed 3 days', rejected: '✖ Rejected: ' + esc(d.reason) })[d.decision] + ' by ' + esc(d.actor) + '</p>'
+             : '<div class="sl-btns"><button class="sl-btn go" type="button" data-sk="' + p.key + '" data-act="accepted">Accept</button><button class="sl-btn" type="button" data-sk="' + p.key + '" data-act="snoozed">Snooze 3 days</button><button class="sl-btn no" type="button" data-sk="' + p.key + '" data-act="rejected">Reject</button><button class="sl-btn" type="button" data-sk="' + p.key + '" data-act="open">Details</button></div>') +
+          '<p class="sl-ctx">Evidence: ' + p.why_refs.map(function (r) { return '<span class="sl-code">' + esc(r) + '</span>'; }).join(' ') + '</p></div>';
+      }).join('') +
+      '<p class="sl-ctx" style="margin-top:6px">Try <span class="sl-code">/focus northstar</span> for one account or <span class="sl-code">/focus prep keystone</span> for exec prep.</p></div></div>';
+  }
+
+  function pct(x) { return Math.round(x * 100) + '%'; }
+  function renderEval(ev) {
+    var bt = ev.backtest, ex = ev.extraction, g = ev.groundedness;
+    $('eval').innerHTML = '<p class="eyebrow">Evaluation</p><h1>Does the ranking find accounts that convert?</h1>' +
+      '<p class="eval-intro">Account Focus is judged on two separate things: whether its picks convert better than the baseline score, and whether every sentence it writes is supported by evidence. A persuasive explanation of a bad ranking is the failure we guard against. Every number below is computed by the app from the files in data/seed.</p>' +
+      '<p class="disclaimer"><b>Synthetic data.</b> The backtest history and the labelled call segments are generated, with buying signals planted so extraction can be scored against known answers. They show the method, not real-world results. The generating assumptions are written in data/generate_data.py.</p>' +
+      '<div class="kpis">' +
+      '<article class="kpi"><span class="lab">Precision@5: picks that converted within 60 days</span><div class="cmp"><div class="focus"><span>Account Focus</span><b>' + pct(bt.precision_focus) + '</b></div><div><span>Baseline score</span><b>' + pct(bt.precision_baseline) + '</b></div></div><p class="delta">' + (bt.relative_lift >= 0 ? '+' : '') + Math.round(bt.relative_lift * 100) + '% relative · top decile ' + bt.top_decile_lift.toFixed(1) + '× <small>· ' + bt.snapshots + ' weekly snapshots, ' + bt.sellers + ' sellers</small></p></article>' +
+      '<article class="kpi"><span class="lab">Call signal precision against planted labels</span><div class="cmp"><div class="focus"><span>Two-stage read (offline rules)</span><b>' + ex.two_stage_rules.precision.toFixed(2) + '</b></div><div><span>Counting tracker hits</span><b>' + ex.tracker.precision.toFixed(2) + '</b></div></div><p class="delta">Recall ' + ex.two_stage_rules.recall.toFixed(2) + ' vs ' + ex.tracker.recall.toFixed(2) + ' <small>· ' + ex.segments + ' labelled segments; live mode reads them with Cortex</small></p></article>' +
+      '<article class="kpi"><span class="lab">Groundedness: sentences shown with valid evidence</span><div class="cmp"><div class="focus"><span>After the validator</span><b>100%</b></div><div><span>Before the validator</span><b>' + pct((g.sentences - g.removed) / g.sentences) + '</b></div></div><p class="delta">' + g.removed + ' uncited claim' + (g.removed === 1 ? '' : 's') + ' removed <small>· ' + g.sentences + ' drafted sentences in today\'s run</small></p></article></div>' +
+      '<section class="eval-sec"><h2>How the online test works</h2><div class="steps4">' +
+      '<article><b>Holdout</b><p>One in five matched accounts gets no Focus picks, so lift is measured against what sellers would have done anyway.</p></article>' +
+      '<article><b>Exploration slot</b><p>One pick in five is an attractive account the model is less sure about, so it learns from more than its own favourites.</p></article>' +
+      '<article><b>Separate the funnel</b><p>Accepted, acted on, meeting, opportunity and pipeline are counted separately. High acceptance with no meetings means the ranking is wrong.</p></article>' +
+      '<article><b>Replayable</b><p>Every run is stored with its scoring date and version, so any past pick can be replayed exactly as it was made.</p></article></div></section>';
+  }
+
+  function renderTrail(rows) {
+    $('trail').innerHTML = rows.map(function (r) { return '<tr class="' + (r.level || '') + '"><td class="t">' + esc(r.at.replace('T', ' ').slice(0, 19)) + '</td><td>' + esc(r.actor) + '</td><td class="evt">' + esc(r.event) + '</td><td>' + esc(r.detail) + '</td></tr>'; }).join('');
+  }
+
+  /* ---------- data flow ---------- */
+  function refreshBrief() { return api.brief().then(function (b) { state.brief = b; renderDay(); renderRail(); renderSlack(); }); }
+  function refreshTrail() { return api.audit().then(renderTrail); }
+  function select(key, scroll) {
+    state.current = key; state.tab = 'signals'; state.prepOpen = false; state.prep = null;
+    if (state.brief) renderRail();
+    return api.account(key).then(function (a) {
+      state.account = a; renderAccount(); renderMove();
+      if (scroll && window.innerWidth < 860) $('acct').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }).catch(fail);
+  }
+  function reloadAccount() { return api.account(state.current).then(function (a) { state.account = a; renderAccount(); renderMove(); }); }
+
+  function decide(key, decision, reason) {
+    return api.decide(key, decision, reason).then(function () {
+      var name = (state.brief.picks.filter(function (p) { return p.key === key; })[0] || {}).name || key;
+      toast({ accepted: 'Accepted. ' + name + ' is in today\'s plan.', snoozed: 'Snoozed. ' + name + ' comes back in 3 days.', rejected: 'Rejected. ' + name + ' stays out for 14 days unless a strong new event lands.' }[decision]);
+      return Promise.all([refreshBrief(), refreshTrail(), key === state.current ? reloadAccount() : null]);
+    }).catch(fail);
+  }
+
+  var rejectKey = null;
+  function askReject(key) {
+    rejectKey = key;
+    var p = state.brief.picks.filter(function (x) { return x.key === key; })[0];
+    $('rejectTitle').textContent = 'Why reject ' + (p ? p.name : 'this pick') + '?';
+    $('rejectForm').reset(); $('rejectError').hidden = true;
+    $('rejectDlg').showModal();
+  }
+
+  function replay() {
+    var items = Array.prototype.slice.call(document.querySelectorAll('#stages .stage')), rm = $('removedLine'), a = state.account;
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    items.forEach(function (s) { s.className = 'stage'; }); if (rm) rm.hidden = true;
+    (function step(i) {
+      if (i > 0) items[i - 1].className = 'stage done';
+      if (i === items.length) { if (a.why.removed.length) { items[4].className = 'stage flag'; if (rm) rm.hidden = false; } return; }
+      items[i].className = 'stage active'; setTimeout(function () { step(i + 1); }, reduce ? 60 : 650);
+    })(0);
+  }
+
+  function flashRef(ref) {
+    if (state.tab !== 'signals') { state.tab = 'signals'; renderAccount(); }
+    var li = document.getElementById('sig-' + ref);
+    if (li) { li.classList.add('hl'); li.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(function () { li.classList.remove('hl'); }, 1600); }
+    else toast(ref + ' is a CRM record; in live mode it opens in Salesforce.');
+  }
+
+  var VIEWS = ['focus', 'slack', 'evaluation'];
+  function setView(v) {
+    if (VIEWS.indexOf(v) < 0) v = 'focus';
+    VIEWS.forEach(function (n) { $('view-' + n).hidden = n !== v; });
+    Array.prototype.forEach.call(document.querySelectorAll('.view-link'), function (x) { x.setAttribute('aria-current', x.dataset.view === v ? 'page' : 'false'); });
+    if (v === 'evaluation') api.evaluation().then(renderEval).catch(fail);
+    if (location.hash.slice(1) !== v) history.replaceState(null, '', '#' + v);
+  }
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.view) return setView(b.dataset.view);
+    if (b.dataset.sk) {
+      if (b.dataset.act === 'open') { setView('focus'); return select(b.dataset.sk, true); }
+      return b.dataset.act === 'rejected' ? askReject(b.dataset.sk) : decide(b.dataset.sk, b.dataset.act);
+    }
+    if (b.dataset.key) return select(b.dataset.key, true);
+    if (b.dataset.tab) { state.tab = b.dataset.tab; return renderAccount(); }
+    if (b.dataset.ref) return flashRef(b.dataset.ref);
+    if (b.dataset.act) return b.dataset.act === 'rejected' ? askReject(state.current) : decide(state.current, b.dataset.act);
+    if (b.id === 'replay') return replay();
+    if (b.id === 'openPrep') return api.prep(state.current).then(function (p) { state.prep = p; state.prepOpen = true; renderMove(); }).catch(fail);
+    if (b.id === 'closePrep') { state.prepOpen = false; return renderMove(); }
+    if (b.id === 'handoff') return api.handoff(state.current).then(function (h) { state.handoff = h; renderMove(); refreshTrail(); toast('Sent to Orbit\'s outreach brief with Focus context.'); }).catch(fail);
+    if (b.id === 'rejectCancel') return $('rejectDlg').close();
+    if (b.id === 'resetBtn') return api.reset().then(function () { state.handoff = null; return Promise.all([refreshBrief(), refreshTrail(), reloadAccount()]); }).then(function () { toast('Demo decisions cleared.'); }).catch(fail);
+  });
+  $('rejectForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var r = new FormData(e.target).get('reason');
+    if (!r) { $('rejectError').textContent = 'Pick a reason first.'; $('rejectError').hidden = false; return; }
+    $('rejectDlg').close();
+    decide(rejectKey, 'rejected', r);
+  });
+  window.addEventListener('hashchange', function () { setView(location.hash.slice(1)); });
+
+  /* ---------- boot ---------- */
+  Promise.all([api.health(), api.reasons()]).then(function (res) {
+    var h = res[0];
+    state.mode = h.mode;
+    var m = $('mode');
+    m.textContent = h.mode === 'live' ? 'Live · Snowflake' : h.mode === 'demo' ? 'Demo · fictional data' : 'Offline · fictional data';
+    m.className = 'mode' + (h.mode === 'live' ? ' live' : '');
+    if (h.mode !== 'live') $('resetBtn').hidden = false;
+    $('reasons').innerHTML = '<legend class="sub">Reason</legend>' + res[1].map(function (r, i) { return '<label><input type="radio" name="reason" id="reason-' + i + '" value="' + esc(r) + '"> ' + esc(r) + '</label>'; }).join('');
+    return refreshBrief();
+  }).then(function () {
+    setView(location.hash.slice(1));
+    refreshTrail();
+    return select(state.brief.picks[0].key, false);
+  }).catch(function (e) {
+    $('acct').innerHTML = '<p class="empty">Could not load Account Focus: ' + esc(e.message) + '</p>';
+    $('mode').textContent = 'Not connected';
+  });
+})();
+</script>
+</body>
+</html>

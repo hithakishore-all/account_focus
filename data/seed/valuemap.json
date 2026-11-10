@@ -1,0 +1,65 @@
+[
+ {
+  "account": "GTM-0024",
+  "priority": "Take 12% out of service delivery cost by end of 2027",
+  "ref": "PUB-ER-0024-Q3",
+  "vis": "public",
+  "value_prop": "VP-ONE-SCHEDULE",
+  "proof": "PP-BLUEPEAK",
+  "inside": "GONG-9120#7"
+ },
+ {
+  "account": "GTM-0024",
+  "priority": "Fund the change in Q1 if the numbers hold",
+  "ref": "GONG-9120#4",
+  "vis": "internal",
+  "value_prop": "VP-ONE-SCHEDULE",
+  "proof": "PP-BLUEPEAK",
+  "inside": "SF-OPP-006ORB000000031AAA"
+ },
+ {
+  "account": "GTM-0001",
+  "priority": "Consolidate scheduling onto one platform",
+  "ref": "GONG-8812#3",
+  "vis": "internal",
+  "value_prop": "VP-REPLACE",
+  "proof": "PP-BLUEPEAK3",
+  "inside": "GONG-8812#2"
+ },
+ {
+  "account": "GTM-0001",
+  "priority": "Dispatch stays the source for job status",
+  "ref": "GONG-8812#4",
+  "vis": "internal",
+  "value_prop": "VP-DISPATCH-CONNECT",
+  "proof": "PP-HARROW",
+  "inside": "SF-OPP-006ORB000000002AAA"
+ },
+ {
+  "account": "GTM-0011",
+  "priority": "Consolidate from 14 field-software vendors to 5",
+  "ref": "PUB-LTR-0011-2026",
+  "vis": "public",
+  "value_prop": "VP-REPLACE",
+  "proof": "PP-BLUEPEAK3",
+  "inside": "GONG-9033#2"
+ },
+ {
+  "account": "GTM-0011",
+  "priority": "Every new tool must replace one",
+  "ref": "GONG-9033#5",
+  "vis": "internal",
+  "value_prop": "VP-REPLACE",
+  "proof": "PP-BLUEPEAK3",
+  "inside": "SF-OPP-006ORB000000044AAA"
+ },
+ {
+  "account": "GTM-0002",
+  "priority": "Hiring for clinical field scheduling",
+  "ref": "PUB-JOBS-0002",
+  "vis": "public",
+  "value_prop": "VP-SCALE",
+  "proof": "PP-BLUEPEAK3",
+  "inside": null
+ }
+]

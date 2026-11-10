@@ -1,0 +1,4328 @@
+{
+ "version": "af_v1.0",
+ "as_of": "2026-11-09",
+ "model": "scripted",
+ "owner": {
+  "id": "005ORB000000001AAA",
+  "name": "Alex Rivera",
+  "email": "ae@acme.example",
+  "slack_handle": "alex.rivera"
+ },
+ "seller": {
+  "company": "Acme",
+  "domain": "acme.example"
+ },
+ "brief": {
+  "picks": [
+   "GTM-0024",
+   "GTM-0011",
+   "GTM-0012",
+   "GTM-0001",
+   "GTM-0002"
+  ],
+  "rest": [
+   "GTM-0019",
+   "GTM-0003",
+   "GTM-0006",
+   "GTM-0009",
+   "GTM-0023",
+   "GTM-0025",
+   "GTM-0020",
+   "GTM-0015",
+   "GTM-0008",
+   "GTM-0014",
+   "GTM-0005",
+   "GTM-0021",
+   "GTM-0018",
+   "GTM-0013",
+   "GTM-0004",
+   "GTM-0017",
+   "GTM-0016",
+   "GTM-0022",
+   "GTM-0010",
+   "GTM-0007"
+  ]
+ },
+ "accounts": {
+  "GTM-0024": {
+   "key": "GTM-0024",
+   "salesforce_id": "001ORB000000024AAA",
+   "name": "Keystone Elevator Services",
+   "industry": "Machinery",
+   "region": "NA",
+   "employees": 4200,
+   "type": "Prospect",
+   "motion": "New logo",
+   "baseline_score": 0.85,
+   "baseline_age_days": 0,
+   "scores": {
+    "A": 85,
+    "M": 91,
+    "R": 88,
+    "C": 92,
+    "P": 88
+   },
+   "components": {
+    "A": {
+     "fit": 88,
+     "whitespace": 82,
+     "alignment": 80
+    },
+    "M": {
+     "value": 91,
+     "raw": 2.452,
+     "events_used": 5
+    },
+    "C": []
+   },
+   "action": {
+    "kind": "Pursue",
+    "title": "Request an executive meeting with Dana Whitfield",
+    "who": "Dana Whitfield, CFO · with Luis Ortega",
+    "due": "2026-11-12",
+    "points": [
+     "Tie one technician schedule to the 12% service-cost program",
+     "Bring the Bluepeak Utilities overtime result",
+     "Ask to include COO Renee Albright"
+    ]
+   },
+   "why": {
+    "text": "Dana Whitfield, CFO for seven weeks, said budget is set aside for Q1 on the Nov 4 call, a week after the CEO announced a 12% service-cost program.",
+    "refs": [
+     "GONG-9120#4",
+     "PUB-ER-0024-Q3",
+     "PUB-NEWS-0024-01"
+    ],
+    "removed": [
+     {
+      "text": "Keystone is moving off its current scheduling vendor this quarter.",
+      "reason": "no evidence ID"
+     }
+    ]
+   },
+   "signals": [
+    {
+     "ref": "SF-OPP-006ORB000000031AAA",
+     "side": "inside",
+     "source": "Salesforce",
+     "type": "New opportunity",
+     "date": "2026-11-05",
+     "text": "Keystone · Service Scheduling Platform · Discovery · $240,000",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "GONG-9120#4",
+     "side": "inside",
+     "source": "Gong",
+     "type": "Budget",
+     "date": "2026-11-04",
+     "text": "\"We have budget set aside for this in Q1 if the numbers hold up.\"",
+     "speaker": "Dana Whitfield, CFO",
+     "speaker_side": "customer",
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "GONG-9120#7",
+     "side": "inside",
+     "source": "Gong",
+     "type": "Timeline",
+     "date": "2026-11-04",
+     "text": "\"We want every technician on one schedule before the spring maintenance season.\"",
+     "speaker": "Luis Ortega, VP Service Operations",
+     "speaker_side": "customer",
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "INTENT-0024-TECH_SCHEDULING",
+     "side": "outside",
+     "source": "Intent",
+     "type": "Research intent",
+     "date": "2026-11-01",
+     "text": "\"technician scheduling\" at 74/100, up from 41 four weeks earlier.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "PUB-ER-0024-Q3",
+     "side": "outside",
+     "source": "Public",
+     "type": "Stated strategy",
+     "date": "2026-10-28",
+     "text": "\"We are launching a program to take 12% out of service delivery cost by the end of 2027.\" (CEO, Q3 earnings call)",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "PUB-NEWS-0024-01",
+     "side": "outside",
+     "source": "Public",
+     "type": "Executive change",
+     "date": "2026-09-22",
+     "text": "Keystone names Dana Whitfield Chief Financial Officer.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "SF-OPP-006ORB000000019AAA",
+     "side": "inside",
+     "source": "Salesforce",
+     "type": "Closed lost",
+     "date": "2024-08-15",
+     "text": "Keystone · Scheduling Pilot · Closed Lost · lost to an incumbent on price",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "context",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "KEY-BUDGET",
+     "lead": "GONG-9120#4",
+     "family": "gong_buying",
+     "polarity": "buy",
+     "strength": 0.9,
+     "count_weight": 1,
+     "date": "2026-11-05",
+     "corroboration": 2,
+     "refs": [
+      "SF-OPP-006ORB000000031AAA",
+      "GONG-9120#4"
+     ]
+    },
+    {
+     "key": "KEY-TIMELINE",
+     "lead": "GONG-9120#7",
+     "family": "gong_buying",
+     "polarity": "buy",
+     "strength": 0.7,
+     "count_weight": 1,
+     "date": "2026-11-04",
+     "corroboration": 1,
+     "refs": [
+      "GONG-9120#7"
+     ]
+    },
+    {
+     "key": "INTENT-0024-TECH_SCHEDULING",
+     "lead": "INTENT-0024-TECH_SCHEDULING",
+     "family": "intent",
+     "polarity": "buy",
+     "strength": 0.6,
+     "count_weight": 1,
+     "date": "2026-11-01",
+     "corroboration": 1,
+     "refs": [
+      "INTENT-0024-TECH_SCHEDULING"
+     ]
+    },
+    {
+     "key": "PUB-ER-0024-Q3",
+     "lead": "PUB-ER-0024-Q3",
+     "family": "strategy",
+     "polarity": "buy",
+     "strength": 0.8,
+     "count_weight": 1,
+     "date": "2026-10-28",
+     "corroboration": 1,
+     "refs": [
+      "PUB-ER-0024-Q3"
+     ]
+    },
+    {
+     "key": "PUB-NEWS-0024-01",
+     "lead": "PUB-NEWS-0024-01",
+     "family": "exec_change",
+     "polarity": "buy",
+     "strength": 0.9,
+     "count_weight": 1,
+     "date": "2026-09-22",
+     "corroboration": 1,
+     "refs": [
+      "PUB-NEWS-0024-01"
+     ]
+    },
+    {
+     "key": "SF-OPP-006ORB000000019AAA",
+     "lead": "SF-OPP-006ORB000000019AAA",
+     "family": "opportunity",
+     "polarity": "buy",
+     "strength": 0,
+     "count_weight": 1,
+     "date": "2024-08-15",
+     "corroboration": 1,
+     "refs": [
+      "SF-OPP-006ORB000000019AAA"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "engaged",
+     "contact_id": "003ORB000000081AAA",
+     "name": "Dana Whitfield",
+     "title": "CFO",
+     "last_engaged": "2026-11-04",
+     "days_since": 5
+    },
+    "champion": {
+     "state": "engaged",
+     "contact_id": "003ORB000000082AAA",
+     "name": "Luis Ortega",
+     "title": "VP Service Operations",
+     "last_engaged": "2026-11-04",
+     "days_since": 5
+    },
+    "technical_evaluator": {
+     "state": "engaged",
+     "contact_id": "003ORB000000083AAA",
+     "name": "Sam Okafor",
+     "title": "IT Director",
+     "last_engaged": "2026-10-30",
+     "days_since": 10
+    },
+    "executive_sponsor": {
+     "state": "mapped",
+     "contact_id": "003ORB000000088AAA",
+     "name": "Renee Albright",
+     "title": "COO",
+     "last_engaged": null,
+     "days_since": null
+    }
+   },
+   "blocked": [],
+   "gaps": [
+    {
+     "type": "Executive sponsor not engaged",
+     "severity": "low",
+     "refs": [
+      "SF-CON-003ORB000000088AAA"
+     ],
+     "text": "Renee Albright (COO) is mapped as executive sponsor but has not joined a call."
+    }
+   ],
+   "valuemap": [
+    {
+     "priority": "Take 12% out of service delivery cost by end of 2027",
+     "ref": "PUB-ER-0024-Q3",
+     "vis": "public",
+     "value_prop": "One schedule for every technician cuts drive time and overtime",
+     "proof": "Bluepeak Utilities (fictional): overtime down 18% in two quarters after moving 600 technicians to one schedule.",
+     "inside": "\"We want every technician on one schedule before the spring maintenance season.\"",
+     "inside_ref": "GONG-9120#7"
+    },
+    {
+     "priority": "Fund the change in Q1 if the numbers hold",
+     "ref": "GONG-9120#4",
+     "vis": "internal",
+     "value_prop": "One schedule for every technician cuts drive time and overtime",
+     "proof": "Bluepeak Utilities (fictional): overtime down 18% in two quarters after moving 600 technicians to one schedule.",
+     "inside": "Keystone · Service Scheduling Platform · Discovery · $240,000",
+     "inside_ref": "SF-OPP-006ORB000000031AAA"
+    }
+   ],
+   "prep": {
+    "exec": "Dana Whitfield, CFO",
+    "contact": "003ORB000000081AAA",
+    "pov": {
+     "text": "We believe split technician schedules are costing Keystone overtime and drive time it needs back for the 12% program, because each region plans crews in its own tool.",
+     "refs": [
+      "PUB-ER-0024-Q3",
+      "GONG-9120#7"
+     ]
+    },
+    "priorities": [
+     {
+      "text": "Take 12% out of service delivery cost by the end of 2027",
+      "vis": "public",
+      "ref": "PUB-ER-0024-Q3"
+     },
+     {
+      "text": "Every technician on one schedule before the spring season",
+      "vis": "internal",
+      "ref": "GONG-9120#7"
+     },
+     {
+      "text": "Fund the change in Q1 if the numbers hold",
+      "vis": "internal",
+      "ref": "GONG-9120#4"
+     }
+    ],
+    "questions": [
+     "Which cost lines does the 12% program measure first: overtime, drive time or subcontractors?",
+     "What would \"the numbers hold up\" need to show for a Q1 decision?",
+     "Who else signs off on a cross-region tool change?"
+    ],
+    "proof": "Bluepeak Utilities (fictional): overtime down 18% in two quarters after moving 600 technicians to one schedule.",
+    "landmines": [
+     {
+      "text": "Keystone chose an incumbent over Acme on price in 2024",
+      "vis": "internal",
+      "ref": "SF-OPP-006ORB000000019AAA"
+     },
+     {
+      "text": "The Q1 budget remark was made on a private call; do not quote it back as public",
+      "vis": "internal",
+      "ref": "GONG-9120#4"
+     }
+    ],
+    "ask": "A 45-minute working session with Dana and Luis to size overtime savings for the Q1 business case.",
+    "removed": 0
+   },
+   "slot": "ranked",
+   "rank": 1,
+   "rest_reason": null,
+   "decision": null,
+   "pipeline": {
+    "signals": "7 signals, 6 counted, 6 events",
+    "score": "A 85 · M 91 · R 88 · C 92",
+    "pick": "Rank 1 of 5, new logo slot",
+    "explain": "2 sentences drafted",
+    "validate": "1 uncited claim removed"
+   }
+  },
+  "GTM-0001": {
+   "key": "GTM-0001",
+   "salesforce_id": "001ORB000000001AAA",
+   "name": "Northstar Field Services",
+   "industry": "Consulting",
+   "region": "NA",
+   "employees": 1800,
+   "type": "Customer",
+   "motion": "Expansion",
+   "baseline_score": 0.87,
+   "baseline_age_days": 0,
+   "scores": {
+    "A": 81,
+    "M": 79,
+    "R": 38,
+    "C": 88,
+    "P": 80
+   },
+   "components": {
+    "A": {
+     "fit": 84,
+     "whitespace": 78,
+     "alignment": 76
+    },
+    "M": {
+     "value": 79,
+     "raw": 1.54,
+     "events_used": 3
+    },
+    "C": [
+     "2 buying roles unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Multithread",
+    "title": "Ask Riley to bring in the budget owner and the dispatch owner",
+    "who": "Riley Chen, Director Field Operations",
+    "due": "2026-11-13",
+    "points": [
+     "Offer a 30-minute dispatch integration review for their system owner",
+     "Ask who signs off on the $185,000 before Q1 planning closes",
+     "Invite Jordan Patel; he is named on calls but has never attended"
+    ]
+   },
+   "why": {
+    "text": "Riley Chen says Jordan Patel wants a decision before Q1 planning closes, but nobody who owns the budget or the dispatch integration has joined a call.",
+    "refs": [
+     "GONG-8812#6",
+     "GONG-8812#4",
+     "SF-OPP-006ORB000000002AAA"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "SF-OPP-006ORB000000002AAA",
+     "side": "inside",
+     "source": "Salesforce",
+     "type": "Opportunity",
+     "date": "2026-10-23",
+     "text": "Regional Scheduling Expansion · Qualification · $185,000 · next step: confirm technical evaluator",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "INTENT-0001-FIELD_SERVICE_SCHEDULING",
+     "side": "outside",
+     "source": "Intent",
+     "type": "Research intent",
+     "date": "2026-10-19",
+     "text": "\"field service scheduling\" at 70/100, up from 48 four weeks earlier.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "GONG-8812#2",
+     "side": "inside",
+     "source": "Gong",
+     "type": "Pain",
+     "date": "2026-10-14",
+     "text": "\"We're running three different scheduling tools across our field regions. It's a mess for dispatch.\"",
+     "speaker": "Riley Chen, Director Field Operations",
+     "speaker_side": "customer",
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "GONG-8812#3",
+     "side": "inside",
+     "source": "Gong",
+     "type": "Priority alignment",
+     "date": "2026-10-14",
+     "text": "\"The goal is to consolidate scheduling onto one platform and keep dispatch data in one place.\"",
+     "speaker": "Riley Chen, Director Field Operations",
+     "speaker_side": "customer",
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "GONG-8812#4",
+     "side": "inside",
+     "source": "Gong",
+     "type": "Objection",
+     "date": "2026-10-14",
+     "text": "\"The big question is integration. Our dispatch system has to stay the source for job status.\"",
+     "speaker": "Riley Chen, Director Field Operations",
+     "speaker_side": "customer",
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "GONG-8812#6",
+     "side": "inside",
+     "source": "Gong",
+     "type": "Timeline",
+     "date": "2026-10-14",
+     "text": "\"Jordan wants a decision before Q1 planning closes.\"",
+     "speaker": "Riley Chen, Director Field Operations",
+     "speaker_side": "customer",
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "NS-TIMELINE",
+     "lead": "GONG-8812#6",
+     "family": "gong_buying",
+     "polarity": "buy",
+     "strength": 0.9,
+     "count_weight": 1,
+     "date": "2026-10-23",
+     "corroboration": 2,
+     "refs": [
+      "SF-OPP-006ORB000000002AAA",
+      "GONG-8812#6"
+     ]
+    },
+    {
+     "key": "NS-PAIN",
+     "lead": "GONG-8812#2",
+     "family": "gong_buying",
+     "polarity": "buy",
+     "strength": 0.8,
+     "count_weight": 1,
+     "date": "2026-10-19",
+     "corroboration": 2,
+     "refs": [
+      "INTENT-0001-FIELD_SERVICE_SCHEDULING",
+      "GONG-8812#2",
+      "GONG-8812#3"
+     ]
+    },
+    {
+     "key": "NS-OBJECTION",
+     "lead": "GONG-8812#4",
+     "family": "gong_buying",
+     "polarity": "buy",
+     "strength": 0.3,
+     "count_weight": 1,
+     "date": "2026-10-14",
+     "corroboration": 1,
+     "refs": [
+      "GONG-8812#4"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "missing"
+    },
+    "champion": {
+     "state": "engaged",
+     "contact_id": "003ORB000000001AAA",
+     "name": "Riley Chen",
+     "title": "Director, Field Operations",
+     "last_engaged": "2026-10-14",
+     "days_since": 26
+    },
+    "technical_evaluator": {
+     "state": "missing"
+    },
+    "executive_sponsor": {
+     "state": "mapped",
+     "contact_id": "003ORB000000002AAA",
+     "name": "Jordan Patel",
+     "title": "VP, Business Systems",
+     "last_engaged": null,
+     "days_since": null
+    }
+   },
+   "blocked": [
+    {
+     "name": "Morgan Ellis",
+     "title": "Operations Manager",
+     "reason": "opted out of email"
+    }
+   ],
+   "gaps": [
+    {
+     "type": "Single-threaded",
+     "severity": "high",
+     "refs": [
+      "GONG-8812#2",
+      "GONG-8812#3",
+      "GONG-8812#4"
+     ],
+     "text": "Every customer statement in the last 90 days comes from Riley Chen. Bring in the people who own the budget and the decision."
+    },
+    {
+     "type": "Stalled next step",
+     "severity": "medium",
+     "refs": [
+      "SF-OPP-006ORB000000002AAA"
+     ],
+     "text": "The opportunity's next step has been open 17 days."
+    },
+    {
+     "type": "Executive sponsor not engaged",
+     "severity": "low",
+     "refs": [
+      "SF-CON-003ORB000000002AAA"
+     ],
+     "text": "Jordan Patel (VP, Business Systems) is mapped as executive sponsor but has not joined a call."
+    }
+   ],
+   "valuemap": [
+    {
+     "priority": "Consolidate scheduling onto one platform",
+     "ref": "GONG-8812#3",
+     "vis": "internal",
+     "value_prop": "Scheduling, dispatch sync and job notes in one platform, with named tools retired",
+     "proof": "Bluepeak Utilities (fictional): retired three field tools in one quarter.",
+     "inside": "\"We're running three different scheduling tools across our field regions. It's a mess for dispatch.\"",
+     "inside_ref": "GONG-8812#2"
+    },
+    {
+     "priority": "Dispatch stays the source for job status",
+     "ref": "GONG-8812#4",
+     "vis": "internal",
+     "value_prop": "Dispatch Connect syncs job status both ways; your dispatch system stays the system of record",
+     "proof": "Harrow Lifts (fictional): connected to their dispatch system and live across 4 regions in 9 weeks.",
+     "inside": "Regional Scheduling Expansion · Qualification · $185,000 · next step: confirm technical evaluator",
+     "inside_ref": "SF-OPP-006ORB000000002AAA"
+    }
+   ],
+   "prep": {
+    "exec": "Jordan Patel, VP Business Systems",
+    "contact": "003ORB000000002AAA",
+    "pov": {
+     "text": "We believe three regional scheduling tools are slowing Northstar's dispatch, and one platform that keeps dispatch as the source of job status removes that without a risky migration.",
+     "refs": [
+      "GONG-8812#2",
+      "GONG-8812#4"
+     ]
+    },
+    "priorities": [
+     {
+      "text": "Consolidate scheduling onto one platform",
+      "vis": "internal",
+      "ref": "GONG-8812#3"
+     },
+     {
+      "text": "Keep dispatch the source for job status",
+      "vis": "internal",
+      "ref": "GONG-8812#4"
+     },
+     {
+      "text": "Decide before Q1 planning closes",
+      "vis": "internal",
+      "ref": "GONG-8812#6"
+     }
+    ],
+    "questions": [
+     "What has to be true about the dispatch integration for you to sign off?",
+     "Who owns the budget for the regional rollout?",
+     "What did the second-region rollout teach you about adoption?"
+    ],
+    "proof": "Harrow Lifts (fictional): connected to their dispatch system and live across 4 regions in 9 weeks.",
+    "landmines": [
+     {
+      "text": "Morgan Ellis opted out of email; do not copy them",
+      "vis": "internal",
+      "ref": "SF-CON-003ORB000000003AAA"
+     }
+    ],
+    "ask": "A dispatch integration review with your system owner next week.",
+    "removed": 0
+   },
+   "slot": "ranked",
+   "rank": 4,
+   "rest_reason": null,
+   "decision": null,
+   "pipeline": {
+    "signals": "6 signals, 6 counted, 3 events",
+    "score": "A 81 · M 79 · R 38 · C 88",
+    "pick": "Rank 4 of 5, expansion slot",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0011": {
+   "key": "GTM-0011",
+   "salesforce_id": "001ORB000000011AAA",
+   "name": "Pacific Crest Home Services",
+   "industry": "Construction",
+   "region": "NA",
+   "employees": 2600,
+   "type": "Prospect",
+   "motion": "New logo",
+   "baseline_score": 0.84,
+   "baseline_age_days": 0,
+   "scores": {
+    "A": 78,
+    "M": 87,
+    "R": 63,
+    "C": 90,
+    "P": 82
+   },
+   "components": {
+    "A": {
+     "fit": 80,
+     "whitespace": 76,
+     "alignment": 78
+    },
+    "M": {
+     "value": 87,
+     "raw": 2.02,
+     "events_used": 3
+    },
+    "C": [
+     "1 buying role unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Pursue",
+    "title": "Reframe the proposal as a consolidation before procurement reviews it",
+    "who": "Tom Becker, Director Operations",
+    "due": "2026-11-14",
+    "points": [
+     "Map which of the 14 vendors Acme replaces, by name",
+     "Show logins removed per technician per day",
+     "Resubmit as a replacement and ask Tom to bring in CFO Grace Liu"
+    ]
+   },
+   "why": {
+    "text": "The CEO committed to cutting field-software vendors from 14 to 5, and procurement now wants every new tool to replace one, yet our open proposal is a $90,000 add-on.",
+    "refs": [
+     "PUB-LTR-0011-2026",
+     "GONG-9033#5",
+     "SF-OPP-006ORB000000044AAA"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "GONG-9033#2",
+     "side": "inside",
+     "source": "Gong",
+     "type": "Pain",
+     "date": "2026-11-03",
+     "text": "\"Our techs log into four apps before the first job.\"",
+     "speaker": "Tom Becker, Director Operations",
+     "speaker_side": "customer",
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "GONG-9033#5",
+     "side": "inside",
+     "source": "Gong",
+     "type": "Process",
+     "date": "2026-11-03",
+     "text": "\"Procurement now wants every new tool to replace at least one we already pay for.\"",
+     "speaker": "Ana Ruiz, Procurement Manager",
+     "speaker_side": "customer",
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "SF-OPP-006ORB000000044AAA",
+     "side": "inside",
+     "source": "Salesforce",
+     "type": "Opportunity",
+     "date": "2026-10-30",
+     "text": "Pacific Crest · Dispatch Add-on · Proposal · $90,000",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "PUB-LTR-0011-2026",
+     "side": "outside",
+     "source": "Public",
+     "type": "Stated strategy",
+     "date": "2026-10-20",
+     "text": "\"We will consolidate from 14 field-software vendors to 5 by 2028.\" (Marcus Bell, CEO, shareholder letter)",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "PC-PAIN",
+     "lead": "GONG-9033#2",
+     "family": "gong_buying",
+     "polarity": "buy",
+     "strength": 0.8,
+     "count_weight": 1,
+     "date": "2026-11-03",
+     "corroboration": 1,
+     "refs": [
+      "GONG-9033#2"
+     ]
+    },
+    {
+     "key": "PC-CONSOL",
+     "lead": "GONG-9033#5",
+     "family": "gong_buying",
+     "polarity": "buy",
+     "strength": 0.8,
+     "count_weight": 1,
+     "date": "2026-11-03",
+     "corroboration": 2,
+     "refs": [
+      "GONG-9033#5",
+      "PUB-LTR-0011-2026"
+     ]
+    },
+    {
+     "key": "PC-OPP",
+     "lead": "SF-OPP-006ORB000000044AAA",
+     "family": "opportunity",
+     "polarity": "buy",
+     "strength": 0.7,
+     "count_weight": 1,
+     "date": "2026-10-30",
+     "corroboration": 1,
+     "refs": [
+      "SF-OPP-006ORB000000044AAA"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "mapped",
+     "contact_id": "003ORB000000113AAA",
+     "name": "Grace Liu",
+     "title": "CFO",
+     "last_engaged": null,
+     "days_since": null
+    },
+    "champion": {
+     "state": "engaged",
+     "contact_id": "003ORB000000111AAA",
+     "name": "Tom Becker",
+     "title": "Director, Operations",
+     "last_engaged": "2026-11-03",
+     "days_since": 6
+    },
+    "technical_evaluator": {
+     "state": "engaged",
+     "contact_id": "003ORB000000112AAA",
+     "name": "Kevin Osei",
+     "title": "IT Manager",
+     "last_engaged": "2026-10-27",
+     "days_since": 13
+    },
+    "executive_sponsor": {
+     "state": "missing"
+    }
+   },
+   "blocked": [],
+   "gaps": [
+    {
+     "type": "Narrative mismatch",
+     "severity": "high",
+     "refs": [
+      "GONG-9033#5",
+      "PUB-LTR-0011-2026",
+      "SF-OPP-006ORB000000044AAA"
+     ],
+     "text": "The customer is asking for consolidation, but the open opportunity is pitched as an add-on. Reframe it as a replacement."
+    }
+   ],
+   "valuemap": [
+    {
+     "priority": "Consolidate from 14 field-software vendors to 5",
+     "ref": "PUB-LTR-0011-2026",
+     "vis": "public",
+     "value_prop": "Scheduling, dispatch sync and job notes in one platform, with named tools retired",
+     "proof": "Bluepeak Utilities (fictional): retired three field tools in one quarter.",
+     "inside": "\"Our techs log into four apps before the first job.\"",
+     "inside_ref": "GONG-9033#2"
+    },
+    {
+     "priority": "Every new tool must replace one",
+     "ref": "GONG-9033#5",
+     "vis": "internal",
+     "value_prop": "Scheduling, dispatch sync and job notes in one platform, with named tools retired",
+     "proof": "Bluepeak Utilities (fictional): retired three field tools in one quarter.",
+     "inside": "Pacific Crest · Dispatch Add-on · Proposal · $90,000",
+     "inside_ref": "SF-OPP-006ORB000000044AAA"
+    }
+   ],
+   "prep": {
+    "exec": "Marcus Bell, CEO",
+    "contact": null,
+    "pov": {
+     "text": "We believe Pacific Crest can reach its 14-to-5 vendor goal faster if scheduling, dispatch sync and job notes come off three tools and onto one.",
+     "refs": [
+      "PUB-LTR-0011-2026",
+      "GONG-9033#2"
+     ]
+    },
+    "priorities": [
+     {
+      "text": "Consolidate from 14 field-software vendors to 5 by 2028",
+      "vis": "public",
+      "ref": "PUB-LTR-0011-2026"
+     },
+     {
+      "text": "Every new tool replaces one already paid for",
+      "vis": "internal",
+      "ref": "GONG-9033#5"
+     },
+     {
+      "text": "Fewer apps for technicians before the first job",
+      "vis": "internal",
+      "ref": "GONG-9033#2"
+     }
+    ],
+    "questions": [
+     "Which vendor categories are first in line for consolidation?",
+     "How will you measure the consolidation: contracts, spend or technician time?",
+     "Who decides which tools survive?"
+    ],
+    "proof": "Bluepeak Utilities (fictional): retired three field tools in one quarter.",
+    "landmines": [
+     {
+      "text": "Our open proposal is an add-on; lead with replacement, not with that proposal",
+      "vis": "internal",
+      "ref": "SF-OPP-006ORB000000044AAA"
+     }
+    ],
+    "ask": "Agree a two-week replacement assessment with Tom Becker's team.",
+    "removed": 0
+   },
+   "slot": "ranked",
+   "rank": 2,
+   "rest_reason": null,
+   "decision": null,
+   "pipeline": {
+    "signals": "4 signals, 4 counted, 3 events",
+    "score": "A 78 · M 87 · R 63 · C 90",
+    "pick": "Rank 2 of 5, new logo slot",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0012": {
+   "key": "GTM-0012",
+   "salesforce_id": "001ORB000000012AAA",
+   "name": "Meridian Senior Living",
+   "industry": "Healthcare",
+   "region": "NA",
+   "employees": 3100,
+   "type": "Customer",
+   "motion": "Renewal risk",
+   "baseline_score": 0.79,
+   "baseline_age_days": 0,
+   "scores": {
+    "A": 76,
+    "M": 87,
+    "R": 63,
+    "C": 92,
+    "P": 81
+   },
+   "components": {
+    "A": {
+     "fit": 78,
+     "whitespace": 70,
+     "alignment": 80
+    },
+    "M": {
+     "value": 87,
+     "raw": 2.066,
+     "events_used": 5
+    },
+    "C": []
+   },
+   "action": {
+    "kind": "Rescue",
+    "title": "Re-engage Hannah Cole with a fix-first note, then propose the review",
+    "who": "Hannah Cole · copy the customer success manager",
+    "due": "2026-11-11",
+    "points": [
+     "Lead with the fix date for the night-staff shift swap case",
+     "Ask how the new three-division structure changes her team",
+     "Propose the regional directors review she offered in September"
+    ]
+   },
+   "why": {
+    "text": "Champion Hannah Cole has been silent for 47 days, weekly active schedulers fell 31%, and the $310,000 renewal is 84 days away.",
+    "refs": [
+     "GONG-8790#9",
+     "USAGE-0012-WAU",
+     "SF-CTR-00000412"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "SF-CTR-00000412",
+     "side": "inside",
+     "source": "Salesforce",
+     "type": "Renewal",
+     "date": "2026-11-09",
+     "text": "Contract renews 1 Feb 2027 · $310,000 ARR",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "risk"
+    },
+    {
+     "ref": "USAGE-0012-WAU",
+     "side": "inside",
+     "source": "Usage",
+     "type": "Usage drop",
+     "date": "2026-11-07",
+     "text": "Weekly active schedulers down 31% in 60 days (212 to 146).",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "risk"
+    },
+    {
+     "ref": "SF-CASE-00001044",
+     "side": "inside",
+     "source": "Salesforce",
+     "type": "Open escalation",
+     "date": "2026-10-29",
+     "text": "Case · High priority · \"Shift swap sync failing for night staff\" · open 11 days",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "risk"
+    },
+    {
+     "ref": "PUB-NEWS-0012-01",
+     "side": "outside",
+     "source": "Public",
+     "type": "Reorganization",
+     "date": "2026-10-15",
+     "text": "Meridian reorganizes regional operations into three divisions.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "risk"
+    },
+    {
+     "ref": "GONG-8790#9",
+     "side": "inside",
+     "source": "Gong",
+     "type": "Commitment",
+     "date": "2026-09-23",
+     "text": "\"Let's do a full review with my regional directors in October.\"",
+     "speaker": "Hannah Cole, Director Clinical Operations",
+     "speaker_side": "customer",
+     "count": "counted",
+     "polarity": "risk"
+    }
+   ],
+   "events": [
+    {
+     "key": "SF-CTR-00000412",
+     "lead": "SF-CTR-00000412",
+     "family": "renewal",
+     "polarity": "risk",
+     "strength": 0.8,
+     "count_weight": 1,
+     "date": "2026-11-09",
+     "corroboration": 1,
+     "refs": [
+      "SF-CTR-00000412"
+     ]
+    },
+    {
+     "key": "USAGE-0012-WAU",
+     "lead": "USAGE-0012-WAU",
+     "family": "usage",
+     "polarity": "risk",
+     "strength": 0.9,
+     "count_weight": 1,
+     "date": "2026-11-07",
+     "corroboration": 1,
+     "refs": [
+      "USAGE-0012-WAU"
+     ]
+    },
+    {
+     "key": "SF-CASE-00001044",
+     "lead": "SF-CASE-00001044",
+     "family": "engagement",
+     "polarity": "risk",
+     "strength": 0.7,
+     "count_weight": 1,
+     "date": "2026-10-29",
+     "corroboration": 1,
+     "refs": [
+      "SF-CASE-00001044"
+     ]
+    },
+    {
+     "key": "PUB-NEWS-0012-01",
+     "lead": "PUB-NEWS-0012-01",
+     "family": "exec_change",
+     "polarity": "risk",
+     "strength": 0.6,
+     "count_weight": 1,
+     "date": "2026-10-15",
+     "corroboration": 1,
+     "refs": [
+      "PUB-NEWS-0012-01"
+     ]
+    },
+    {
+     "key": "GONG-8790#9",
+     "lead": "GONG-8790#9",
+     "family": "gong_buying",
+     "polarity": "risk",
+     "strength": 0.6,
+     "count_weight": 1,
+     "date": "2026-09-23",
+     "corroboration": 1,
+     "refs": [
+      "GONG-8790#9"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "mapped",
+     "contact_id": "003ORB000000122AAA",
+     "name": "Paul Hartley",
+     "title": "CFO",
+     "last_engaged": "2026-06-10",
+     "days_since": 152
+    },
+    "champion": {
+     "state": "engaged",
+     "contact_id": "003ORB000000121AAA",
+     "name": "Hannah Cole",
+     "title": "Director, Clinical Operations",
+     "last_engaged": "2026-09-23",
+     "days_since": 47
+    },
+    "technical_evaluator": {
+     "state": "mapped",
+     "contact_id": "003ORB000000123AAA",
+     "name": "Irene Vos",
+     "title": "IT Lead",
+     "last_engaged": "2026-08-18",
+     "days_since": 83
+    },
+    "executive_sponsor": {
+     "state": "mapped",
+     "contact_id": "003ORB000000124AAA",
+     "name": "Daniel Shore",
+     "title": "COO",
+     "last_engaged": "2026-05-20",
+     "days_since": 173
+    }
+   },
+   "blocked": [],
+   "gaps": [
+    {
+     "type": "Stalled commitment",
+     "severity": "medium",
+     "refs": [
+      "GONG-8790#9"
+     ],
+     "text": "The customer committed to a next step 47 days ago and it has not happened."
+    },
+    {
+     "type": "Champion risk",
+     "severity": "high",
+     "refs": [
+      "GONG-8790#9"
+     ],
+     "text": "Hannah Cole has not engaged in 47 days."
+    },
+    {
+     "type": "Executive sponsor not engaged",
+     "severity": "low",
+     "refs": [
+      "SF-CON-003ORB000000124AAA"
+     ],
+     "text": "Daniel Shore (COO) is mapped as executive sponsor but has not joined a call."
+    }
+   ],
+   "valuemap": [],
+   "prep": null,
+   "slot": "ranked",
+   "rank": 3,
+   "rest_reason": null,
+   "decision": null,
+   "pipeline": {
+    "signals": "5 signals, 5 counted, 5 events",
+    "score": "A 76 · M 87 · R 63 · C 92",
+    "pick": "Rank 3 of 5, renewal risk slot",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0002": {
+   "key": "GTM-0002",
+   "salesforce_id": "001ORB000000002AAA",
+   "name": "Juniper Ridge Health",
+   "industry": "Healthcare",
+   "region": "EMEA",
+   "employees": 5400,
+   "type": "Customer",
+   "motion": "Expansion",
+   "baseline_score": 0.81,
+   "baseline_age_days": 1,
+   "scores": {
+    "A": 82,
+    "M": 48,
+    "R": 25,
+    "C": 53,
+    "P": 63
+   },
+   "components": {
+    "A": {
+     "fit": 82,
+     "whitespace": 90,
+     "alignment": 72
+    },
+    "M": {
+     "value": 48,
+     "raw": 0.647,
+     "events_used": 2
+    },
+    "C": [
+     "evidence is public only",
+     "no customer call in 90 days",
+     "2 buying roles unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Multithread",
+    "title": "Ask Elena Rossi for an introduction to the new CIO",
+    "who": "Elena Rossi, Head of Homecare Operations",
+    "due": "2026-11-16",
+    "points": [
+     "Share homecare results Elena can bring to the CIO",
+     "Ask what Priya Nandakumar is prioritising in her first 90 days",
+     "Offer a short briefing on scheduling across all five divisions"
+    ]
+   },
+   "why": {
+    "text": "A new CIO, Priya Nandakumar, started 38 days ago and the company is hiring clinical scheduling analysts, but nobody at Acme has met her.",
+    "refs": [
+     "PUB-NEWS-0002-01",
+     "PUB-JOBS-0002"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "PUB-JOBS-0002",
+     "side": "outside",
+     "source": "Public",
+     "type": "Hiring",
+     "date": "2026-10-20",
+     "text": "3 open roles for \"Field Clinical Scheduling Analyst\" across two regions.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "PUB-NEWS-0002-01",
+     "side": "outside",
+     "source": "Public",
+     "type": "Executive change",
+     "date": "2026-10-02",
+     "text": "Juniper Ridge Health appoints Priya Nandakumar as Chief Information Officer.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "PUB-JOBS-0002",
+     "lead": "PUB-JOBS-0002",
+     "family": "hiring",
+     "polarity": "buy",
+     "strength": 0.8,
+     "count_weight": 1,
+     "date": "2026-10-20",
+     "corroboration": 1,
+     "refs": [
+      "PUB-JOBS-0002"
+     ]
+    },
+    {
+     "key": "PUB-NEWS-0002-01",
+     "lead": "PUB-NEWS-0002-01",
+     "family": "exec_change",
+     "polarity": "buy",
+     "strength": 0.9,
+     "count_weight": 1,
+     "date": "2026-10-02",
+     "corroboration": 1,
+     "refs": [
+      "PUB-NEWS-0002-01"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "missing"
+    },
+    "champion": {
+     "state": "mapped",
+     "contact_id": "003ORB000000021AAA",
+     "name": "Tomás Ferreira",
+     "title": "Scheduling Manager",
+     "last_engaged": "2026-08-12",
+     "days_since": 89
+    },
+    "technical_evaluator": {
+     "state": "missing"
+    },
+    "executive_sponsor": {
+     "state": "mapped",
+     "contact_id": "003ORB000000022AAA",
+     "name": "Elena Rossi",
+     "title": "Head of Homecare Operations",
+     "last_engaged": "2026-08-30",
+     "days_since": 71
+    }
+   },
+   "blocked": [],
+   "gaps": [
+    {
+     "type": "New executive, no relationship",
+     "severity": "high",
+     "refs": [
+      "PUB-NEWS-0002-01"
+     ],
+     "text": "Priya Nandakumar started 38 days ago and nobody at the seller has met them."
+    },
+    {
+     "type": "Champion risk",
+     "severity": "high",
+     "refs": [],
+     "text": "Tomás Ferreira has not engaged in 89 days."
+    },
+    {
+     "type": "Executive sponsor not engaged",
+     "severity": "low",
+     "refs": [
+      "SF-CON-003ORB000000022AAA"
+     ],
+     "text": "Elena Rossi (Head of Homecare Operations) is mapped as executive sponsor but has not joined a call."
+    }
+   ],
+   "valuemap": [
+    {
+     "priority": "Hiring for clinical field scheduling",
+     "ref": "PUB-JOBS-0002",
+     "vis": "public",
+     "value_prop": "Scale scheduling from one division to many without new tools",
+     "proof": "Bluepeak Utilities (fictional): retired three field tools in one quarter.",
+     "inside": null,
+     "inside_ref": null
+    }
+   ],
+   "prep": null,
+   "slot": "exploration",
+   "rank": 6,
+   "rest_reason": null,
+   "decision": null,
+   "pipeline": {
+    "signals": "2 signals, 2 counted, 2 events",
+    "score": "A 82 · M 48 · R 25 · C 53",
+    "pick": "Exploration slot",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0019": {
+   "key": "GTM-0019",
+   "salesforce_id": "001ORB000000019AAA",
+   "name": "Heartland Foodservice Distributors",
+   "industry": "Food & Beverage",
+   "region": "NA",
+   "employees": 2200,
+   "type": "Customer",
+   "motion": "Expansion",
+   "baseline_score": 0.77,
+   "baseline_age_days": 0,
+   "scores": {
+    "A": 70,
+    "M": 69,
+    "R": 75,
+    "C": 92,
+    "P": 69
+   },
+   "components": {
+    "A": {
+     "fit": 72,
+     "whitespace": 70,
+     "alignment": 66
+    },
+    "M": {
+     "value": 69,
+     "raw": 1.171,
+     "events_used": 2
+    },
+    "C": []
+   },
+   "action": {
+    "kind": "Expand",
+    "title": "Propose seats for the Midwest depots",
+    "who": "Greg Tanner, VP Distribution",
+    "due": "2026-11-17",
+    "points": [
+     "Show the 96% seat use",
+     "Price the Midwest depots as one add-on",
+     "Ask Greg to bring in CFO Lisa Grant"
+    ]
+   },
+   "why": {
+    "text": "Seats are at 96% of contract and the Midwest depots asked to join after the pilot.",
+    "refs": [
+     "USAGE-0019-SEATS",
+     "GONG-9101#3"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "USAGE-0019-SEATS",
+     "side": "inside",
+     "source": "Usage",
+     "type": "Seat ceiling",
+     "date": "2026-11-06",
+     "text": "288 of 300 seats in use (96%).",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "GONG-9101#3",
+     "side": "inside",
+     "source": "Gong",
+     "type": "Expansion",
+     "date": "2026-10-27",
+     "text": "\"The Midwest depots want in after the pilot.\"",
+     "speaker": "Greg Tanner, VP Distribution",
+     "speaker_side": "customer",
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "USAGE-0019-SEATS",
+     "lead": "USAGE-0019-SEATS",
+     "family": "usage",
+     "polarity": "buy",
+     "strength": 0.9,
+     "count_weight": 1,
+     "date": "2026-11-06",
+     "corroboration": 1,
+     "refs": [
+      "USAGE-0019-SEATS"
+     ]
+    },
+    {
+     "key": "GONG-9101#3",
+     "lead": "GONG-9101#3",
+     "family": "gong_buying",
+     "polarity": "buy",
+     "strength": 0.7,
+     "count_weight": 1,
+     "date": "2026-10-27",
+     "corroboration": 1,
+     "refs": [
+      "GONG-9101#3"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "mapped",
+     "contact_id": "003ORB000000193AAA",
+     "name": "Lisa Grant",
+     "title": "CFO",
+     "last_engaged": "2026-07-15",
+     "days_since": 117
+    },
+    "champion": {
+     "state": "engaged",
+     "contact_id": "003ORB000000191AAA",
+     "name": "Greg Tanner",
+     "title": "VP Distribution",
+     "last_engaged": "2026-10-27",
+     "days_since": 13
+    },
+    "technical_evaluator": {
+     "state": "engaged",
+     "contact_id": "003ORB000000192AAA",
+     "name": "Ray Kim",
+     "title": "IT Director",
+     "last_engaged": "2026-10-30",
+     "days_since": 10
+    },
+    "executive_sponsor": {
+     "state": "mapped",
+     "contact_id": "003ORB000000194AAA",
+     "name": "Ann Doyle",
+     "title": "COO",
+     "last_engaged": "2026-06-02",
+     "days_since": 160
+    }
+   },
+   "blocked": [],
+   "gaps": [
+    {
+     "type": "Single-threaded",
+     "severity": "high",
+     "refs": [
+      "GONG-9101#3"
+     ],
+     "text": "Every customer statement in the last 90 days comes from Greg Tanner. Bring in the people who own the budget and the decision."
+    },
+    {
+     "type": "Executive sponsor not engaged",
+     "severity": "low",
+     "refs": [
+      "SF-CON-003ORB000000194AAA"
+     ],
+     "text": "Ann Doyle (COO) is mapped as executive sponsor but has not joined a call."
+    }
+   ],
+   "valuemap": [],
+   "prep": null,
+   "slot": "held",
+   "rank": 5,
+   "rest_reason": "Priority 69 · held, five slots full",
+   "decision": null,
+   "pipeline": {
+    "signals": "2 signals, 2 counted, 2 events",
+    "score": "A 70 · M 69 · R 75 · C 92",
+    "pick": "Priority 69 · held, five slots full",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0003": {
+   "key": "GTM-0003",
+   "salesforce_id": "001ORB000000003AAA",
+   "name": "Cobalt Ledger Systems",
+   "industry": "Finance",
+   "region": "NA",
+   "employees": 900,
+   "type": "Customer",
+   "motion": "Expansion",
+   "baseline_score": 0.76,
+   "baseline_age_days": 6,
+   "scores": {
+    "A": 72,
+    "M": 40,
+    "R": 13,
+    "C": 41,
+    "P": 54
+   },
+   "components": {
+    "A": {
+     "fit": 74,
+     "whitespace": 70,
+     "alignment": 70
+    },
+    "M": {
+     "value": 40,
+     "raw": 0.516,
+     "events_used": 2
+    },
+    "C": [
+     "baseline score 6 days old",
+     "a call speaker is not matched to a CRM contact",
+     "3 buying roles unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Verify",
+    "title": "Confirm who \"Chris M.\" is and refresh the score",
+    "who": "You · about 10 minutes",
+    "due": "2026-11-10",
+    "points": [
+     "Check the Oct 30 call participants",
+     "Link the speaker to a CRM contact (likely Chris Moreno, Controller)",
+     "The account is rescored within the hour after the fix"
+    ]
+   },
+   "why": {
+    "text": "Someone asked for the reporting module before year-end close, but the speaker is not matched to any CRM contact and the baseline score is 6 days old.",
+    "refs": [
+     "GONG-8981#2",
+     "GONG-8981#5"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "GONG-8981#2",
+     "side": "inside",
+     "source": "Gong",
+     "type": "Interest",
+     "date": "2026-10-30",
+     "text": "\"We'd like to see the reporting module for the audit team.\"",
+     "speaker": "\"Chris M.\" (not matched to a CRM contact)",
+     "speaker_side": "customer",
+     "count": "half",
+     "polarity": "buy"
+    },
+    {
+     "ref": "GONG-8981#5",
+     "side": "inside",
+     "source": "Gong",
+     "type": "Timeline",
+     "date": "2026-10-30",
+     "text": "\"If it works we would want it before year-end close.\"",
+     "speaker": "\"Chris M.\" (not matched to a CRM contact)",
+     "speaker_side": "customer",
+     "count": "half",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "GONG-8981#2",
+     "lead": "GONG-8981#2",
+     "family": "gong_buying",
+     "polarity": "buy",
+     "strength": 0.7,
+     "count_weight": 0.5,
+     "date": "2026-10-30",
+     "corroboration": 1,
+     "refs": [
+      "GONG-8981#2"
+     ]
+    },
+    {
+     "key": "GONG-8981#5",
+     "lead": "GONG-8981#5",
+     "family": "gong_buying",
+     "polarity": "buy",
+     "strength": 0.6,
+     "count_weight": 0.5,
+     "date": "2026-10-30",
+     "corroboration": 1,
+     "refs": [
+      "GONG-8981#5"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "missing"
+    },
+    "champion": {
+     "state": "missing"
+    },
+    "technical_evaluator": {
+     "state": "mapped",
+     "contact_id": "003ORB000000031AAA",
+     "name": "Ivy Lam",
+     "title": "Systems Analyst",
+     "last_engaged": "2026-09-02",
+     "days_since": 68
+    },
+    "executive_sponsor": {
+     "state": "missing"
+    }
+   },
+   "blocked": [],
+   "gaps": [
+    {
+     "type": "Identity unverified",
+     "severity": "high",
+     "refs": [
+      "GONG-8981#2",
+      "GONG-8981#5"
+     ],
+     "text": "A call speaker is not matched to any CRM contact. Confirm who they are before treating them as a champion."
+    }
+   ],
+   "valuemap": [],
+   "prep": null,
+   "slot": "verify",
+   "rank": 7,
+   "rest_reason": "Verify first · confidence 41",
+   "decision": null,
+   "pipeline": {
+    "signals": "2 signals, 2 counted, 2 events",
+    "score": "A 72 · M 40 · R 13 · C 41",
+    "pick": "Verify first · confidence 41",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0017": {
+   "key": "GTM-0017",
+   "salesforce_id": "001ORB000000017AAA",
+   "name": "Copperline Fiber Services",
+   "industry": "Telecommunications",
+   "region": "NA",
+   "employees": 1300,
+   "type": "Prospect",
+   "motion": "New logo",
+   "baseline_score": 0.83,
+   "baseline_age_days": 0,
+   "scores": {
+    "A": 74,
+    "M": 0,
+    "R": 25,
+    "C": 86,
+    "P": 0
+   },
+   "components": {
+    "A": {
+     "fit": 78,
+     "whitespace": 72,
+     "alignment": 68
+    },
+    "M": {
+     "value": 0,
+     "raw": -0.516,
+     "events_used": 1
+    },
+    "C": [
+     "3 buying roles unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Hold",
+    "title": "Set a watch for the network build finishing",
+    "who": "Rescore on a new budget or executive event",
+    "due": null,
+    "points": [
+     "Revisit in Q2 2027",
+     "Rescore automatically on a new executive or funding event"
+    ]
+   },
+   "why": {
+    "text": "All 9 budget and pricing tracker hits were questions asked by our side, and the customer said nothing new is moving until the network build finishes next summer.",
+    "refs": [
+     "GONG-8955#3",
+     "GONG-8955#6"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "GONG-8955#3",
+     "side": "inside",
+     "source": "Gong",
+     "type": "Tracker: Budget",
+     "date": "2026-10-21",
+     "text": "\"Do you have budget allocated for this year?\" (one of 9 budget and pricing tracker hits, all spoken by Acme)",
+     "speaker": "Alex Rivera, Acme",
+     "speaker_side": "seller",
+     "count": "not_counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "GONG-8955#6",
+     "side": "inside",
+     "source": "Gong",
+     "type": "Timing risk",
+     "date": "2026-10-21",
+     "text": "\"We're not looking at anything new until the network build finishes next summer.\"",
+     "speaker": "Nina Park, Network Operations Lead",
+     "speaker_side": "customer",
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "GONG-8955#3",
+     "lead": "GONG-8955#3",
+     "family": "gong_buying",
+     "polarity": "buy",
+     "strength": 0.8,
+     "count_weight": 0,
+     "date": "2026-10-21",
+     "corroboration": 1,
+     "refs": [
+      "GONG-8955#3"
+     ]
+    },
+    {
+     "key": "GONG-8955#6",
+     "lead": "GONG-8955#6",
+     "family": "gong_buying",
+     "polarity": "buy",
+     "strength": -0.8,
+     "count_weight": 1,
+     "date": "2026-10-21",
+     "corroboration": 1,
+     "refs": [
+      "GONG-8955#6"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "missing"
+    },
+    "champion": {
+     "state": "engaged",
+     "contact_id": "003ORB000000171AAA",
+     "name": "Nina Park",
+     "title": "Network Operations Lead",
+     "last_engaged": "2026-10-21",
+     "days_since": 19
+    },
+    "technical_evaluator": {
+     "state": "missing"
+    },
+    "executive_sponsor": {
+     "state": "missing"
+    }
+   },
+   "blocked": [],
+   "gaps": [],
+   "valuemap": [],
+   "prep": null,
+   "slot": "watch",
+   "rank": 21,
+   "rest_reason": "Watching · momentum 0",
+   "decision": null,
+   "pipeline": {
+    "signals": "2 signals, 1 counted, 2 events",
+    "score": "A 74 · M 0 · R 25 · C 86",
+    "pick": "Watching · momentum 0",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0007": {
+   "key": "GTM-0007",
+   "salesforce_id": "001ORB000000007AAA",
+   "name": "Quarry & Pine Manufacturing",
+   "industry": "Machinery",
+   "region": "NA",
+   "employees": null,
+   "type": "Prospect",
+   "motion": "New logo",
+   "baseline_score": null,
+   "baseline_age_days": null,
+   "scores": {
+    "A": null,
+    "M": null,
+    "R": 0,
+    "C": 14,
+    "P": null
+   },
+   "components": {
+    "A": {
+     "fit": null,
+     "whitespace": null,
+     "alignment": null
+    },
+    "M": {
+     "value": 0,
+     "raw": 0,
+     "events_used": 0
+    },
+    "C": [
+     "no baseline score",
+     "missing firmographics",
+     "no customer call in 90 days",
+     "4 buying roles unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Research",
+    "title": "Fill in the basics so it can be scored",
+    "who": "You or your SDR",
+    "due": null,
+    "points": [
+     "Add employee count and industry",
+     "Find one operations leader",
+     "The account is rescored within the hour"
+    ]
+   },
+   "why": {
+    "text": "Not scored: there is no employee count, no baseline score and only one contact with no title.",
+    "refs": [
+     "SF-ACC-001ORB000000007AAA"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "SF-ACC-001ORB000000007AAA",
+     "side": "inside",
+     "source": "Salesforce",
+     "type": "Missing data",
+     "date": "2026-05-12",
+     "text": "No employee count, no baseline score, 1 contact with no title.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "context",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "SF-ACC-001ORB000000007AAA",
+     "lead": "SF-ACC-001ORB000000007AAA",
+     "family": "firmographic",
+     "polarity": "buy",
+     "strength": 0,
+     "count_weight": 1,
+     "date": "2026-05-12",
+     "corroboration": 1,
+     "refs": [
+      "SF-ACC-001ORB000000007AAA"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "missing"
+    },
+    "champion": {
+     "state": "missing"
+    },
+    "technical_evaluator": {
+     "state": "missing"
+    },
+    "executive_sponsor": {
+     "state": "missing"
+    }
+   },
+   "blocked": [],
+   "gaps": [],
+   "valuemap": [],
+   "prep": null,
+   "slot": "unscored",
+   "rank": null,
+   "rest_reason": "Not scored · missing data",
+   "decision": null,
+   "pipeline": {
+    "signals": "1 signals, 0 counted, 1 events",
+    "score": "Not scored",
+    "pick": "Not scored · missing data",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0010": {
+   "key": "GTM-0010",
+   "salesforce_id": "001ORB000000010AAA",
+   "name": "Kestrel Biotech",
+   "industry": "Biotechnology",
+   "region": "EMEA",
+   "employees": 140,
+   "type": "Prospect",
+   "motion": "New logo",
+   "baseline_score": 0.41,
+   "baseline_age_days": 4,
+   "scores": {
+    "A": 27,
+    "M": 0,
+    "R": 13,
+    "C": 56,
+    "P": 0
+   },
+   "components": {
+    "A": {
+     "fit": 22,
+     "whitespace": 30,
+     "alignment": 36
+    },
+    "M": {
+     "value": 0,
+     "raw": 0,
+     "events_used": 0
+    },
+    "C": [
+     "baseline score 4 days old",
+     "no customer call in 90 days",
+     "3 buying roles unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Deprioritize",
+    "title": "Skip this account for now",
+    "who": "No action needed",
+    "due": null,
+    "points": [
+     "Rescore only if field operations appear"
+    ]
+   },
+   "why": {
+    "text": "140 employees and no field service operations put Kestrel outside the ideal customer profile.",
+    "refs": [
+     "SF-ACC-001ORB000000010AAA"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "SF-ACC-001ORB000000010AAA",
+     "side": "inside",
+     "source": "Salesforce",
+     "type": "Firmographics",
+     "date": "2026-07-02",
+     "text": "140 employees · lab operations · no field technicians.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "context",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "SF-ACC-001ORB000000010AAA",
+     "lead": "SF-ACC-001ORB000000010AAA",
+     "family": "firmographic",
+     "polarity": "buy",
+     "strength": 0,
+     "count_weight": 1,
+     "date": "2026-07-02",
+     "corroboration": 1,
+     "refs": [
+      "SF-ACC-001ORB000000010AAA"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "missing"
+    },
+    "champion": {
+     "state": "mapped",
+     "contact_id": "003ORB000000101AAA",
+     "name": "Owen Hale",
+     "title": "Lab Manager",
+     "last_engaged": "2026-04-08",
+     "days_since": 215
+    },
+    "technical_evaluator": {
+     "state": "missing"
+    },
+    "executive_sponsor": {
+     "state": "missing"
+    }
+   },
+   "blocked": [],
+   "gaps": [],
+   "valuemap": [],
+   "prep": null,
+   "slot": "deprioritized",
+   "rank": 24,
+   "rest_reason": "Deprioritized · outside ICP",
+   "decision": null,
+   "pipeline": {
+    "signals": "1 signals, 0 counted, 1 events",
+    "score": "A 27 · M 0 · R 13 · C 56",
+    "pick": "Deprioritized · outside ICP",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0013": {
+   "key": "GTM-0013",
+   "salesforce_id": "001ORB000000013AAA",
+   "name": "Ironbridge Construction Group",
+   "industry": "Construction",
+   "region": "NA",
+   "employees": 1500,
+   "type": "Prospect",
+   "motion": "New logo",
+   "baseline_score": 0.74,
+   "baseline_age_days": 1,
+   "scores": {
+    "A": 50,
+    "M": 2,
+    "R": 25,
+    "C": 78,
+    "P": 10
+   },
+   "components": {
+    "A": {
+     "fit": 53,
+     "whitespace": 43,
+     "alignment": 55
+    },
+    "M": {
+     "value": 2,
+     "raw": 0.016,
+     "events_used": 2
+    },
+    "C": [
+     "no customer call in 90 days",
+     "2 buying roles unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Hold",
+    "title": "Watch for a stronger signal",
+    "who": "Logan Foster, Director of Operations",
+    "due": null,
+    "points": [
+     "Rescore on a new executive, funding or usage event"
+    ]
+   },
+   "why": {
+    "text": "Recent intent on 09-03 and engagement on 09-19.",
+    "refs": [
+     "INTENT-0013-2",
+     "ENG-0013-1"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "ENG-0013-1",
+     "side": "inside",
+     "source": "Salesforce",
+     "type": "Engagement",
+     "date": "2026-09-19",
+     "text": "Opened the field scheduling guide and attended a webinar.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "INTENT-0013-2",
+     "side": "outside",
+     "source": "Intent",
+     "type": "Intent",
+     "date": "2026-09-03",
+     "text": "\"workforce scheduling\" at 48/100.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "ENG-0013-1",
+     "lead": "ENG-0013-1",
+     "family": "engagement",
+     "polarity": "buy",
+     "strength": 0.35,
+     "count_weight": 1,
+     "date": "2026-09-19",
+     "corroboration": 1,
+     "refs": [
+      "ENG-0013-1"
+     ]
+    },
+    {
+     "key": "INTENT-0013-2",
+     "lead": "INTENT-0013-2",
+     "family": "intent",
+     "polarity": "buy",
+     "strength": 0.45,
+     "count_weight": 1,
+     "date": "2026-09-03",
+     "corroboration": 1,
+     "refs": [
+      "INTENT-0013-2"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "missing"
+    },
+    "champion": {
+     "state": "mapped",
+     "contact_id": "003ORB0013000000AAA",
+     "name": "Logan Foster",
+     "title": "Director of Operations",
+     "last_engaged": "2026-07-20",
+     "days_since": 112
+    },
+    "technical_evaluator": {
+     "state": "missing"
+    },
+    "executive_sponsor": {
+     "state": "mapped",
+     "contact_id": "003ORB0013010000AAA",
+     "name": "Harper Nolan",
+     "title": "COO",
+     "last_engaged": null,
+     "days_since": null
+    }
+   },
+   "blocked": [],
+   "gaps": [
+    {
+     "type": "Champion risk",
+     "severity": "high",
+     "refs": [],
+     "text": "Logan Foster has not engaged in 112 days."
+    }
+   ],
+   "valuemap": [],
+   "prep": null,
+   "slot": "watch",
+   "rank": 19,
+   "rest_reason": "Watching · momentum 2",
+   "decision": null,
+   "pipeline": {
+    "signals": "2 signals, 2 counted, 2 events",
+    "score": "A 50 · M 2 · R 25 · C 78",
+    "pick": "Watching · momentum 2",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0016": {
+   "key": "GTM-0016",
+   "salesforce_id": "001ORB000000016AAA",
+   "name": "Lakeshore Regional Medical Center",
+   "industry": "Healthcare",
+   "region": "NA",
+   "employees": 2900,
+   "type": "Prospect",
+   "motion": "New logo",
+   "baseline_score": 0.73,
+   "baseline_age_days": 5,
+   "scores": {
+    "A": 59,
+    "M": 0,
+    "R": 25,
+    "C": 31,
+    "P": 0
+   },
+   "components": {
+    "A": {
+     "fit": 72,
+     "whitespace": 45,
+     "alignment": 46
+    },
+    "M": {
+     "value": 0,
+     "raw": 0.005,
+     "events_used": 1
+    },
+    "C": [
+     "baseline score 5 days old",
+     "evidence is public only",
+     "no customer call in 90 days",
+     "3 buying roles unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Verify",
+    "title": "Check the data before acting",
+    "who": "You",
+    "due": null,
+    "points": [
+     "Fix the low-confidence inputs",
+     "The account is rescored within the hour"
+    ]
+   },
+   "why": {
+    "text": "Recent intent on 09-14.",
+    "refs": [
+     "INTENT-0016-1"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "INTENT-0016-1",
+     "side": "outside",
+     "source": "Intent",
+     "type": "Intent",
+     "date": "2026-09-14",
+     "text": "\"workforce scheduling\" at 50/100.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "INTENT-0016-1",
+     "lead": "INTENT-0016-1",
+     "family": "intent",
+     "polarity": "buy",
+     "strength": 0.55,
+     "count_weight": 1,
+     "date": "2026-09-14",
+     "corroboration": 1,
+     "refs": [
+      "INTENT-0016-1"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "missing"
+    },
+    "champion": {
+     "state": "missing"
+    },
+    "technical_evaluator": {
+     "state": "engaged",
+     "contact_id": "003ORB0016000000AAA",
+     "name": "Morgan Lowe",
+     "title": "IT Manager",
+     "last_engaged": "2026-09-15",
+     "days_since": 55
+    },
+    "executive_sponsor": {
+     "state": "missing"
+    }
+   },
+   "blocked": [],
+   "gaps": [],
+   "valuemap": [],
+   "prep": null,
+   "slot": "verify",
+   "rank": 22,
+   "rest_reason": "Verify first · confidence 31",
+   "decision": null,
+   "pipeline": {
+    "signals": "1 signals, 1 counted, 1 events",
+    "score": "A 59 · M 0 · R 25 · C 31",
+    "pick": "Verify first · confidence 31",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0005": {
+   "key": "GTM-0005",
+   "salesforce_id": "001ORB000000005AAA",
+   "name": "Verdant Grid Energy",
+   "industry": "Energy",
+   "region": "EMEA",
+   "employees": 3600,
+   "type": "Customer",
+   "motion": "Expansion",
+   "baseline_score": 0.72,
+   "baseline_age_days": 2,
+   "scores": {
+    "A": 57,
+    "M": 6,
+    "R": 38,
+    "C": 55,
+    "P": 18
+   },
+   "components": {
+    "A": {
+     "fit": 62,
+     "whitespace": 48,
+     "alignment": 57
+    },
+    "M": {
+     "value": 6,
+     "raw": 0.061,
+     "events_used": 1
+    },
+    "C": [
+     "evidence is public only",
+     "no customer call in 90 days",
+     "1 buying role unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Hold",
+    "title": "Watch for a stronger signal",
+    "who": "Kendall Hughes, Director of Operations",
+    "due": null,
+    "points": [
+     "Rescore on a new executive, funding or usage event"
+    ]
+   },
+   "why": {
+    "text": "Recent hiring on 10-07.",
+    "refs": [
+     "PUB-JOBS-0005-1"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "PUB-JOBS-0005-1",
+     "side": "outside",
+     "source": "Public",
+     "type": "Hiring",
+     "date": "2026-10-07",
+     "text": "1 open operations roles posted.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "PUB-JOBS-0005-1",
+     "lead": "PUB-JOBS-0005-1",
+     "family": "hiring",
+     "polarity": "buy",
+     "strength": 0.34,
+     "count_weight": 1,
+     "date": "2026-10-07",
+     "corroboration": 1,
+     "refs": [
+      "PUB-JOBS-0005-1"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "mapped",
+     "contact_id": "003ORB0005010000AAA",
+     "name": "Taylor Ellison",
+     "title": "CFO",
+     "last_engaged": "2026-07-07",
+     "days_since": 125
+    },
+    "champion": {
+     "state": "mapped",
+     "contact_id": "003ORB0005000000AAA",
+     "name": "Kendall Hughes",
+     "title": "Director of Operations",
+     "last_engaged": null,
+     "days_since": null
+    },
+    "technical_evaluator": {
+     "state": "missing"
+    },
+    "executive_sponsor": {
+     "state": "mapped",
+     "contact_id": "003ORB0005020000AAA",
+     "name": "Quinn Price",
+     "title": "COO",
+     "last_engaged": null,
+     "days_since": null
+    }
+   },
+   "blocked": [],
+   "gaps": [],
+   "valuemap": [],
+   "prep": null,
+   "slot": "watch",
+   "rank": 16,
+   "rest_reason": "Watching · momentum 6",
+   "decision": null,
+   "pipeline": {
+    "signals": "1 signals, 1 counted, 1 events",
+    "score": "A 57 · M 6 · R 38 · C 55",
+    "pick": "Watching · momentum 6",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0014": {
+   "key": "GTM-0014",
+   "salesforce_id": "001ORB000000014AAA",
+   "name": "Summit Valley Credit Union",
+   "industry": "Banking",
+   "region": "NA",
+   "employees": 700,
+   "type": "Prospect",
+   "motion": "New logo",
+   "baseline_score": 0.71,
+   "baseline_age_days": 2,
+   "scores": {
+    "A": 56,
+    "M": 7,
+    "R": 13,
+    "C": 76,
+    "P": 20
+   },
+   "components": {
+    "A": {
+     "fit": 48,
+     "whitespace": 68,
+     "alignment": 56
+    },
+    "M": {
+     "value": 7,
+     "raw": 0.074,
+     "events_used": 1
+    },
+    "C": [
+     "no customer call in 90 days",
+     "3 buying roles unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Hold",
+    "title": "Watch for a stronger signal",
+    "who": "You",
+    "due": null,
+    "points": [
+     "Rescore on a new executive, funding or usage event"
+    ]
+   },
+   "why": {
+    "text": "Recent engagement on 10-22.",
+    "refs": [
+     "ENG-0014-1"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "ENG-0014-1",
+     "side": "inside",
+     "source": "Salesforce",
+     "type": "Engagement",
+     "date": "2026-10-22",
+     "text": "Opened the field scheduling guide and attended a webinar.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "ENG-0014-1",
+     "lead": "ENG-0014-1",
+     "family": "engagement",
+     "polarity": "buy",
+     "strength": 0.36,
+     "count_weight": 1,
+     "date": "2026-10-22",
+     "corroboration": 1,
+     "refs": [
+      "ENG-0014-1"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "mapped",
+     "contact_id": "003ORB0014000000AAA",
+     "name": "Blake Mendes",
+     "title": "CFO",
+     "last_engaged": "2026-07-12",
+     "days_since": 120
+    },
+    "champion": {
+     "state": "missing"
+    },
+    "technical_evaluator": {
+     "state": "missing"
+    },
+    "executive_sponsor": {
+     "state": "missing"
+    }
+   },
+   "blocked": [],
+   "gaps": [],
+   "valuemap": [],
+   "prep": null,
+   "slot": "watch",
+   "rank": 15,
+   "rest_reason": "Watching · momentum 7",
+   "decision": null,
+   "pipeline": {
+    "signals": "1 signals, 1 counted, 1 events",
+    "score": "A 56 · M 7 · R 13 · C 76",
+    "pick": "Watching · momentum 7",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0021": {
+   "key": "GTM-0021",
+   "salesforce_id": "001ORB000000021AAA",
+   "name": "Harbor Point Hospitality Group",
+   "industry": "Hospitality",
+   "region": "NA",
+   "employees": 2400,
+   "type": "Prospect",
+   "motion": "New logo",
+   "baseline_score": 0.7,
+   "baseline_age_days": 0,
+   "scores": {
+    "A": 49,
+    "M": 5,
+    "R": 25,
+    "C": 53,
+    "P": 16
+   },
+   "components": {
+    "A": {
+     "fit": 51,
+     "whitespace": 52,
+     "alignment": 40
+    },
+    "M": {
+     "value": 5,
+     "raw": 0.051,
+     "events_used": 2
+    },
+    "C": [
+     "evidence is public only",
+     "no customer call in 90 days",
+     "2 buying roles unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Hold",
+    "title": "Watch for a stronger signal",
+    "who": "Logan Ortiz, Director of Operations",
+    "due": null,
+    "points": [
+     "Rescore on a new executive, funding or usage event"
+    ]
+   },
+   "why": {
+    "text": "Recent hiring on 09-07 and intent on 09-20.",
+    "refs": [
+     "PUB-JOBS-0021-1",
+     "INTENT-0021-2"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "INTENT-0021-2",
+     "side": "outside",
+     "source": "Intent",
+     "type": "Intent",
+     "date": "2026-09-20",
+     "text": "\"workforce scheduling\" at 51/100.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "PUB-JOBS-0021-1",
+     "side": "outside",
+     "source": "Public",
+     "type": "Hiring",
+     "date": "2026-09-07",
+     "text": "2 open operations roles posted.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "INTENT-0021-2",
+     "lead": "INTENT-0021-2",
+     "family": "intent",
+     "polarity": "buy",
+     "strength": 0.38,
+     "count_weight": 1,
+     "date": "2026-09-20",
+     "corroboration": 1,
+     "refs": [
+      "INTENT-0021-2"
+     ]
+    },
+    {
+     "key": "PUB-JOBS-0021-1",
+     "lead": "PUB-JOBS-0021-1",
+     "family": "hiring",
+     "polarity": "buy",
+     "strength": 0.41,
+     "count_weight": 1,
+     "date": "2026-09-07",
+     "corroboration": 1,
+     "refs": [
+      "PUB-JOBS-0021-1"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "missing"
+    },
+    "champion": {
+     "state": "mapped",
+     "contact_id": "003ORB0021000000AAA",
+     "name": "Logan Ortiz",
+     "title": "Director of Operations",
+     "last_engaged": "2026-08-06",
+     "days_since": 95
+    },
+    "technical_evaluator": {
+     "state": "mapped",
+     "contact_id": "003ORB0021010000AAA",
+     "name": "Blake Brooks",
+     "title": "IT Manager",
+     "last_engaged": "2026-07-29",
+     "days_since": 103
+    },
+    "executive_sponsor": {
+     "state": "missing"
+    }
+   },
+   "blocked": [],
+   "gaps": [
+    {
+     "type": "Champion risk",
+     "severity": "high",
+     "refs": [],
+     "text": "Logan Ortiz has not engaged in 95 days."
+    }
+   ],
+   "valuemap": [],
+   "prep": null,
+   "slot": "watch",
+   "rank": 17,
+   "rest_reason": "Watching · momentum 5",
+   "decision": null,
+   "pipeline": {
+    "signals": "2 signals, 2 counted, 2 events",
+    "score": "A 49 · M 5 · R 25 · C 53",
+    "pick": "Watching · momentum 5",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0004": {
+   "key": "GTM-0004",
+   "salesforce_id": "001ORB000000004AAA",
+   "name": "Harborline Logistics",
+   "industry": "Transportation",
+   "region": "NA",
+   "employees": 3300,
+   "type": "Customer",
+   "motion": "Expansion",
+   "baseline_score": 0.69,
+   "baseline_age_days": 0,
+   "scores": {
+    "A": 56,
+    "M": 1,
+    "R": 25,
+    "C": 53,
+    "P": 7
+   },
+   "components": {
+    "A": {
+     "fit": 57,
+     "whitespace": 58,
+     "alignment": 51
+    },
+    "M": {
+     "value": 1,
+     "raw": 0.005,
+     "events_used": 1
+    },
+    "C": [
+     "evidence is public only",
+     "no customer call in 90 days",
+     "2 buying roles unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Hold",
+    "title": "Watch for a stronger signal",
+    "who": "You",
+    "due": null,
+    "points": [
+     "Rescore on a new executive, funding or usage event"
+    ]
+   },
+   "why": {
+    "text": "Recent intent on 09-17.",
+    "refs": [
+     "INTENT-0004-1"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "INTENT-0004-1",
+     "side": "outside",
+     "source": "Intent",
+     "type": "Intent",
+     "date": "2026-09-17",
+     "text": "\"workforce scheduling\" at 59/100.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "INTENT-0004-1",
+     "lead": "INTENT-0004-1",
+     "family": "intent",
+     "polarity": "buy",
+     "strength": 0.52,
+     "count_weight": 1,
+     "date": "2026-09-17",
+     "corroboration": 1,
+     "refs": [
+      "INTENT-0004-1"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "mapped",
+     "contact_id": "003ORB0004000000AAA",
+     "name": "Parker Nolan",
+     "title": "CFO",
+     "last_engaged": null,
+     "days_since": null
+    },
+    "champion": {
+     "state": "missing"
+    },
+    "technical_evaluator": {
+     "state": "missing"
+    },
+    "executive_sponsor": {
+     "state": "mapped",
+     "contact_id": "003ORB0004010000AAA",
+     "name": "Reese Garcia",
+     "title": "COO",
+     "last_engaged": "2026-07-19",
+     "days_since": 113
+    }
+   },
+   "blocked": [],
+   "gaps": [],
+   "valuemap": [],
+   "prep": null,
+   "slot": "watch",
+   "rank": 20,
+   "rest_reason": "Watching · momentum 1",
+   "decision": null,
+   "pipeline": {
+    "signals": "1 signals, 1 counted, 1 events",
+    "score": "A 56 · M 1 · R 25 · C 53",
+    "pick": "Watching · momentum 1",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0015": {
+   "key": "GTM-0015",
+   "salesforce_id": "001ORB000000015AAA",
+   "name": "Granite State Utilities",
+   "industry": "Utilities",
+   "region": "NA",
+   "employees": 1900,
+   "type": "Prospect",
+   "motion": "New logo",
+   "baseline_score": 0.68,
+   "baseline_age_days": 0,
+   "scores": {
+    "A": 63,
+    "M": 9,
+    "R": 25,
+    "C": 53,
+    "P": 24
+   },
+   "components": {
+    "A": {
+     "fit": 63,
+     "whitespace": 58,
+     "alignment": 70
+    },
+    "M": {
+     "value": 9,
+     "raw": 0.096,
+     "events_used": 1
+    },
+    "C": [
+     "evidence is public only",
+     "no customer call in 90 days",
+     "2 buying roles unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Hold",
+    "title": "Watch for a stronger signal",
+    "who": "You",
+    "due": null,
+    "points": [
+     "Rescore on a new executive, funding or usage event"
+    ]
+   },
+   "why": {
+    "text": "Recent intent on 10-27.",
+    "refs": [
+     "INTENT-0015-1"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "INTENT-0015-1",
+     "side": "outside",
+     "source": "Intent",
+     "type": "Intent",
+     "date": "2026-10-27",
+     "text": "\"workforce scheduling\" at 51/100.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "INTENT-0015-1",
+     "lead": "INTENT-0015-1",
+     "family": "intent",
+     "polarity": "buy",
+     "strength": 0.59,
+     "count_weight": 1,
+     "date": "2026-10-27",
+     "corroboration": 1,
+     "refs": [
+      "INTENT-0015-1"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "missing"
+    },
+    "champion": {
+     "state": "missing"
+    },
+    "technical_evaluator": {
+     "state": "mapped",
+     "contact_id": "003ORB0015010000AAA",
+     "name": "Morgan Lowe",
+     "title": "IT Manager",
+     "last_engaged": null,
+     "days_since": null
+    },
+    "executive_sponsor": {
+     "state": "mapped",
+     "contact_id": "003ORB0015000000AAA",
+     "name": "Finley Mendes",
+     "title": "COO",
+     "last_engaged": "2026-08-02",
+     "days_since": 99
+    }
+   },
+   "blocked": [],
+   "gaps": [],
+   "valuemap": [],
+   "prep": null,
+   "slot": "watch",
+   "rank": 13,
+   "rest_reason": "Watching · momentum 9",
+   "decision": null,
+   "pipeline": {
+    "signals": "1 signals, 1 counted, 1 events",
+    "score": "A 63 · M 9 · R 25 · C 53",
+    "pick": "Watching · momentum 9",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0023": {
+   "key": "GTM-0023",
+   "salesforce_id": "001ORB000000023AAA",
+   "name": "Atlas Fleet Maintenance",
+   "industry": "Transportation",
+   "region": "NA",
+   "employees": 1100,
+   "type": "Customer",
+   "motion": "Expansion",
+   "baseline_score": 0.67,
+   "baseline_age_days": 0,
+   "scores": {
+    "A": 69,
+    "M": 18,
+    "R": 13,
+    "C": 76,
+    "P": 35
+   },
+   "components": {
+    "A": {
+     "fit": 76,
+     "whitespace": 71,
+     "alignment": 47
+    },
+    "M": {
+     "value": 18,
+     "raw": 0.196,
+     "events_used": 3
+    },
+    "C": [
+     "no customer call in 90 days",
+     "3 buying roles unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Hold",
+    "title": "Watch for a stronger signal",
+    "who": "You",
+    "due": null,
+    "points": [
+     "Rescore on a new executive, funding or usage event"
+    ]
+   },
+   "why": {
+    "text": "Recent hiring on 09-03 and hiring on 10-14.",
+    "refs": [
+     "PUB-JOBS-0023-3",
+     "PUB-JOBS-0023-1"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "PUB-JOBS-0023-1",
+     "side": "outside",
+     "source": "Public",
+     "type": "Hiring",
+     "date": "2026-10-14",
+     "text": "1 open operations roles posted.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "ENG-0023-2",
+     "side": "inside",
+     "source": "Salesforce",
+     "type": "Engagement",
+     "date": "2026-09-11",
+     "text": "Opened the field scheduling guide and attended a webinar.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "PUB-JOBS-0023-3",
+     "side": "outside",
+     "source": "Public",
+     "type": "Hiring",
+     "date": "2026-09-03",
+     "text": "3 open operations roles posted.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "PUB-JOBS-0023-1",
+     "lead": "PUB-JOBS-0023-1",
+     "family": "hiring",
+     "polarity": "buy",
+     "strength": 0.59,
+     "count_weight": 1,
+     "date": "2026-10-14",
+     "corroboration": 1,
+     "refs": [
+      "PUB-JOBS-0023-1"
+     ]
+    },
+    {
+     "key": "ENG-0023-2",
+     "lead": "ENG-0023-2",
+     "family": "engagement",
+     "polarity": "buy",
+     "strength": 0.48,
+     "count_weight": 1,
+     "date": "2026-09-11",
+     "corroboration": 1,
+     "refs": [
+      "ENG-0023-2"
+     ]
+    },
+    {
+     "key": "PUB-JOBS-0023-3",
+     "lead": "PUB-JOBS-0023-3",
+     "family": "hiring",
+     "polarity": "buy",
+     "strength": 0.6,
+     "count_weight": 1,
+     "date": "2026-09-03",
+     "corroboration": 1,
+     "refs": [
+      "PUB-JOBS-0023-3"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "missing"
+    },
+    "champion": {
+     "state": "missing"
+    },
+    "technical_evaluator": {
+     "state": "mapped",
+     "contact_id": "003ORB0023000000AAA",
+     "name": "Taylor Ortiz",
+     "title": "IT Manager",
+     "last_engaged": "2026-06-26",
+     "days_since": 136
+    },
+    "executive_sponsor": {
+     "state": "missing"
+    }
+   },
+   "blocked": [],
+   "gaps": [],
+   "valuemap": [],
+   "prep": null,
+   "slot": "watch",
+   "rank": 10,
+   "rest_reason": "Watching · momentum 18",
+   "decision": null,
+   "pipeline": {
+    "signals": "3 signals, 3 counted, 3 events",
+    "score": "A 69 · M 18 · R 13 · C 76",
+    "pick": "Watching · momentum 18",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0009": {
+   "key": "GTM-0009",
+   "salesforce_id": "001ORB000000009AAA",
+   "name": "Brightwater Insurance",
+   "industry": "Insurance",
+   "region": "NA",
+   "employees": 2100,
+   "type": "Prospect",
+   "motion": "New logo",
+   "baseline_score": 0.66,
+   "baseline_age_days": 1,
+   "scores": {
+    "A": 68,
+    "M": 19,
+    "R": 63,
+    "C": 80,
+    "P": 36
+   },
+   "components": {
+    "A": {
+     "fit": 68,
+     "whitespace": 70,
+     "alignment": 67
+    },
+    "M": {
+     "value": 19,
+     "raw": 0.206,
+     "events_used": 2
+    },
+    "C": [
+     "no customer call in 90 days",
+     "1 buying role unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Hold",
+    "title": "Watch for a stronger signal",
+    "who": "Avery Nolan, Director of Operations",
+    "due": null,
+    "points": [
+     "Rescore on a new executive, funding or usage event"
+    ]
+   },
+   "why": {
+    "text": "Recent engagement on 10-15 and hiring on 10-22.",
+    "refs": [
+     "ENG-0009-2",
+     "PUB-JOBS-0009-1"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "PUB-JOBS-0009-1",
+     "side": "outside",
+     "source": "Public",
+     "type": "Hiring",
+     "date": "2026-10-22",
+     "text": "3 open operations roles posted.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "ENG-0009-2",
+     "side": "inside",
+     "source": "Salesforce",
+     "type": "Engagement",
+     "date": "2026-10-15",
+     "text": "Opened the field scheduling guide and attended a webinar.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "PUB-JOBS-0009-1",
+     "lead": "PUB-JOBS-0009-1",
+     "family": "hiring",
+     "polarity": "buy",
+     "strength": 0.55,
+     "count_weight": 1,
+     "date": "2026-10-22",
+     "corroboration": 1,
+     "refs": [
+      "PUB-JOBS-0009-1"
+     ]
+    },
+    {
+     "key": "ENG-0009-2",
+     "lead": "ENG-0009-2",
+     "family": "engagement",
+     "polarity": "buy",
+     "strength": 0.56,
+     "count_weight": 1,
+     "date": "2026-10-15",
+     "corroboration": 1,
+     "refs": [
+      "ENG-0009-2"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "engaged",
+     "contact_id": "003ORB0009020000AAA",
+     "name": "Morgan Jensen",
+     "title": "CFO",
+     "last_engaged": "2026-09-23",
+     "days_since": 47
+    },
+    "champion": {
+     "state": "engaged",
+     "contact_id": "003ORB0009010000AAA",
+     "name": "Avery Nolan",
+     "title": "Director of Operations",
+     "last_engaged": "2026-10-28",
+     "days_since": 12
+    },
+    "technical_evaluator": {
+     "state": "missing"
+    },
+    "executive_sponsor": {
+     "state": "mapped",
+     "contact_id": "003ORB0009000000AAA",
+     "name": "Quinn Hughes",
+     "title": "COO",
+     "last_engaged": "2026-08-16",
+     "days_since": 85
+    }
+   },
+   "blocked": [],
+   "gaps": [],
+   "valuemap": [],
+   "prep": null,
+   "slot": "watch",
+   "rank": 9,
+   "rest_reason": "Watching · momentum 19",
+   "decision": null,
+   "pipeline": {
+    "signals": "2 signals, 2 counted, 2 events",
+    "score": "A 68 · M 19 · R 63 · C 80",
+    "pick": "Watching · momentum 19",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0018": {
+   "key": "GTM-0018",
+   "salesforce_id": "001ORB000000018AAA",
+   "name": "Bayview Property Management",
+   "industry": "Other",
+   "region": "NA",
+   "employees": 600,
+   "type": "Customer",
+   "motion": "Expansion",
+   "baseline_score": 0.64,
+   "baseline_age_days": 0,
+   "scores": {
+    "A": 61,
+    "M": 3,
+    "R": 50,
+    "C": 55,
+    "P": 14
+   },
+   "components": {
+    "A": {
+     "fit": 73,
+     "whitespace": 49,
+     "alignment": 51
+    },
+    "M": {
+     "value": 3,
+     "raw": 0.035,
+     "events_used": 3
+    },
+    "C": [
+     "evidence is public only",
+     "no customer call in 90 days",
+     "1 buying role unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Hold",
+    "title": "Watch for a stronger signal",
+    "who": "You",
+    "due": null,
+    "points": [
+     "Rescore on a new executive, funding or usage event"
+    ]
+   },
+   "why": {
+    "text": "Recent intent on 10-10 and intent on 09-12.",
+    "refs": [
+     "INTENT-0018-2",
+     "INTENT-0018-3"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "INTENT-0018-2",
+     "side": "outside",
+     "source": "Intent",
+     "type": "Intent",
+     "date": "2026-10-10",
+     "text": "\"workforce scheduling\" at 55/100.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "INTENT-0018-3",
+     "side": "outside",
+     "source": "Intent",
+     "type": "Intent",
+     "date": "2026-09-12",
+     "text": "\"workforce scheduling\" at 61/100.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "INTENT-0018-1",
+     "side": "outside",
+     "source": "Intent",
+     "type": "Intent",
+     "date": "2026-09-09",
+     "text": "\"workforce scheduling\" at 47/100.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "INTENT-0018-2",
+     "lead": "INTENT-0018-2",
+     "family": "intent",
+     "polarity": "buy",
+     "strength": 0.59,
+     "count_weight": 1,
+     "date": "2026-10-10",
+     "corroboration": 1,
+     "refs": [
+      "INTENT-0018-2"
+     ]
+    },
+    {
+     "key": "INTENT-0018-3",
+     "lead": "INTENT-0018-3",
+     "family": "intent",
+     "polarity": "buy",
+     "strength": 0.57,
+     "count_weight": 1,
+     "date": "2026-09-12",
+     "corroboration": 1,
+     "refs": [
+      "INTENT-0018-3"
+     ]
+    },
+    {
+     "key": "INTENT-0018-1",
+     "lead": "INTENT-0018-1",
+     "family": "intent",
+     "polarity": "buy",
+     "strength": 0.31,
+     "count_weight": 1,
+     "date": "2026-09-09",
+     "corroboration": 1,
+     "refs": [
+      "INTENT-0018-1"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "engaged",
+     "contact_id": "003ORB0018000000AAA",
+     "name": "Devon Nolan",
+     "title": "CFO",
+     "last_engaged": "2026-10-09",
+     "days_since": 31
+    },
+    "champion": {
+     "state": "missing"
+    },
+    "technical_evaluator": {
+     "state": "mapped",
+     "contact_id": "003ORB0018020000AAA",
+     "name": "Sage Abbott",
+     "title": "IT Manager",
+     "last_engaged": null,
+     "days_since": null
+    },
+    "executive_sponsor": {
+     "state": "mapped",
+     "contact_id": "003ORB0018010000AAA",
+     "name": "Sage Garcia",
+     "title": "COO",
+     "last_engaged": "2026-06-19",
+     "days_since": 143
+    }
+   },
+   "blocked": [],
+   "gaps": [],
+   "valuemap": [],
+   "prep": null,
+   "slot": "watch",
+   "rank": 18,
+   "rest_reason": "Watching · momentum 3",
+   "decision": null,
+   "pipeline": {
+    "signals": "3 signals, 3 counted, 3 events",
+    "score": "A 61 · M 3 · R 50 · C 55",
+    "pick": "Watching · momentum 3",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0008": {
+   "key": "GTM-0008",
+   "salesforce_id": "001ORB000000008AAA",
+   "name": "Lumen Arc Media",
+   "industry": "Media",
+   "region": "NA",
+   "employees": 800,
+   "type": "Prospect",
+   "motion": "New logo",
+   "baseline_score": 0.63,
+   "baseline_age_days": 0,
+   "scores": {
+    "A": 58,
+    "M": 7,
+    "R": 13,
+    "C": 76,
+    "P": 20
+   },
+   "components": {
+    "A": {
+     "fit": 52,
+     "whitespace": 68,
+     "alignment": 57
+    },
+    "M": {
+     "value": 7,
+     "raw": 0.068,
+     "events_used": 3
+    },
+    "C": [
+     "no customer call in 90 days",
+     "3 buying roles unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Hold",
+    "title": "Watch for a stronger signal",
+    "who": "Sage Shah, Director of Operations",
+    "due": null,
+    "points": [
+     "Rescore on a new executive, funding or usage event"
+    ]
+   },
+   "why": {
+    "text": "Recent intent on 10-12 and intent on 10-17.",
+    "refs": [
+     "INTENT-0008-1",
+     "INTENT-0008-3"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "INTENT-0008-3",
+     "side": "outside",
+     "source": "Intent",
+     "type": "Intent",
+     "date": "2026-10-17",
+     "text": "\"workforce scheduling\" at 61/100.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "INTENT-0008-1",
+     "side": "outside",
+     "source": "Intent",
+     "type": "Intent",
+     "date": "2026-10-12",
+     "text": "\"workforce scheduling\" at 59/100.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "ENG-0008-2",
+     "side": "inside",
+     "source": "Salesforce",
+     "type": "Engagement",
+     "date": "2026-08-31",
+     "text": "Opened the field scheduling guide and attended a webinar.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "INTENT-0008-3",
+     "lead": "INTENT-0008-3",
+     "family": "intent",
+     "polarity": "buy",
+     "strength": 0.37,
+     "count_weight": 1,
+     "date": "2026-10-17",
+     "corroboration": 1,
+     "refs": [
+      "INTENT-0008-3"
+     ]
+    },
+    {
+     "key": "INTENT-0008-1",
+     "lead": "INTENT-0008-1",
+     "family": "intent",
+     "polarity": "buy",
+     "strength": 0.58,
+     "count_weight": 1,
+     "date": "2026-10-12",
+     "corroboration": 1,
+     "refs": [
+      "INTENT-0008-1"
+     ]
+    },
+    {
+     "key": "ENG-0008-2",
+     "lead": "ENG-0008-2",
+     "family": "engagement",
+     "polarity": "buy",
+     "strength": 0.31,
+     "count_weight": 1,
+     "date": "2026-08-31",
+     "corroboration": 1,
+     "refs": [
+      "ENG-0008-2"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "missing"
+    },
+    "champion": {
+     "state": "mapped",
+     "contact_id": "003ORB0008000000AAA",
+     "name": "Sage Shah",
+     "title": "Director of Operations",
+     "last_engaged": "2026-07-20",
+     "days_since": 112
+    },
+    "technical_evaluator": {
+     "state": "missing"
+    },
+    "executive_sponsor": {
+     "state": "missing"
+    }
+   },
+   "blocked": [],
+   "gaps": [
+    {
+     "type": "Champion risk",
+     "severity": "high",
+     "refs": [],
+     "text": "Sage Shah has not engaged in 112 days."
+    }
+   ],
+   "valuemap": [],
+   "prep": null,
+   "slot": "watch",
+   "rank": 14,
+   "rest_reason": "Watching · momentum 7",
+   "decision": null,
+   "pipeline": {
+    "signals": "3 signals, 3 counted, 3 events",
+    "score": "A 58 · M 7 · R 13 · C 76",
+    "pick": "Watching · momentum 7",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0020": {
+   "key": "GTM-0020",
+   "salesforce_id": "001ORB000000020AAA",
+   "name": "Cascade Water District",
+   "industry": "Government",
+   "region": "NA",
+   "employees": 450,
+   "type": "Prospect",
+   "motion": "New logo",
+   "baseline_score": 0.61,
+   "baseline_age_days": 1,
+   "scores": {
+    "A": 56,
+    "M": 11,
+    "R": 13,
+    "C": 76,
+    "P": 25
+   },
+   "components": {
+    "A": {
+     "fit": 60,
+     "whitespace": 54,
+     "alignment": 47
+    },
+    "M": {
+     "value": 11,
+     "raw": 0.112,
+     "events_used": 3
+    },
+    "C": [
+     "no customer call in 90 days",
+     "3 buying roles unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Hold",
+    "title": "Watch for a stronger signal",
+    "who": "Sage Ortiz, Director of Operations",
+    "due": null,
+    "points": [
+     "Rescore on a new executive, funding or usage event"
+    ]
+   },
+   "why": {
+    "text": "Recent intent on 09-21 and engagement on 10-28.",
+    "refs": [
+     "INTENT-0020-2",
+     "ENG-0020-3"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "ENG-0020-3",
+     "side": "inside",
+     "source": "Salesforce",
+     "type": "Engagement",
+     "date": "2026-10-28",
+     "text": "Opened the field scheduling guide and attended a webinar.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "INTENT-0020-2",
+     "side": "outside",
+     "source": "Intent",
+     "type": "Intent",
+     "date": "2026-09-21",
+     "text": "\"workforce scheduling\" at 62/100.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "INTENT-0020-1",
+     "side": "outside",
+     "source": "Intent",
+     "type": "Intent",
+     "date": "2026-09-01",
+     "text": "\"workforce scheduling\" at 57/100.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "ENG-0020-3",
+     "lead": "ENG-0020-3",
+     "family": "engagement",
+     "polarity": "buy",
+     "strength": 0.38,
+     "count_weight": 1,
+     "date": "2026-10-28",
+     "corroboration": 1,
+     "refs": [
+      "ENG-0020-3"
+     ]
+    },
+    {
+     "key": "INTENT-0020-2",
+     "lead": "INTENT-0020-2",
+     "family": "intent",
+     "polarity": "buy",
+     "strength": 0.42,
+     "count_weight": 1,
+     "date": "2026-09-21",
+     "corroboration": 1,
+     "refs": [
+      "INTENT-0020-2"
+     ]
+    },
+    {
+     "key": "INTENT-0020-1",
+     "lead": "INTENT-0020-1",
+     "family": "intent",
+     "polarity": "buy",
+     "strength": 0.33,
+     "count_weight": 1,
+     "date": "2026-09-01",
+     "corroboration": 1,
+     "refs": [
+      "INTENT-0020-1"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "missing"
+    },
+    "champion": {
+     "state": "mapped",
+     "contact_id": "003ORB0020000000AAA",
+     "name": "Sage Ortiz",
+     "title": "Director of Operations",
+     "last_engaged": "2026-08-12",
+     "days_since": 89
+    },
+    "technical_evaluator": {
+     "state": "missing"
+    },
+    "executive_sponsor": {
+     "state": "missing"
+    }
+   },
+   "blocked": [],
+   "gaps": [
+    {
+     "type": "Champion risk",
+     "severity": "high",
+     "refs": [],
+     "text": "Sage Ortiz has not engaged in 89 days."
+    }
+   ],
+   "valuemap": [],
+   "prep": null,
+   "slot": "watch",
+   "rank": 12,
+   "rest_reason": "Watching · momentum 11",
+   "decision": null,
+   "pipeline": {
+    "signals": "3 signals, 3 counted, 3 events",
+    "score": "A 56 · M 11 · R 13 · C 76",
+    "pick": "Watching · momentum 11",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0006": {
+   "key": "GTM-0006",
+   "salesforce_id": "001ORB000000006AAA",
+   "name": "Tessellate Retail Group",
+   "industry": "Retail",
+   "region": "APAC",
+   "employees": 5200,
+   "type": "Customer",
+   "motion": "Expansion",
+   "baseline_score": 0.58,
+   "baseline_age_days": 3,
+   "scores": {
+    "A": 68,
+    "M": 28,
+    "R": 25,
+    "C": 76,
+    "P": 44
+   },
+   "components": {
+    "A": {
+     "fit": 73,
+     "whitespace": 65,
+     "alignment": 58
+    },
+    "M": {
+     "value": 28,
+     "raw": 0.329,
+     "events_used": 3
+    },
+    "C": [
+     "no customer call in 90 days",
+     "3 buying roles unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Hold",
+    "title": "Watch for a stronger signal",
+    "who": "You",
+    "due": null,
+    "points": [
+     "Rescore on a new executive, funding or usage event"
+    ]
+   },
+   "why": {
+    "text": "Recent engagement on 10-28 and hiring on 09-28.",
+    "refs": [
+     "ENG-0006-3",
+     "PUB-JOBS-0006-2"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "ENG-0006-3",
+     "side": "inside",
+     "source": "Salesforce",
+     "type": "Engagement",
+     "date": "2026-10-28",
+     "text": "Opened the field scheduling guide and attended a webinar.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "ENG-0006-1",
+     "side": "inside",
+     "source": "Salesforce",
+     "type": "Engagement",
+     "date": "2026-10-27",
+     "text": "Opened the field scheduling guide and attended a webinar.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "PUB-JOBS-0006-2",
+     "side": "outside",
+     "source": "Public",
+     "type": "Hiring",
+     "date": "2026-09-28",
+     "text": "1 open operations roles posted.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "ENG-0006-3",
+     "lead": "ENG-0006-3",
+     "family": "engagement",
+     "polarity": "buy",
+     "strength": 0.52,
+     "count_weight": 1,
+     "date": "2026-10-28",
+     "corroboration": 1,
+     "refs": [
+      "ENG-0006-3"
+     ]
+    },
+    {
+     "key": "ENG-0006-1",
+     "lead": "ENG-0006-1",
+     "family": "engagement",
+     "polarity": "buy",
+     "strength": 0.4,
+     "count_weight": 1,
+     "date": "2026-10-27",
+     "corroboration": 1,
+     "refs": [
+      "ENG-0006-1"
+     ]
+    },
+    {
+     "key": "PUB-JOBS-0006-2",
+     "lead": "PUB-JOBS-0006-2",
+     "family": "hiring",
+     "polarity": "buy",
+     "strength": 0.51,
+     "count_weight": 1,
+     "date": "2026-09-28",
+     "corroboration": 1,
+     "refs": [
+      "PUB-JOBS-0006-2"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "missing"
+    },
+    "champion": {
+     "state": "missing"
+    },
+    "technical_evaluator": {
+     "state": "engaged",
+     "contact_id": "003ORB0006000000AAA",
+     "name": "Blake Brooks",
+     "title": "IT Manager",
+     "last_engaged": "2026-09-22",
+     "days_since": 48
+    },
+    "executive_sponsor": {
+     "state": "missing"
+    }
+   },
+   "blocked": [],
+   "gaps": [],
+   "valuemap": [],
+   "prep": null,
+   "slot": "watch",
+   "rank": 8,
+   "rest_reason": "Watching · momentum 28",
+   "decision": null,
+   "pipeline": {
+    "signals": "3 signals, 3 counted, 3 events",
+    "score": "A 68 · M 28 · R 25 · C 76",
+    "pick": "Watching · momentum 28",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0025": {
+   "key": "GTM-0025",
+   "salesforce_id": "001ORB000000025AAA",
+   "name": "Southern Cross Facilities Group",
+   "industry": "Consulting",
+   "region": "APAC",
+   "employees": 1400,
+   "type": "Prospect",
+   "motion": "New logo",
+   "baseline_score": 0.57,
+   "baseline_age_days": 0,
+   "scores": {
+    "A": 69,
+    "M": 13,
+    "R": 13,
+    "C": 51,
+    "P": 30
+   },
+   "components": {
+    "A": {
+     "fit": 74,
+     "whitespace": 67,
+     "alignment": 57
+    },
+    "M": {
+     "value": 13,
+     "raw": 0.137,
+     "events_used": 2
+    },
+    "C": [
+     "evidence is public only",
+     "no customer call in 90 days",
+     "3 buying roles unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Hold",
+    "title": "Watch for a stronger signal",
+    "who": "Morgan Garcia, Director of Operations",
+    "due": null,
+    "points": [
+     "Rescore on a new executive, funding or usage event"
+    ]
+   },
+   "why": {
+    "text": "Recent intent on 10-27 and hiring on 10-05.",
+    "refs": [
+     "INTENT-0025-1",
+     "PUB-JOBS-0025-2"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "INTENT-0025-1",
+     "side": "outside",
+     "source": "Intent",
+     "type": "Intent",
+     "date": "2026-10-27",
+     "text": "\"workforce scheduling\" at 55/100.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    },
+    {
+     "ref": "PUB-JOBS-0025-2",
+     "side": "outside",
+     "source": "Public",
+     "type": "Hiring",
+     "date": "2026-10-05",
+     "text": "1 open operations roles posted.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "INTENT-0025-1",
+     "lead": "INTENT-0025-1",
+     "family": "intent",
+     "polarity": "buy",
+     "strength": 0.41,
+     "count_weight": 1,
+     "date": "2026-10-27",
+     "corroboration": 1,
+     "refs": [
+      "INTENT-0025-1"
+     ]
+    },
+    {
+     "key": "PUB-JOBS-0025-2",
+     "lead": "PUB-JOBS-0025-2",
+     "family": "hiring",
+     "polarity": "buy",
+     "strength": 0.4,
+     "count_weight": 1,
+     "date": "2026-10-05",
+     "corroboration": 1,
+     "refs": [
+      "PUB-JOBS-0025-2"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "missing"
+    },
+    "champion": {
+     "state": "mapped",
+     "contact_id": "003ORB0025000000AAA",
+     "name": "Morgan Garcia",
+     "title": "Director of Operations",
+     "last_engaged": null,
+     "days_since": null
+    },
+    "technical_evaluator": {
+     "state": "missing"
+    },
+    "executive_sponsor": {
+     "state": "missing"
+    }
+   },
+   "blocked": [],
+   "gaps": [],
+   "valuemap": [],
+   "prep": null,
+   "slot": "watch",
+   "rank": 11,
+   "rest_reason": "Watching · momentum 13",
+   "decision": null,
+   "pipeline": {
+    "signals": "2 signals, 2 counted, 2 events",
+    "score": "A 69 · M 13 · R 13 · C 51",
+    "pick": "Watching · momentum 13",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  },
+  "GTM-0022": {
+   "key": "GTM-0022",
+   "salesforce_id": "001ORB000000022AAA",
+   "name": "Thameside Veterinary Partners",
+   "industry": "Healthcare",
+   "region": "EMEA",
+   "employees": 650,
+   "type": "Prospect",
+   "motion": "New logo",
+   "baseline_score": 0.44,
+   "baseline_age_days": 2,
+   "scores": {
+    "A": 57,
+    "M": 0,
+    "R": 38,
+    "C": 55,
+    "P": 0
+   },
+   "components": {
+    "A": {
+     "fit": 57,
+     "whitespace": 54,
+     "alignment": 61
+    },
+    "M": {
+     "value": 0,
+     "raw": 0.003,
+     "events_used": 1
+    },
+    "C": [
+     "evidence is public only",
+     "no customer call in 90 days",
+     "1 buying role unmapped"
+    ]
+   },
+   "action": {
+    "kind": "Hold",
+    "title": "Watch for a stronger signal",
+    "who": "You",
+    "due": null,
+    "points": [
+     "Rescore on a new executive, funding or usage event"
+    ]
+   },
+   "why": {
+    "text": "Recent intent on 09-08.",
+    "refs": [
+     "INTENT-0022-1"
+    ],
+    "removed": []
+   },
+   "signals": [
+    {
+     "ref": "INTENT-0022-1",
+     "side": "outside",
+     "source": "Intent",
+     "type": "Intent",
+     "date": "2026-09-08",
+     "text": "\"workforce scheduling\" at 60/100.",
+     "speaker": null,
+     "speaker_side": null,
+     "count": "counted",
+     "polarity": "buy"
+    }
+   ],
+   "events": [
+    {
+     "key": "INTENT-0022-1",
+     "lead": "INTENT-0022-1",
+     "family": "intent",
+     "polarity": "buy",
+     "strength": 0.5,
+     "count_weight": 1,
+     "date": "2026-09-08",
+     "corroboration": 1,
+     "refs": [
+      "INTENT-0022-1"
+     ]
+    }
+   ],
+   "roles": {
+    "economic_buyer": {
+     "state": "mapped",
+     "contact_id": "003ORB0022010000AAA",
+     "name": "Quinn Mendes",
+     "title": "CFO",
+     "last_engaged": "2026-09-05",
+     "days_since": 65
+    },
+    "champion": {
+     "state": "missing"
+    },
+    "technical_evaluator": {
+     "state": "mapped",
+     "contact_id": "003ORB0022020000AAA",
+     "name": "Reese Jensen",
+     "title": "IT Manager",
+     "last_engaged": "2026-08-04",
+     "days_since": 97
+    },
+    "executive_sponsor": {
+     "state": "mapped",
+     "contact_id": "003ORB0022000000AAA",
+     "name": "Taylor Hughes",
+     "title": "COO",
+     "last_engaged": "2026-08-08",
+     "days_since": 93
+    }
+   },
+   "blocked": [],
+   "gaps": [],
+   "valuemap": [],
+   "prep": null,
+   "slot": "watch",
+   "rank": 23,
+   "rest_reason": "Watching · momentum 0",
+   "decision": null,
+   "pipeline": {
+    "signals": "1 signals, 1 counted, 1 events",
+    "score": "A 57 · M 0 · R 38 · C 55",
+    "pick": "Watching · momentum 0",
+    "explain": "1 sentence drafted",
+    "validate": "All claims cited"
+   }
+  }
+ },
+ "stats": {
+  "signals_read": 61,
+  "counted": 57,
+  "not_counted": 1,
+  "context": 3,
+  "events": 56,
+  "corroborated": 4,
+  "sentences": 26,
+  "removed": 1
+ },
+ "audit": [
+  {
+   "at": "2026-11-09T06:00:04Z",
+   "actor": "scheduler",
+   "event": "FOCUS_SCORE_RUN",
+   "detail": "25 accounts scored · af_v1.0 · model scripted"
+  },
+  {
+   "at": "2026-11-09T06:01:12Z",
+   "actor": "extractor",
+   "event": "SIGNALS_READ",
+   "detail": "61 signals read · 57 counted · 1 not counted (spoken by our side)"
+  },
+  {
+   "at": "2026-11-09T06:01:40Z",
+   "actor": "extractor",
+   "event": "EVENTS_CLUSTERED",
+   "detail": "56 events · 4 corroborated"
+  },
+  {
+   "at": "2026-11-09T06:02:31Z",
+   "actor": "validator",
+   "event": "CLAIM_REMOVED",
+   "level": "WARN",
+   "detail": "Keystone Elevator Services · \"Keystone is moving off its current scheduling vendor this quarter.\" · no evidence ID"
+  },
+  {
+   "at": "2026-11-09T06:02:58Z",
+   "actor": "focus",
+   "event": "BRIEF_BUILT",
+   "detail": "Alex Rivera · 5 picks · 1 exploration slot"
+  }
+ ],
+ "evaluation": {
+  "backtest": {
+   "snapshots": 96,
+   "sellers": 8,
+   "precision_focus": 0.6875,
+   "precision_baseline": 0.64375,
+   "relative_lift": 0.06796116504854369,
+   "top_decile_lift": 1.8190954773869346,
+   "base_rate": 0.41458333333333336
+  },
+  "extraction": {
+   "segments": 214,
+   "tracker": {
+    "precision": 0.40875912408759124,
+    "recall": 0.5
+   },
+   "two_stage_rules": {
+    "precision": 0.8504672897196262,
+    "recall": 0.8125
+   }
+  },
+  "groundedness": {
+   "sentences": 26,
+   "removed": 1
+  }
+ },
+ "generated_from": "data/seed + app/lib/core.js"
+}

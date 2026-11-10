@@ -1,0 +1,21 @@
+{
+ "demo_today": "2026-11-09",
+ "owner": {
+  "id": "005ORB000000001AAA",
+  "name": "Alex Rivera",
+  "email": "ae@acme.example",
+  "slack_handle": "alex.rivera"
+ },
+ "seller": {
+  "company": "Acme",
+  "domain": "acme.example"
+ },
+ "model": "scripted",
+ "cortex_model": "mistral-large2",
+ "brief_size": 5,
+ "max_per_motion": 3,
+ "cooldown_days": 14,
+ "snooze_days": 3,
+ "min_confidence": 50,
+ "scoring_version": "af_v1.0"
+}

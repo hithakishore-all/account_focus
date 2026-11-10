@@ -1,0 +1,133 @@
+{
+ "GTM-0024": {
+  "exec": "Dana Whitfield, CFO",
+  "contact": "003ORB000000081AAA",
+  "pov": {
+   "text": "We believe split technician schedules are costing Keystone overtime and drive time it needs back for the 12% program, because each region plans crews in its own tool.",
+   "refs": [
+    "PUB-ER-0024-Q3",
+    "GONG-9120#7"
+   ]
+  },
+  "priorities": [
+   {
+    "text": "Take 12% out of service delivery cost by the end of 2027",
+    "vis": "public",
+    "ref": "PUB-ER-0024-Q3"
+   },
+   {
+    "text": "Every technician on one schedule before the spring season",
+    "vis": "internal",
+    "ref": "GONG-9120#7"
+   },
+   {
+    "text": "Fund the change in Q1 if the numbers hold",
+    "vis": "internal",
+    "ref": "GONG-9120#4"
+   }
+  ],
+  "questions": [
+   "Which cost lines does the 12% program measure first: overtime, drive time or subcontractors?",
+   "What would \"the numbers hold up\" need to show for a Q1 decision?",
+   "Who else signs off on a cross-region tool change?"
+  ],
+  "proof": "PP-BLUEPEAK",
+  "landmines": [
+   {
+    "text": "Keystone chose an incumbent over Acme on price in 2024",
+    "vis": "internal",
+    "ref": "SF-OPP-006ORB000000019AAA"
+   },
+   {
+    "text": "The Q1 budget remark was made on a private call; do not quote it back as public",
+    "vis": "internal",
+    "ref": "GONG-9120#4"
+   }
+  ],
+  "ask": "A 45-minute working session with Dana and Luis to size overtime savings for the Q1 business case."
+ },
+ "GTM-0001": {
+  "exec": "Jordan Patel, VP Business Systems",
+  "contact": "003ORB000000002AAA",
+  "pov": {
+   "text": "We believe three regional scheduling tools are slowing Northstar's dispatch, and one platform that keeps dispatch as the source of job status removes that without a risky migration.",
+   "refs": [
+    "GONG-8812#2",
+    "GONG-8812#4"
+   ]
+  },
+  "priorities": [
+   {
+    "text": "Consolidate scheduling onto one platform",
+    "vis": "internal",
+    "ref": "GONG-8812#3"
+   },
+   {
+    "text": "Keep dispatch the source for job status",
+    "vis": "internal",
+    "ref": "GONG-8812#4"
+   },
+   {
+    "text": "Decide before Q1 planning closes",
+    "vis": "internal",
+    "ref": "GONG-8812#6"
+   }
+  ],
+  "questions": [
+   "What has to be true about the dispatch integration for you to sign off?",
+   "Who owns the budget for the regional rollout?",
+   "What did the second-region rollout teach you about adoption?"
+  ],
+  "proof": "PP-HARROW",
+  "landmines": [
+   {
+    "text": "Morgan Ellis opted out of email; do not copy them",
+    "vis": "internal",
+    "ref": "SF-CON-003ORB000000003AAA"
+   }
+  ],
+  "ask": "A dispatch integration review with your system owner next week."
+ },
+ "GTM-0011": {
+  "exec": "Marcus Bell, CEO",
+  "contact": null,
+  "pov": {
+   "text": "We believe Pacific Crest can reach its 14-to-5 vendor goal faster if scheduling, dispatch sync and job notes come off three tools and onto one.",
+   "refs": [
+    "PUB-LTR-0011-2026",
+    "GONG-9033#2"
+   ]
+  },
+  "priorities": [
+   {
+    "text": "Consolidate from 14 field-software vendors to 5 by 2028",
+    "vis": "public",
+    "ref": "PUB-LTR-0011-2026"
+   },
+   {
+    "text": "Every new tool replaces one already paid for",
+    "vis": "internal",
+    "ref": "GONG-9033#5"
+   },
+   {
+    "text": "Fewer apps for technicians before the first job",
+    "vis": "internal",
+    "ref": "GONG-9033#2"
+   }
+  ],
+  "questions": [
+   "Which vendor categories are first in line for consolidation?",
+   "How will you measure the consolidation: contracts, spend or technician time?",
+   "Who decides which tools survive?"
+  ],
+  "proof": "PP-BLUEPEAK3",
+  "landmines": [
+   {
+    "text": "Our open proposal is an add-on; lead with replacement, not with that proposal",
+    "vis": "internal",
+    "ref": "SF-OPP-006ORB000000044AAA"
+   }
+  ],
+  "ask": "Agree a two-week replacement assessment with Tom Becker's team."
+ }
+}

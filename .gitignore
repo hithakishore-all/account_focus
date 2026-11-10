@@ -1,0 +1,13 @@
+# dependencies and local state
+node_modules/
+.env
+.keys/
+*.p8
+*.pem
+.DS_Store
+# Salesforce exports and the SQL generated from them contain your org's record IDs
+salesforce/exports/
+snowflake/08_sync_salesforce.sql
+# Salesforce CLI state
+.sf/
+.sfdx/

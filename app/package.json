@@ -1,0 +1,26 @@
+{
+  "name": "account-focus",
+  "version": "1.0.0",
+  "description": "Account Focus: the daily decision layer inside GTM Orbit. Five picks a day, why now, who to engage, what to do next.",
+  "license": "MIT",
+  "private": true,
+  "main": "server.js",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node server.js",
+    "offline": "node server.js --offline",
+    "fixtures": "node scripts/build-fixtures.js",
+    "engine-sql": "node scripts/build-engine-sql.js",
+    "demo": "node scripts/build-demo.js",
+    "send-brief": "node scripts/send-brief.js",
+    "sync-sql": "node scripts/build-sync-sql.js",
+    "test": "node --test test/engine.test.js test/smoke.test.js"
+  },
+  "dependencies": {
+    "@slack/bolt": "5.1.0",
+    "@slack/web-api": "8.3.0",
+    "dotenv": "18.0.8",
+    "express": "5.3.0",
+    "snowflake-sdk": "3.4.0"
+  }
+}

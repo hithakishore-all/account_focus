@@ -1,0 +1,47 @@
+{
+ "value_props": [
+  {
+   "id": "VP-ONE-SCHEDULE",
+   "text": "One schedule for every technician cuts drive time and overtime",
+   "themes": [
+    "cost",
+    "consolidation"
+   ]
+  },
+  {
+   "id": "VP-DISPATCH-CONNECT",
+   "text": "Dispatch Connect syncs job status both ways; your dispatch system stays the system of record",
+   "themes": [
+    "integration"
+   ]
+  },
+  {
+   "id": "VP-REPLACE",
+   "text": "Scheduling, dispatch sync and job notes in one platform, with named tools retired",
+   "themes": [
+    "consolidation"
+   ]
+  },
+  {
+   "id": "VP-SCALE",
+   "text": "Scale scheduling from one division to many without new tools",
+   "themes": [
+    "growth"
+   ]
+  }
+ ],
+ "proof_points": [
+  {
+   "id": "PP-BLUEPEAK",
+   "text": "Bluepeak Utilities (fictional): overtime down 18% in two quarters after moving 600 technicians to one schedule."
+  },
+  {
+   "id": "PP-BLUEPEAK3",
+   "text": "Bluepeak Utilities (fictional): retired three field tools in one quarter."
+  },
+  {
+   "id": "PP-HARROW",
+   "text": "Harrow Lifts (fictional): connected to their dispatch system and live across 4 regions in 9 weeks."
+  }
+ ]
+}

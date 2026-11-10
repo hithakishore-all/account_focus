@@ -1,0 +1,390 @@
+/*
+ * Account Focus core engine.
+ *
+ * One file, two runtimes: Node (offline mode, tests, fixture builds) and a Snowflake
+ * JavaScript stored procedure (live mode; snowflake/05_engine.sql is generated from this file).
+ * Keep it dependency-free and plain JavaScript so both runtimes run the same code.
+ *
+ * buildRun(input) turns raw inputs (accounts, signals, contacts, drafts, prep, catalog,
+ * value map, config, feedback) into one run: scores, picks, explanations, gaps and an audit trail.
+ * Numbers are deterministic. Language comes from drafts (scripted or a model) and is passed
+ * through the validator, which removes any sentence without valid evidence.
+ */
+function AccountFocusCore() {
+  var FAMILY = {
+    gong_buying: { w: 1.0, h: 30 }, opportunity: { w: 0.9, h: 21 }, usage: { w: 0.8, h: 21 },
+    renewal: { w: 0.8, h: 60 }, exec_change: { w: 0.7, h: 90 }, engagement: { w: 0.5, h: 14 },
+    intent: { w: 0.4, h: 10 }, hiring: { w: 0.3, h: 45 }, strategy: { w: 0.3, h: 180 }, firmographic: { w: 0, h: 1 }
+  };
+  var ROLES = ['economic_buyer', 'champion', 'technical_evaluator', 'executive_sponsor'];
+  var ROLE_NAMES = { economic_buyer: 'Economic buyer', champion: 'Champion', technical_evaluator: 'Technical evaluator', executive_sponsor: 'Executive sponsor' };
+  var NO_PICK = { Research: 1, Deprioritize: 1, Verify: 1, Hold: 1 };
+
+  function days(a, b) { return Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / 86400000); }
+  function addDays(iso, n) { return new Date(Date.parse(iso + 'T00:00:00Z') + n * 86400000).toISOString().slice(0, 10); }
+  function clamp(x, lo, hi) { return Math.max(lo, Math.min(hi, x)); }
+  function round(x) { return x == null ? null : Math.round(x); }
+
+  /* How much a signal counts toward momentum. A tracker hit spoken by our own seller counts 0;
+     a statement from a speaker we could not match to a CRM contact counts half. */
+  function countWeight(s) {
+    if (s.source === 'Gong' && s.speaker_side === 'seller') return 0;
+    if (s.speaker_matched === false) return 0.5;
+    return 1;
+  }
+  function countLabel(cw) { return cw === 1 ? 'counted' : cw === 0.5 ? 'half' : 'not_counted'; }
+
+  /* Signals that describe the same thing (a CFO's budget remark and the opportunity it created)
+     form one event. Corroboration = number of distinct sources behind it. */
+  function clusterEvents(signals) {
+    var byKey = {}, order = [];
+    signals.forEach(function (s) {
+      if (!byKey[s.event]) { byKey[s.event] = []; order.push(s.event); }
+      byKey[s.event].push(s);
+    });
+    return order.map(function (k) {
+      var list = byKey[k], lead = null, best = -1, sources = {}, latest = list[0].date;
+      list.forEach(function (s) {
+        var cw = countWeight(s), fam = FAMILY[s.family] || { w: 0.3, h: 30 };
+        var v = Math.abs(s.strength) * fam.w * cw;
+        if (v > best) { best = v; lead = s; }
+        if (cw > 0 && s.strength !== 0) sources[s.source] = 1;
+        if (s.date > latest) latest = s.date;
+      });
+      return { key: k, lead: lead.ref, family: lead.family, polarity: lead.polarity, strength: lead.strength,
+               count_weight: countWeight(lead), date: latest, corroboration: Math.max(1, Object.keys(sources).length),
+               refs: list.map(function (s) { return s.ref; }) };
+    });
+  }
+
+  function momentum(events, motion, today) {
+    var want = motion === 'Renewal risk' ? 'risk' : 'buy', x = 0, used = 0;
+    events.forEach(function (e) {
+      if (e.polarity !== want) return;
+      var fam = FAMILY[e.family] || { w: 0.3, h: 30 };
+      if (fam.w === 0 || e.count_weight === 0 || e.strength === 0) return;
+      var age = Math.max(0, days(e.date, today));
+      x += e.strength * fam.w * e.count_weight * Math.pow(2, -age / fam.h) * (1 + 0.25 * Math.min(e.corroboration - 1, 2));
+      used++;
+    });
+    return { value: round(100 * (1 - Math.exp(-Math.max(0, x)))), raw: Math.round(x * 1000) / 1000, events_used: used };
+  }
+
+  function attractiveness(a) {
+    if (a.fit == null) return null;
+    return round(0.5 * a.fit + 0.3 * a.whitespace + 0.2 * a.alignment);
+  }
+
+  function readiness(contacts, today) {
+    var roles = {}, sum = 0, blocked = [];
+    contacts.forEach(function (c) { if (c.opted_out || c.do_not_call) blocked.push(c); });
+    ROLES.forEach(function (r) {
+      var holders = contacts.filter(function (c) { return c.role === r && !c.opted_out && !c.do_not_call; });
+      var best = null, score = 0;
+      holders.forEach(function (c) {
+        var s = c.last_engaged && days(c.last_engaged, today) <= 60 ? 1 : 0.5;
+        if (s > score || (s === score && c.last_engaged && (!best || !best.last_engaged || c.last_engaged > best.last_engaged))) { score = s; best = c; }
+      });
+      roles[r] = best ? { state: score === 1 ? 'engaged' : 'mapped', contact_id: best.id, name: best.name, title: best.title,
+                          last_engaged: best.last_engaged, days_since: best.last_engaged ? days(best.last_engaged, today) : null }
+                      : { state: 'missing' };
+      sum += score;
+    });
+    return { value: round(sum / ROLES.length * 100), roles: roles,
+             blocked: blocked.map(function (c) { return { name: c.name, title: c.title, reason: c.opted_out ? 'opted out of email' : 'do not call' }; }) };
+  }
+
+  function confidence(a, signals, rd, today) {
+    var c = 92, why = [];
+    function hit(n, t) { c -= n; why.push(t); }
+    if (a.baseline_score == null) hit(30, 'no baseline score');
+    else if (a.baseline_age_days > 3) hit(20, 'baseline score ' + a.baseline_age_days + ' days old');
+    if (signals.some(function (s) { return s.speaker_matched === false; })) hit(25, 'a call speaker is not matched to a CRM contact');
+    var live = signals.filter(function (s) { return countWeight(s) > 0 && s.strength !== 0; });
+    var inside = live.filter(function (s) { return s.side === 'inside'; }).length;
+    if (live.length && !inside) hit(25, 'evidence is public only');
+    if (a.employees == null) hit(30, 'missing firmographics');
+    var recentCall = signals.some(function (s) { return s.source === 'Gong' && s.speaker_side === 'customer' && days(s.date, today) <= 90; });
+    if (!recentCall) hit(10, 'no customer call in 90 days');
+    var missing = ROLES.filter(function (r) { return rd.roles[r].state === 'missing'; }).length;
+    if (missing) hit(2 * missing, missing + ' buying role' + (missing > 1 ? 's' : '') + ' unmapped');
+    return { value: clamp(c, 0, 100), reasons: why };
+  }
+
+  function route(a, s) {
+    if (s.A == null || s.M == null) return 'Research';
+    if (s.A < 40) return 'Deprioritize';
+    if (s.C < 50) return 'Verify';
+    if (a.motion === 'Renewal risk') return 'Rescue';
+    if (s.M < 35) return 'Hold';
+    if (s.R < 40) return 'Multithread';
+    if (a.motion === 'Expansion') return 'Expand';
+    return 'Pursue';
+  }
+
+  function detectGaps(a, signals, contacts, rd, s, today) {
+    var gaps = [];
+    var custSpeakers = {};
+    signals.forEach(function (x) { if (x.source === 'Gong' && x.speaker_side === 'customer' && x.speaker_matched !== false && days(x.date, today) <= 90) custSpeakers[x.speaker] = x.ref; });
+    var speakers = Object.keys(custSpeakers);
+    if (s.M != null && s.M >= 60 && speakers.length === 1 && a.motion !== 'Renewal risk') {
+      gaps.push({ type: 'Single-threaded', severity: 'high', refs: signals.filter(function (x) { return x.speaker === speakers[0]; }).slice(0, 3).map(function (x) { return x.ref; }),
+        text: 'Every customer statement in the last 90 days comes from ' + speakers[0].split(',')[0] + '. Bring in the people who own the budget and the decision.' });
+    }
+    signals.forEach(function (x) {
+      if (x.family === 'exec_change' && x.exec_name && days(x.date, today) <= 90) {
+        var met = contacts.some(function (c) { return c.name === x.exec_name && c.last_engaged; });
+        if (!met) gaps.push({ type: 'New executive, no relationship', severity: 'high', refs: [x.ref],
+          text: x.exec_name + ' started ' + days(x.date, today) + ' days ago and nobody at the seller has met them.' });
+      }
+      if (x.type === 'Commitment' && x.commitment_fulfilled === false && days(x.date, today) > 21) {
+        gaps.push({ type: 'Stalled commitment', severity: 'medium', refs: [x.ref],
+          text: 'The customer committed to a next step ' + days(x.date, today) + ' days ago and it has not happened.' });
+      }
+      if (x.next_step_open_days && x.next_step_open_days > 14) {
+        gaps.push({ type: 'Stalled next step', severity: 'medium', refs: [x.ref],
+          text: 'The opportunity\'s next step has been open ' + x.next_step_open_days + ' days.' });
+      }
+    });
+    var champ = rd.roles.champion;
+    if (champ.state !== 'missing' && champ.days_since != null && champ.days_since > 45 && s.A != null && s.A >= 40) {
+      gaps.push({ type: 'Champion risk', severity: 'high', refs: signals.filter(function (x) { return x.speaker && x.speaker.indexOf(champ.name) === 0; }).map(function (x) { return x.ref; }).slice(0, 2),
+        text: champ.name + ' has not engaged in ' + champ.days_since + ' days.' });
+    }
+    var consol = signals.filter(function (x) { return x.themes && x.themes.indexOf('consolidation') >= 0 && countWeight(x) > 0; });
+    var addon = signals.filter(function (x) { return x.pitch === 'add-on'; });
+    if (consol.length && addon.length) {
+      gaps.push({ type: 'Narrative mismatch', severity: 'high', refs: consol.map(function (x) { return x.ref; }).concat(addon.map(function (x) { return x.ref; })).slice(0, 3),
+        text: 'The customer is asking for consolidation, but the open opportunity is pitched as an add-on. Reframe it as a replacement.' });
+    }
+    if (signals.some(function (x) { return x.speaker_matched === false; })) {
+      gaps.push({ type: 'Identity unverified', severity: 'high', refs: signals.filter(function (x) { return x.speaker_matched === false; }).map(function (x) { return x.ref; }).slice(0, 2),
+        text: 'A call speaker is not matched to any CRM contact. Confirm who they are before treating them as a champion.' });
+    }
+    if (s.A != null && s.A >= 40 && s.M != null && s.M >= 35) {
+      ROLES.forEach(function (r) {
+        var x = rd.roles[r];
+        if (x.state === 'mapped' && r === 'executive_sponsor') gaps.push({ type: 'Executive sponsor not engaged', severity: 'low', refs: ['SF-CON-' + x.contact_id],
+          text: x.name + (x.title ? ' (' + x.title + ')' : '') + ' is mapped as executive sponsor but has not joined a call.' });
+      });
+    }
+    return gaps;
+  }
+
+  /* Validator: every sentence must cite at least one evidence ID that exists for this account. */
+  function validate(sentences, index) {
+    var kept = [], removed = [];
+    (sentences || []).forEach(function (x) {
+      var refs = (x.refs || []).filter(function (r) { return index[r]; });
+      if (!x.refs || !x.refs.length || refs.length !== x.refs.length) removed.push({ text: x.text, reason: !x.refs || !x.refs.length ? 'no evidence ID' : 'cites evidence that does not exist' });
+      else kept.push({ text: x.text, refs: refs });
+    });
+    return { kept: kept, removed: removed };
+  }
+
+  function templateWhy(a, events, signalsByRef, rd, kind) {
+    var top = events.filter(function (e) { return e.count_weight > 0 && e.strength > 0; })
+      .sort(function (x, y) { return y.strength - x.strength; }).slice(0, 2);
+    if (!top.length) return [{ text: 'No recent buying signals for this account.', refs: events.length ? [events[0].lead] : [] }];
+    var parts = top.map(function (e) { var s = signalsByRef[e.lead]; return s.type.toLowerCase() + ' on ' + s.date.slice(5); });
+    var sentence = 'Recent ' + parts.join(' and ') + '.';
+    return [{ text: sentence.charAt(0).toUpperCase() + sentence.slice(1), refs: top.map(function (e) { return e.lead; }) }];
+  }
+
+  function templateAction(a, kind, rd, cfg) {
+    var missing = ROLES.filter(function (r) { return rd.roles[r].state === 'missing'; }).map(function (r) { return ROLE_NAMES[r].toLowerCase(); });
+    var champ = rd.roles.champion.name;
+    var T = {
+      Pursue: { title: 'Book a discovery call with ' + (champ || 'the operations lead'), points: ['Lead with the strongest signal', 'Confirm budget owner and timing'] },
+      Expand: { title: 'Propose the next expansion step', points: ['Show current usage', 'Name the team that would join next'] },
+      Multithread: { title: 'Find the ' + (missing[0] || 'missing buyer'), points: ['Ask ' + (champ || 'your contact') + ' for an introduction', 'Missing: ' + (missing.join(', ') || 'none')] },
+      Rescue: { title: 'Re-engage the champion before the renewal', points: ['Lead with a fix for any open issue', 'Propose a review with their leadership'] },
+      Hold: { title: 'Watch for a stronger signal', points: ['Rescore on a new executive, funding or usage event'] },
+      Verify: { title: 'Check the data before acting', points: ['Fix the low-confidence inputs', 'The account is rescored within the hour'] },
+      Deprioritize: { title: 'Skip this account for now', points: ['Rescore only if the fit changes'] },
+      Research: { title: 'Fill in the basics so it can be scored', points: ['Add employee count and industry', 'Find one operations leader'] }
+    };
+    var t = T[kind];
+    return { title: t.title, who: champ ? champ + (rd.roles.champion.title ? ', ' + rd.roles.champion.title : '') : 'You', due: null, points: t.points };
+  }
+
+  function buildRun(input, hooks) {
+    hooks = hooks || {};
+    var cfg = input.config, today = cfg.demo_today;
+    var byAcc = function (list) { var m = {}; list.forEach(function (x) { (m[x.account] = m[x.account] || []).push(x); }); return m; };
+    var sigBy = byAcc(input.signals), conBy = byAcc(input.contacts), vmBy = byAcc(input.valuemap || []);
+    var catalog = input.catalog || { value_props: [], proof_points: [] };
+    var vp = {}, pp = {};
+    catalog.value_props.forEach(function (x) { vp[x.id] = x; });
+    catalog.proof_points.forEach(function (x) { pp[x.id] = x; });
+    var feedback = (input.feedback || []).slice().sort(function (x, y) { return x.at < y.at ? -1 : 1; });
+    var audit = [], stats = { signals_read: 0, counted: 0, not_counted: 0, events: 0, corroborated: 0, sentences: 0, removed: [] };
+    var out = {};
+
+    input.accounts.forEach(function (a) {
+      var signals = (sigBy[a.key] || []).slice().sort(function (x, y) { return x.date < y.date ? 1 : x.date > y.date ? -1 : (x.ref < y.ref ? -1 : 1); });
+      var contacts = conBy[a.key] || [];
+      var index = {}, signalsByRef = {};
+      signals.forEach(function (s) { index[s.ref] = 1; signalsByRef[s.ref] = s; });
+      contacts.forEach(function (c) { index['SF-CON-' + c.id] = 1; });
+      var events = clusterEvents(signals);
+      var mo = momentum(events, a.motion, today);
+      var rd = readiness(contacts, today);
+      var A = attractiveness(a), M = A == null ? null : mo.value;
+      var cf = confidence(a, signals, rd, today);
+      var s = { A: A, M: M, R: rd.value, C: cf.value, P: A == null || M == null ? null : round(Math.sqrt(A * M)) };
+      var kind = route(a, s);
+      var draft = (input.drafts || {})[a.key];
+      var why = draft ? draft.why_now : templateWhy(a, events, signalsByRef, rd, kind);
+      if (hooks.draftWhyNow && !NO_PICK[kind]) {
+        var model = hooks.draftWhyNow(a, signals.filter(function (x) { return countWeight(x) > 0; }), s, kind);
+        if (model && model.length) why = model;
+      }
+      var v = validate(why, index);
+      if (!v.kept.length) v.kept = [{ text: 'Not enough cited evidence to explain this pick yet.', refs: [] }];
+      stats.sentences += why.length;
+      v.removed.forEach(function (r) { stats.removed.push({ account: a.name, text: r.text, reason: r.reason }); });
+      var act = draft && draft.action ? draft.action : templateAction(a, kind, rd, cfg);
+      var prep = null;
+      var pr = (input.prep || {})[a.key];
+      if (pr) {
+        var pv = validate([pr.pov], index);
+        prep = { exec: pr.exec, contact: pr.contact, pov: pv.kept[0] || null,
+                 priorities: pr.priorities.filter(function (x) { return index[x.ref]; }),
+                 questions: pr.questions, proof: pp[pr.proof] ? pp[pr.proof].text : null,
+                 landmines: pr.landmines.filter(function (x) { return index[x.ref]; }), ask: pr.ask,
+                 removed: pv.removed.length + pr.priorities.filter(function (x) { return !index[x.ref]; }).length + pr.landmines.filter(function (x) { return !index[x.ref]; }).length };
+      }
+      var sigOut = signals.map(function (x) {
+        var cw = countWeight(x);
+        var label = x.strength === 0 ? 'context' : countLabel(cw);
+        if (label === 'context') stats.context = (stats.context || 0) + 1;
+        else if (cw > 0) stats.counted++; else stats.not_counted++;
+        return { ref: x.ref, side: x.side, source: x.source, type: x.type, date: x.date, text: x.text, speaker: x.speaker,
+                 speaker_side: x.speaker_side, count: label, polarity: x.polarity };
+      });
+      stats.signals_read += signals.length;
+      stats.events += events.length;
+      stats.corroborated += events.filter(function (e) { return e.corroboration > 1; }).length;
+      out[a.key] = {
+        key: a.key, salesforce_id: a.salesforce_id, name: a.name, industry: a.industry, region: a.region, employees: a.employees,
+        type: a.type, motion: a.motion, baseline_score: a.baseline_score, baseline_age_days: a.baseline_age_days,
+        scores: s, components: { A: { fit: a.fit, whitespace: a.whitespace, alignment: a.alignment }, M: mo, C: cf.reasons },
+        action: { kind: kind, title: act.title, who: act.who, due: act.due, points: act.points },
+        why: { text: v.kept.map(function (x) { return x.text; }).join(' '), refs: v.kept.reduce(function (r, x) { return r.concat(x.refs); }, []), removed: v.removed },
+        signals: sigOut, events: events, roles: rd.roles, blocked: rd.blocked,
+        gaps: detectGaps(a, signals, contacts, rd, s, today),
+        valuemap: (vmBy[a.key] || []).map(function (m) { return { priority: m.priority, ref: m.ref, vis: m.vis,
+          value_prop: vp[m.value_prop] ? vp[m.value_prop].text : null, proof: pp[m.proof] ? pp[m.proof].text : null,
+          inside: m.inside && signalsByRef[m.inside] ? signalsByRef[m.inside].text : null, inside_ref: m.inside }; }),
+        prep: prep, slot: null, rank: null, rest_reason: null, decision: null
+      };
+    });
+
+    // cooldowns from earlier decisions
+    var cooled = {}, decisions = {};
+    feedback.forEach(function (f) {
+      decisions[f.account] = f;
+      var d = f.at.slice(0, 10);
+      if (f.decision === 'rejected' && d < today && days(d, today) < cfg.cooldown_days) {
+        var strong = (sigBy[f.account] || []).some(function (x) { return x.date > d && Math.abs(x.strength) >= 0.7 && countWeight(x) > 0; });
+        if (!strong) cooled[f.account] = addDays(d, cfg.cooldown_days);
+      }
+      if (f.decision === 'snoozed' && d < today && days(d, today) < cfg.snooze_days) cooled[f.account] = addDays(d, cfg.snooze_days);
+    });
+
+    // assemble the brief
+    var all = Object.keys(out).sort().map(function (k) { return out[k]; });
+    var ranked = all.filter(function (x) { return x.scores.P != null; }).sort(function (x, y) { return y.scores.P - x.scores.P || y.scores.A - x.scores.A || (x.key < y.key ? -1 : 1); });
+    ranked.forEach(function (x, i) { x.rank = i + 1; });
+    var eligible = ranked.filter(function (x) { return !NO_PICK[x.action.kind] && x.scores.C >= cfg.min_confidence && !cooled[x.key]; });
+    var picks = [], perMotion = {}, ranks = cfg.brief_size - 1;
+    eligible.forEach(function (x) {
+      if (picks.length >= ranks) return;
+      if ((perMotion[x.motion] || 0) >= cfg.max_per_motion) return;
+      picks.push(x); perMotion[x.motion] = (perMotion[x.motion] || 0) + 1; x.slot = 'ranked';
+    });
+    var explore = eligible.filter(function (x) { return !x.slot && (perMotion[x.motion] || 0) < cfg.max_per_motion; })
+      .sort(function (x, y) { return y.scores.A - x.scores.A || x.scores.C - y.scores.C; })[0];
+    if (explore) { explore.slot = 'exploration'; picks.push(explore); }
+    all.forEach(function (x) {
+      if (x.slot) return;
+      if (cooled[x.key]) { x.slot = 'cooldown'; x.rest_reason = 'Rejected or snoozed · back ' + cooled[x.key]; return; }
+      var k = x.action.kind;
+      x.slot = x.scores.P == null ? 'unscored' : k === 'Deprioritize' ? 'deprioritized' : k === 'Verify' ? 'verify' : k === 'Hold' ? 'watch' : 'held';
+      x.rest_reason = x.scores.P == null ? 'Not scored · missing data' :
+        k === 'Deprioritize' ? 'Deprioritized · outside ICP' :
+        k === 'Verify' ? 'Verify first · confidence ' + x.scores.C :
+        k === 'Hold' ? 'Watching · momentum ' + x.scores.M :
+        'Priority ' + x.scores.P + ' · held, five slots full';
+    });
+    Object.keys(decisions).forEach(function (k) { if (out[k]) out[k].decision = decisions[k]; });
+
+    all.forEach(function (x) {
+      x.pipeline = {
+        signals: x.signals.length + ' signals, ' + x.signals.filter(function (s) { return s.count === 'counted' || s.count === 'half'; }).length + ' counted, ' + x.events.length + ' events',
+        score: x.scores.P == null ? 'Not scored' : 'A ' + x.scores.A + ' · M ' + x.scores.M + ' · R ' + x.scores.R + ' · C ' + x.scores.C,
+        pick: x.slot === 'ranked' ? 'Rank ' + (picks.indexOf(x) + 1) + ' of ' + picks.length + ', ' + x.motion.toLowerCase() + ' slot' :
+              x.slot === 'exploration' ? 'Exploration slot' : x.rest_reason,
+        explain: (x.why.removed.length + x.why.text.split('. ').length) + (x.why.removed.length + x.why.text.split('. ').length === 1 ? ' sentence' : ' sentences') + ' drafted',
+        validate: x.why.removed.length ? x.why.removed.length + ' uncited claim removed' : 'All claims cited'
+      };
+    });
+
+    var t = cfg.demo_today;
+    audit.push({ at: t + 'T06:00:04Z', actor: 'scheduler', event: 'FOCUS_SCORE_RUN', detail: all.length + ' accounts scored · ' + cfg.scoring_version + ' · model ' + (hooks.modelName || cfg.model) });
+    audit.push({ at: t + 'T06:01:12Z', actor: 'extractor', event: 'SIGNALS_READ', detail: stats.signals_read + ' signals read · ' + stats.counted + ' counted · ' + stats.not_counted + ' not counted (spoken by our side)' });
+    audit.push({ at: t + 'T06:01:40Z', actor: 'extractor', event: 'EVENTS_CLUSTERED', detail: stats.events + ' events · ' + stats.corroborated + ' corroborated' });
+    stats.removed.forEach(function (r) { audit.push({ at: t + 'T06:02:31Z', actor: 'validator', event: 'CLAIM_REMOVED', level: 'WARN', detail: r.account + ' · "' + r.text + '" · ' + r.reason }); });
+    audit.push({ at: t + 'T06:02:58Z', actor: 'focus', event: 'BRIEF_BUILT', detail: input.config.owner.name + ' · ' + picks.length + ' picks · ' + (explore ? '1 exploration slot' : 'no exploration slot') });
+
+    return {
+      version: cfg.scoring_version, as_of: today, model: hooks.modelName || cfg.model, owner: cfg.owner, seller: cfg.seller,
+      brief: { picks: picks.map(function (x) { return x.key; }),
+               rest: all.filter(function (x) { return x.slot !== 'ranked' && x.slot !== 'exploration'; })
+                        .sort(function (x, y) { return (y.scores.P == null ? -1 : y.scores.P) - (x.scores.P == null ? -1 : x.scores.P) || (y.scores.A || 0) - (x.scores.A || 0) || (x.key < y.key ? -1 : 1); })
+                        .map(function (x) { return x.key; }) },
+      accounts: out, stats: { signals_read: stats.signals_read, counted: stats.counted, not_counted: stats.not_counted, context: stats.context || 0, events: stats.events,
+        corroborated: stats.corroborated, sentences: stats.sentences, removed: stats.removed.length }, audit: audit
+    };
+  }
+
+  /* ---------------- evaluation ---------------- */
+  function backtest(rows) {
+    // rows: {seller, week, account, fit, momentum, readiness, baseline_score, outcome_60d}
+    var groups = {};
+    rows.forEach(function (r) { var k = r.seller + '|' + r.week; (groups[k] = groups[k] || []).push(r); });
+    var focusHits = 0, baseHits = 0, n = 0, all = [];
+    Object.keys(groups).forEach(function (k) {
+      var g = groups[k];
+      var f = g.slice().sort(function (x, y) { return Math.sqrt(y.fit * y.momentum) - Math.sqrt(x.fit * x.momentum); }).slice(0, 5);
+      var b = g.slice().sort(function (x, y) { return y.baseline_score - x.baseline_score; }).slice(0, 5);
+      f.forEach(function (r) { focusHits += r.outcome_60d; });
+      b.forEach(function (r) { baseHits += r.outcome_60d; });
+      n += 5;
+      all = all.concat(g);
+    });
+    var overall = all.reduce(function (s, r) { return s + r.outcome_60d; }, 0) / all.length;
+    var sorted = all.slice().sort(function (x, y) { return Math.sqrt(y.fit * y.momentum) - Math.sqrt(x.fit * x.momentum); });
+    var top = sorted.slice(0, Math.round(sorted.length / 10));
+    var topRate = top.reduce(function (s, r) { return s + r.outcome_60d; }, 0) / top.length;
+    return { snapshots: Object.keys(groups).length, sellers: Object.keys(rows.reduce(function (m, r) { m[r.seller] = 1; return m; }, {})).length,
+             precision_focus: focusHits / n, precision_baseline: baseHits / n, relative_lift: (focusHits - baseHits) / baseHits,
+             top_decile_lift: topRate / overall, base_rate: overall };
+  }
+
+  function extraction(segments) {
+    function prf(pred) {
+      var tp = 0, fp = 0, fn = 0;
+      segments.forEach(function (s, i) { if (pred[i] && s.truth) tp++; else if (pred[i]) fp++; else if (s.truth) fn++; });
+      return { precision: tp / Math.max(1, tp + fp), recall: tp / Math.max(1, tp + fn) };
+    }
+    var tracker = prf(segments.map(function (s) { return s.tracker_hit; }));
+    var twoStage = prf(segments.map(function (s) { return s.speaker_side === 'customer' && !s.negated; }));
+    return { segments: segments.length, tracker: tracker, two_stage_rules: twoStage };
+  }
+
+  return { buildRun: buildRun, validate: validate, backtest: backtest, extraction: extraction,
+           FAMILY: FAMILY, ROLES: ROLES, ROLE_NAMES: ROLE_NAMES, _: { momentum: momentum, readiness: readiness, clusterEvents: clusterEvents, route: route, days: days } };
+}
+if (typeof module !== 'undefined' && module.exports) module.exports = AccountFocusCore();

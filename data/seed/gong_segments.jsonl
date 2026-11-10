@@ -1,0 +1,214 @@
+{"id": "SEG-0001", "speaker_side": "customer", "type": "Small talk", "text": "Budget season is always busy for us.", "tracker_hit": false, "truth": false, "negated": false}
+{"id": "SEG-0002", "speaker_side": "customer", "type": "Small talk", "text": "Pricing came up at our offsite, but nothing changed.", "tracker_hit": false, "truth": false, "negated": true}
+{"id": "SEG-0003", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0004", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0005", "speaker_side": "customer", "type": "Small talk", "text": "Budget season is always busy for us.", "tracker_hit": false, "truth": false, "negated": false}
+{"id": "SEG-0006", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0007", "speaker_side": "customer", "type": "Commitment", "text": "Sure, send the security questionnaire over.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0008", "speaker_side": "customer", "type": "Pain", "text": "Dispatch re-keys every job into two systems.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0009", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0010", "speaker_side": "customer", "type": "Commitment", "text": "Sure, send the security questionnaire over.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0011", "speaker_side": "customer", "type": "Small talk", "text": "Budget season is always busy for us.", "tracker_hit": false, "truth": false, "negated": false}
+{"id": "SEG-0012", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0013", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0014", "speaker_side": "seller", "type": "Pricing", "text": "Let me walk you through our pricing tiers.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0015", "speaker_side": "customer", "type": "Small talk", "text": "Budget season is always busy for us.", "tracker_hit": false, "truth": false, "negated": false}
+{"id": "SEG-0016", "speaker_side": "customer", "type": "Authority", "text": "I will bring our CFO to the next call.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0017", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0018", "speaker_side": "customer", "type": "Commitment", "text": "Sure, send the security questionnaire over.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0019", "speaker_side": "seller", "type": "Pricing", "text": "Let me walk you through our pricing tiers.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0020", "speaker_side": "seller", "type": "Budget", "text": "Do you have budget allocated for this?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0021", "speaker_side": "customer", "type": "Authority", "text": "I will bring our CFO to the next call.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0022", "speaker_side": "customer", "type": "Authority", "text": "I will bring our CFO to the next call.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0023", "speaker_side": "customer", "type": "Expansion", "text": "The other depots want the same setup.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0024", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0025", "speaker_side": "customer", "type": "Timeline", "text": "We need this live before the spring season.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0026", "speaker_side": "customer", "type": "Authority", "text": "I will bring our CFO to the next call.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0027", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0028", "speaker_side": "customer", "type": "Pricing", "text": "Pricing is not something we are looking at this year.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0029", "speaker_side": "seller", "type": "Timeline", "text": "What timeline are you working towards?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0030", "speaker_side": "customer", "type": "Pricing", "text": "Pricing is not something we are looking at this year.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0031", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0032", "speaker_side": "customer", "type": "Expansion", "text": "The other depots want the same setup.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0033", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0034", "speaker_side": "seller", "type": "Pricing", "text": "Let me walk you through our pricing tiers.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0035", "speaker_side": "customer", "type": "Pain", "text": "Dispatch re-keys every job into two systems.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0036", "speaker_side": "customer", "type": "Small talk", "text": "Budget season is always busy for us.", "tracker_hit": false, "truth": false, "negated": false}
+{"id": "SEG-0037", "speaker_side": "customer", "type": "Authority", "text": "I will bring our CFO to the next call.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0038", "speaker_side": "customer", "type": "Pain", "text": "Dispatch re-keys every job into two systems.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0039", "speaker_side": "customer", "type": "Pain", "text": "Dispatch re-keys every job into two systems.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0040", "speaker_side": "customer", "type": "Timeline", "text": "We need this live before the spring season.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0041", "speaker_side": "customer", "type": "Timeline", "text": "We need this live before the spring season.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0042", "speaker_side": "customer", "type": "Expansion", "text": "The other depots want the same setup.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0043", "speaker_side": "seller", "type": "Pricing", "text": "Let me walk you through our pricing tiers.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0044", "speaker_side": "customer", "type": "Timeline", "text": "We need this live before the spring season.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0045", "speaker_side": "customer", "type": "Pain", "text": "Dispatch re-keys every job into two systems.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0046", "speaker_side": "customer", "type": "Budget", "text": "We have money set aside for this next quarter.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0047", "speaker_side": "customer", "type": "Pain", "text": "Dispatch re-keys every job into two systems.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0048", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0049", "speaker_side": "customer", "type": "Expansion", "text": "The other depots want the same setup.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0050", "speaker_side": "seller", "type": "Pricing", "text": "Let me walk you through our pricing tiers.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0051", "speaker_side": "seller", "type": "Timeline", "text": "What timeline are you working towards?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0052", "speaker_side": "customer", "type": "Small talk", "text": "Budget season is always busy for us.", "tracker_hit": false, "truth": false, "negated": false}
+{"id": "SEG-0053", "speaker_side": "customer", "type": "Budget", "text": "We have money set aside for this next quarter.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0054", "speaker_side": "customer", "type": "Timeline", "text": "We need this live before the spring season.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0055", "speaker_side": "customer", "type": "Small talk", "text": "Budget season is always busy for us.", "tracker_hit": false, "truth": false, "negated": false}
+{"id": "SEG-0056", "speaker_side": "customer", "type": "Pricing", "text": "Pricing is not something we are looking at this year.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0057", "speaker_side": "seller", "type": "Timeline", "text": "What timeline are you working towards?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0058", "speaker_side": "customer", "type": "Budget", "text": "We have money set aside for this next quarter.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0059", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0060", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0061", "speaker_side": "customer", "type": "Authority", "text": "I will bring our CFO to the next call.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0062", "speaker_side": "customer", "type": "Authority", "text": "I will bring our CFO to the next call.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0063", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0064", "speaker_side": "seller", "type": "Timeline", "text": "What timeline are you working towards?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0065", "speaker_side": "customer", "type": "Expansion", "text": "The other depots want the same setup.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0066", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0067", "speaker_side": "seller", "type": "Pricing", "text": "Let me walk you through our pricing tiers.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0068", "speaker_side": "seller", "type": "Pricing", "text": "Let me walk you through our pricing tiers.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0069", "speaker_side": "customer", "type": "Commitment", "text": "Sure, send the security questionnaire over.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0070", "speaker_side": "customer", "type": "Authority", "text": "I will bring our CFO to the next call.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0071", "speaker_side": "customer", "type": "Small talk", "text": "Pricing came up at our offsite, but nothing changed.", "tracker_hit": false, "truth": false, "negated": true}
+{"id": "SEG-0072", "speaker_side": "customer", "type": "Small talk", "text": "Pricing came up at our offsite, but nothing changed.", "tracker_hit": false, "truth": false, "negated": true}
+{"id": "SEG-0073", "speaker_side": "customer", "type": "Timeline", "text": "We need this live before the spring season.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0074", "speaker_side": "seller", "type": "Budget", "text": "Do you have budget allocated for this?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0075", "speaker_side": "customer", "type": "Small talk", "text": "Budget season is always busy for us.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0076", "speaker_side": "customer", "type": "Budget", "text": "We have money set aside for this next quarter.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0077", "speaker_side": "seller", "type": "Timeline", "text": "What timeline are you working towards?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0078", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0079", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0080", "speaker_side": "customer", "type": "Expansion", "text": "The other depots want the same setup.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0081", "speaker_side": "seller", "type": "Timeline", "text": "What timeline are you working towards?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0082", "speaker_side": "customer", "type": "Authority", "text": "I will bring our CFO to the next call.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0083", "speaker_side": "customer", "type": "Expansion", "text": "The other depots want the same setup.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0084", "speaker_side": "seller", "type": "Timeline", "text": "What timeline are you working towards?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0085", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0086", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0087", "speaker_side": "customer", "type": "Pain", "text": "Dispatch re-keys every job into two systems.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0088", "speaker_side": "seller", "type": "Budget", "text": "Do you have budget allocated for this?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0089", "speaker_side": "seller", "type": "Pricing", "text": "Let me walk you through our pricing tiers.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0090", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0091", "speaker_side": "customer", "type": "Authority", "text": "I will bring our CFO to the next call.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0092", "speaker_side": "customer", "type": "Pricing", "text": "Pricing is not something we are looking at this year.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0093", "speaker_side": "seller", "type": "Timeline", "text": "What timeline are you working towards?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0094", "speaker_side": "customer", "type": "Pain", "text": "Dispatch re-keys every job into two systems.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0095", "speaker_side": "customer", "type": "Small talk", "text": "Budget season is always busy for us.", "tracker_hit": false, "truth": false, "negated": false}
+{"id": "SEG-0096", "speaker_side": "seller", "type": "Pricing", "text": "Let me walk you through our pricing tiers.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0097", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0098", "speaker_side": "seller", "type": "Pricing", "text": "Let me walk you through our pricing tiers.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0099", "speaker_side": "customer", "type": "Budget", "text": "We have money set aside for this next quarter.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0100", "speaker_side": "customer", "type": "Pain", "text": "Dispatch re-keys every job into two systems.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0101", "speaker_side": "customer", "type": "Small talk", "text": "Pricing came up at our offsite, but nothing changed.", "tracker_hit": false, "truth": false, "negated": true}
+{"id": "SEG-0102", "speaker_side": "customer", "type": "Pain", "text": "Dispatch re-keys every job into two systems.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0103", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0104", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0105", "speaker_side": "seller", "type": "Pricing", "text": "Let me walk you through our pricing tiers.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0106", "speaker_side": "customer", "type": "Commitment", "text": "Sure, send the security questionnaire over.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0107", "speaker_side": "customer", "type": "Timeline", "text": "We need this live before the spring season.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0108", "speaker_side": "customer", "type": "Authority", "text": "I will bring our CFO to the next call.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0109", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0110", "speaker_side": "seller", "type": "Timeline", "text": "What timeline are you working towards?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0111", "speaker_side": "seller", "type": "Timeline", "text": "What timeline are you working towards?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0112", "speaker_side": "customer", "type": "Commitment", "text": "Sure, send the security questionnaire over.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0113", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0114", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0115", "speaker_side": "seller", "type": "Budget", "text": "Do you have budget allocated for this?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0116", "speaker_side": "customer", "type": "Pricing", "text": "Pricing is not something we are looking at this year.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0117", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0118", "speaker_side": "customer", "type": "Expansion", "text": "The other depots want the same setup.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0119", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0120", "speaker_side": "customer", "type": "Small talk", "text": "Pricing came up at our offsite, but nothing changed.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0121", "speaker_side": "seller", "type": "Pricing", "text": "Let me walk you through our pricing tiers.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0122", "speaker_side": "customer", "type": "Budget", "text": "We have money set aside for this next quarter.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0123", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0124", "speaker_side": "seller", "type": "Pricing", "text": "Let me walk you through our pricing tiers.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0125", "speaker_side": "customer", "type": "Budget", "text": "We have money set aside for this next quarter.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0126", "speaker_side": "customer", "type": "Small talk", "text": "Pricing came up at our offsite, but nothing changed.", "tracker_hit": false, "truth": false, "negated": true}
+{"id": "SEG-0127", "speaker_side": "seller", "type": "Pricing", "text": "Let me walk you through our pricing tiers.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0128", "speaker_side": "customer", "type": "Small talk", "text": "Budget season is always busy for us.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0129", "speaker_side": "customer", "type": "Small talk", "text": "Pricing came up at our offsite, but nothing changed.", "tracker_hit": false, "truth": false, "negated": true}
+{"id": "SEG-0130", "speaker_side": "customer", "type": "Small talk", "text": "Budget season is always busy for us.", "tracker_hit": false, "truth": false, "negated": false}
+{"id": "SEG-0131", "speaker_side": "seller", "type": "Pricing", "text": "Let me walk you through our pricing tiers.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0132", "speaker_side": "customer", "type": "Expansion", "text": "The other depots want the same setup.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0133", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0134", "speaker_side": "customer", "type": "Pricing", "text": "Pricing is not something we are looking at this year.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0135", "speaker_side": "customer", "type": "Timeline", "text": "We need this live before the spring season.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0136", "speaker_side": "seller", "type": "Timeline", "text": "What timeline are you working towards?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0137", "speaker_side": "customer", "type": "Authority", "text": "I will bring our CFO to the next call.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0138", "speaker_side": "seller", "type": "Budget", "text": "Do you have budget allocated for this?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0139", "speaker_side": "customer", "type": "Timeline", "text": "We need this live before the spring season.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0140", "speaker_side": "customer", "type": "Small talk", "text": "Budget season is always busy for us.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0141", "speaker_side": "seller", "type": "Timeline", "text": "What timeline are you working towards?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0142", "speaker_side": "customer", "type": "Commitment", "text": "Sure, send the security questionnaire over.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0143", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0144", "speaker_side": "customer", "type": "Pricing", "text": "Pricing is not something we are looking at this year.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0145", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0146", "speaker_side": "customer", "type": "Pricing", "text": "Pricing is not something we are looking at this year.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0147", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0148", "speaker_side": "seller", "type": "Pricing", "text": "Let me walk you through our pricing tiers.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0149", "speaker_side": "seller", "type": "Pricing", "text": "Let me walk you through our pricing tiers.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0150", "speaker_side": "customer", "type": "Small talk", "text": "Budget season is always busy for us.", "tracker_hit": false, "truth": false, "negated": false}
+{"id": "SEG-0151", "speaker_side": "customer", "type": "Commitment", "text": "Sure, send the security questionnaire over.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0152", "speaker_side": "customer", "type": "Authority", "text": "I will bring our CFO to the next call.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0153", "speaker_side": "customer", "type": "Small talk", "text": "Pricing came up at our offsite, but nothing changed.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0154", "speaker_side": "customer", "type": "Budget", "text": "We have money set aside for this next quarter.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0155", "speaker_side": "customer", "type": "Small talk", "text": "Budget season is always busy for us.", "tracker_hit": false, "truth": false, "negated": false}
+{"id": "SEG-0156", "speaker_side": "customer", "type": "Budget", "text": "We have money set aside for this next quarter.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0157", "speaker_side": "customer", "type": "Expansion", "text": "The other depots want the same setup.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0158", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0159", "speaker_side": "customer", "type": "Authority", "text": "I will bring our CFO to the next call.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0160", "speaker_side": "seller", "type": "Pricing", "text": "Let me walk you through our pricing tiers.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0161", "speaker_side": "seller", "type": "Pricing", "text": "Let me walk you through our pricing tiers.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0162", "speaker_side": "customer", "type": "Timeline", "text": "We need this live before the spring season.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0163", "speaker_side": "customer", "type": "Budget", "text": "We have money set aside for this next quarter.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0164", "speaker_side": "customer", "type": "Budget", "text": "We have money set aside for this next quarter.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0165", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0166", "speaker_side": "seller", "type": "Timeline", "text": "What timeline are you working towards?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0167", "speaker_side": "seller", "type": "Budget", "text": "Do you have budget allocated for this?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0168", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0169", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0170", "speaker_side": "customer", "type": "Expansion", "text": "The other depots want the same setup.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0171", "speaker_side": "customer", "type": "Authority", "text": "I will bring our CFO to the next call.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0172", "speaker_side": "customer", "type": "Commitment", "text": "Sure, send the security questionnaire over.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0173", "speaker_side": "customer", "type": "Budget", "text": "We have money set aside for this next quarter.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0174", "speaker_side": "customer", "type": "Commitment", "text": "Sure, send the security questionnaire over.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0175", "speaker_side": "seller", "type": "Timeline", "text": "What timeline are you working towards?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0176", "speaker_side": "customer", "type": "Expansion", "text": "The other depots want the same setup.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0177", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0178", "speaker_side": "customer", "type": "Pricing", "text": "Pricing is not something we are looking at this year.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0179", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0180", "speaker_side": "customer", "type": "Small talk", "text": "Pricing came up at our offsite, but nothing changed.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0181", "speaker_side": "customer", "type": "Pricing", "text": "Pricing is not something we are looking at this year.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0182", "speaker_side": "customer", "type": "Expansion", "text": "The other depots want the same setup.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0183", "speaker_side": "customer", "type": "Pain", "text": "Dispatch re-keys every job into two systems.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0184", "speaker_side": "customer", "type": "Authority", "text": "I will bring our CFO to the next call.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0185", "speaker_side": "seller", "type": "Timeline", "text": "What timeline are you working towards?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0186", "speaker_side": "customer", "type": "Expansion", "text": "The other depots want the same setup.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0187", "speaker_side": "customer", "type": "Budget", "text": "There is no budget until the network build is done.", "tracker_hit": true, "truth": false, "negated": true}
+{"id": "SEG-0188", "speaker_side": "customer", "type": "Small talk", "text": "Pricing came up at our offsite, but nothing changed.", "tracker_hit": false, "truth": false, "negated": true}
+{"id": "SEG-0189", "speaker_side": "customer", "type": "Expansion", "text": "The other depots want the same setup.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0190", "speaker_side": "customer", "type": "Expansion", "text": "The other depots want the same setup.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0191", "speaker_side": "customer", "type": "Budget", "text": "We have money set aside for this next quarter.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0192", "speaker_side": "customer", "type": "Timeline", "text": "We need this live before the spring season.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0193", "speaker_side": "customer", "type": "Budget", "text": "We have money set aside for this next quarter.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0194", "speaker_side": "customer", "type": "Budget", "text": "We have money set aside for this next quarter.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0195", "speaker_side": "seller", "type": "Timeline", "text": "What timeline are you working towards?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0196", "speaker_side": "customer", "type": "Commitment", "text": "Sure, send the security questionnaire over.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0197", "speaker_side": "customer", "type": "Pain", "text": "Dispatch re-keys every job into two systems.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0198", "speaker_side": "customer", "type": "Small talk", "text": "Budget season is always busy for us.", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0199", "speaker_side": "customer", "type": "Small talk", "text": "Budget season is always busy for us.", "tracker_hit": false, "truth": false, "negated": false}
+{"id": "SEG-0200", "speaker_side": "customer", "type": "Expansion", "text": "The other depots want the same setup.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0201", "speaker_side": "seller", "type": "Relayed", "text": "As Dana said last week, budget is set aside for Q1.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0202", "speaker_side": "customer", "type": "Small talk", "text": "Pricing came up at our offsite, but nothing changed.", "tracker_hit": false, "truth": false, "negated": true}
+{"id": "SEG-0203", "speaker_side": "customer", "type": "Commitment", "text": "Sure, send the security questionnaire over.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0204", "speaker_side": "customer", "type": "Authority", "text": "I will bring our CFO to the next call.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0205", "speaker_side": "customer", "type": "Commitment", "text": "Sure, send the security questionnaire over.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0206", "speaker_side": "customer", "type": "Commitment", "text": "Sure, send the security questionnaire over.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0207", "speaker_side": "customer", "type": "Pain", "text": "Dispatch re-keys every job into two systems.", "tracker_hit": false, "truth": true, "negated": false}
+{"id": "SEG-0208", "speaker_side": "seller", "type": "Budget", "text": "Do you have budget allocated for this?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0209", "speaker_side": "customer", "type": "Pain", "text": "Dispatch re-keys every job into two systems.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0210", "speaker_side": "customer", "type": "Commitment", "text": "Sure, send the security questionnaire over.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0211", "speaker_side": "customer", "type": "Small talk", "text": "Pricing came up at our offsite, but nothing changed.", "tracker_hit": false, "truth": false, "negated": true}
+{"id": "SEG-0212", "speaker_side": "customer", "type": "Commitment", "text": "Sure, send the security questionnaire over.", "tracker_hit": true, "truth": true, "negated": false}
+{"id": "SEG-0213", "speaker_side": "seller", "type": "Timeline", "text": "What timeline are you working towards?", "tracker_hit": true, "truth": false, "negated": false}
+{"id": "SEG-0214", "speaker_side": "customer", "type": "Commitment", "text": "Sure, send the security questionnaire over.", "tracker_hit": false, "truth": true, "negated": false}

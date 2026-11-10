@@ -1,0 +1,215 @@
+{
+ "GTM-0024": {
+  "why_now": [
+   {
+    "text": "Dana Whitfield, CFO for seven weeks, said budget is set aside for Q1 on the Nov 4 call, a week after the CEO announced a 12% service-cost program.",
+    "refs": [
+     "GONG-9120#4",
+     "PUB-ER-0024-Q3",
+     "PUB-NEWS-0024-01"
+    ]
+   },
+   {
+    "text": "Keystone is moving off its current scheduling vendor this quarter.",
+    "refs": []
+   }
+  ],
+  "action": {
+   "title": "Request an executive meeting with Dana Whitfield",
+   "who": "Dana Whitfield, CFO · with Luis Ortega",
+   "due": "2026-11-12",
+   "points": [
+    "Tie one technician schedule to the 12% service-cost program",
+    "Bring the Bluepeak Utilities overtime result",
+    "Ask to include COO Renee Albright"
+   ]
+  }
+ },
+ "GTM-0001": {
+  "why_now": [
+   {
+    "text": "Riley Chen says Jordan Patel wants a decision before Q1 planning closes, but nobody who owns the budget or the dispatch integration has joined a call.",
+    "refs": [
+     "GONG-8812#6",
+     "GONG-8812#4",
+     "SF-OPP-006ORB000000002AAA"
+    ]
+   }
+  ],
+  "action": {
+   "title": "Ask Riley to bring in the budget owner and the dispatch owner",
+   "who": "Riley Chen, Director Field Operations",
+   "due": "2026-11-13",
+   "points": [
+    "Offer a 30-minute dispatch integration review for their system owner",
+    "Ask who signs off on the $185,000 before Q1 planning closes",
+    "Invite Jordan Patel; he is named on calls but has never attended"
+   ]
+  }
+ },
+ "GTM-0011": {
+  "why_now": [
+   {
+    "text": "The CEO committed to cutting field-software vendors from 14 to 5, and procurement now wants every new tool to replace one, yet our open proposal is a $90,000 add-on.",
+    "refs": [
+     "PUB-LTR-0011-2026",
+     "GONG-9033#5",
+     "SF-OPP-006ORB000000044AAA"
+    ]
+   }
+  ],
+  "action": {
+   "title": "Reframe the proposal as a consolidation before procurement reviews it",
+   "who": "Tom Becker, Director Operations",
+   "due": "2026-11-14",
+   "points": [
+    "Map which of the 14 vendors Acme replaces, by name",
+    "Show logins removed per technician per day",
+    "Resubmit as a replacement and ask Tom to bring in CFO Grace Liu"
+   ]
+  }
+ },
+ "GTM-0012": {
+  "why_now": [
+   {
+    "text": "Champion Hannah Cole has been silent for 47 days, weekly active schedulers fell 31%, and the $310,000 renewal is 84 days away.",
+    "refs": [
+     "GONG-8790#9",
+     "USAGE-0012-WAU",
+     "SF-CTR-00000412"
+    ]
+   }
+  ],
+  "action": {
+   "title": "Re-engage Hannah Cole with a fix-first note, then propose the review",
+   "who": "Hannah Cole · copy the customer success manager",
+   "due": "2026-11-11",
+   "points": [
+    "Lead with the fix date for the night-staff shift swap case",
+    "Ask how the new three-division structure changes her team",
+    "Propose the regional directors review she offered in September"
+   ]
+  }
+ },
+ "GTM-0002": {
+  "why_now": [
+   {
+    "text": "A new CIO, Priya Nandakumar, started 38 days ago and the company is hiring clinical scheduling analysts, but nobody at Acme has met her.",
+    "refs": [
+     "PUB-NEWS-0002-01",
+     "PUB-JOBS-0002"
+    ]
+   }
+  ],
+  "action": {
+   "title": "Ask Elena Rossi for an introduction to the new CIO",
+   "who": "Elena Rossi, Head of Homecare Operations",
+   "due": "2026-11-16",
+   "points": [
+    "Share homecare results Elena can bring to the CIO",
+    "Ask what Priya Nandakumar is prioritising in her first 90 days",
+    "Offer a short briefing on scheduling across all five divisions"
+   ]
+  }
+ },
+ "GTM-0019": {
+  "why_now": [
+   {
+    "text": "Seats are at 96% of contract and the Midwest depots asked to join after the pilot.",
+    "refs": [
+     "USAGE-0019-SEATS",
+     "GONG-9101#3"
+    ]
+   }
+  ],
+  "action": {
+   "title": "Propose seats for the Midwest depots",
+   "who": "Greg Tanner, VP Distribution",
+   "due": "2026-11-17",
+   "points": [
+    "Show the 96% seat use",
+    "Price the Midwest depots as one add-on",
+    "Ask Greg to bring in CFO Lisa Grant"
+   ]
+  }
+ },
+ "GTM-0003": {
+  "why_now": [
+   {
+    "text": "Someone asked for the reporting module before year-end close, but the speaker is not matched to any CRM contact and the baseline score is 6 days old.",
+    "refs": [
+     "GONG-8981#2",
+     "GONG-8981#5"
+    ]
+   }
+  ],
+  "action": {
+   "title": "Confirm who \"Chris M.\" is and refresh the score",
+   "who": "You · about 10 minutes",
+   "due": "2026-11-10",
+   "points": [
+    "Check the Oct 30 call participants",
+    "Link the speaker to a CRM contact (likely Chris Moreno, Controller)",
+    "The account is rescored within the hour after the fix"
+   ]
+  }
+ },
+ "GTM-0017": {
+  "why_now": [
+   {
+    "text": "All 9 budget and pricing tracker hits were questions asked by our side, and the customer said nothing new is moving until the network build finishes next summer.",
+    "refs": [
+     "GONG-8955#3",
+     "GONG-8955#6"
+    ]
+   }
+  ],
+  "action": {
+   "title": "Set a watch for the network build finishing",
+   "who": "Rescore on a new budget or executive event",
+   "due": null,
+   "points": [
+    "Revisit in Q2 2027",
+    "Rescore automatically on a new executive or funding event"
+   ]
+  }
+ },
+ "GTM-0010": {
+  "why_now": [
+   {
+    "text": "140 employees and no field service operations put Kestrel outside the ideal customer profile.",
+    "refs": [
+     "SF-ACC-001ORB000000010AAA"
+    ]
+   }
+  ],
+  "action": {
+   "title": "Skip this account for now",
+   "who": "No action needed",
+   "due": null,
+   "points": [
+    "Rescore only if field operations appear"
+   ]
+  }
+ },
+ "GTM-0007": {
+  "why_now": [
+   {
+    "text": "Not scored: there is no employee count, no baseline score and only one contact with no title.",
+    "refs": [
+     "SF-ACC-001ORB000000007AAA"
+    ]
+   }
+  ],
+  "action": {
+   "title": "Fill in the basics so it can be scored",
+   "who": "You or your SDR",
+   "due": null,
+   "points": [
+    "Add employee count and industry",
+    "Find one operations leader",
+    "The account is rescored within the hour"
+   ]
+  }
+ }
+}

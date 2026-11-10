@@ -1,0 +1,29 @@
+# Slack app manifest for Account Focus. Create the app from this file:
+# api.slack.com/apps → Create New App → From a manifest → pick your workspace → paste this.
+display_information:
+  name: Account Focus
+  description: Your five accounts for today, why now, and the next move. Part of GTM Orbit.
+  background_color: "#0b6e79"
+features:
+  bot_user:
+    display_name: Account Focus
+    always_online: true
+  slash_commands:
+    - command: /focus
+      description: Your five for today, one account, or exec prep
+      usage_hint: "[account] | prep [account]"
+      should_escape: false
+oauth_config:
+  scopes:
+    bot:
+      - commands
+      - chat:write
+      - chat:write.public
+      - im:write
+      - users:read
+settings:
+  interactivity:
+    is_enabled: true
+  org_deploy_enabled: false
+  socket_mode_enabled: true
+  token_rotation_enabled: false
