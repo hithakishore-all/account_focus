@@ -2,7 +2,7 @@
   "name": "account-focus",
   "version": "1.0.0",
   "description": "Account Focus: the daily decision layer inside GTM Orbit. Five picks a day, why now, who to engage, what to do next.",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "private": true,
   "main": "server.js",
   "engines": { "node": ">=20" },
